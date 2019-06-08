@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	$basetexture "models\weapons\blazerEframe"
+	$bumpmap "models\weapons\blazerEframe_normal"
+	$envmap  env_cubemap
+	$envmaptint .25 .25 .25
+	$normalalphaenvmapmask 1
+}

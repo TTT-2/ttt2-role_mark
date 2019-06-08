@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	$basetexture "models/weapons/reg_stabilizer_black"
+	$envmap env_cubemap
+	$envmaptint .1 .1 .1
+}

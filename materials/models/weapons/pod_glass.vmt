@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	$basetexture "models/weapons/pod_glass"
+	
+	$envmap  env_cubemap
+	$envmapcontrast .2
+	$translucent 1
+	
+}

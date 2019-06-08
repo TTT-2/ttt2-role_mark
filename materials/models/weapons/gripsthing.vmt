@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	$basetexture "models/weapons/gripsthing"
+	$bumpmap "models/weapons/gripsthing_normal"
+	$envmap env_cubemap
+	$envmaptint .25 .25 .25
+}

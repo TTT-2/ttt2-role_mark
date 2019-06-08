@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	$basetexture "models/weapons/drop_asa"
+	$bumpmap "models/weapons/drop_asa_normal"
+	$envmap env_cubemap
+	$envmaptint .25 .25 .25
+}

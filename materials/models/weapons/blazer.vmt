@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	$basetexture "models/weapons/blazer"
+	$envmap env_cubemap
+	$envmapmask "models/weapons/blazer_specmap"
+	$envmaptint .2 .2 .2
+}
