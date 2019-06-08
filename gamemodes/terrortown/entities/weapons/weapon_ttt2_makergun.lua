@@ -3,7 +3,7 @@ SWEP.Base = 'weapon_tttbase'
 SWEP.Kind = WEAPON_EQUIP2
 
 if SERVER then
-	AddCSLuaFile( 'shared.lua' )
+	AddCSLuaFile('weapon_ttt2_makergun.lua')
 end
 
 if CLIENT then
@@ -127,12 +127,12 @@ if SERVER then
 
 		-- show player that they are marked
 		if GetConVar('ttt_mark_show_sidebar'):GetBool() and ply:GetSubRole() ~= ROLE_MARKER then
-			STATUS:AddStatus(ply, 'ttt2_role_marker_marked')
+			MARKER_DATA:MarkPlayer(ply)
 		end
 
 		-- send to marker that he has marked another player
 		if ply:GetSubRole() ~= ROLE_MARKER then
-			MARKER_DATA:SetMarkedPlayer(ply, attacker)
+			MARKER_DATA:SetMarkedPlayer(ply)
 		end
 		
 		dmginfo:SetDamage(0)

@@ -71,6 +71,16 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 end) 
 
 if SERVER then
+	-- modify roles table of rolesetup addon
+	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rolesTable)
+		local markers = rolesTable[ROLE_MARKER]
+
+		if not markers then return end
+
+		rolesTable[ROLE_INNOCENT] = rolesTable[ROLE_INNOCENT] + markers
+		rolesTable[ROLE_MARKER] = 0
+	end)
+
 	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun', function(ply, old, new)
 		if ply:GetSubRole() ~= ROLE_MARKER then return end
 
@@ -91,7 +101,7 @@ if SERVER then
 
 		if player_alive < GetConVar('ttt_mark_min_alive'):GetInt() then return end
 
-		if GetConVar('ttt_mark_pct_marked'):GetFloat() * (#player.GetAll() - amnt_marker) <= MARKER_DATA.marked_amount then
+		if GetConVar('ttt_mark_pct_marked'):GetFloat() * (player_alive - amnt_marker) <= MARKER_DATA.marked_amount then
 			return TEAM_MARKER
 		end
 	end)
