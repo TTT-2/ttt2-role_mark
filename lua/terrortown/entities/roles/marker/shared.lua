@@ -72,13 +72,8 @@ end)
 
 if SERVER then
 	-- modify roles table of rolesetup addon
-	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rolesTable)
-		local markers = rolesTable[ROLE_MARKER]
-
-		if not markers then return end
-
-		rolesTable[ROLE_INNOCENT] = rolesTable[ROLE_INNOCENT] + markers
-		rolesTable[ROLE_MARKER] = 0
+	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rls, printrls)
+		printrls[ROLE_MARKER] = true
 	end)
 
 	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun', function(ply, old, new)
