@@ -83,28 +83,29 @@ end
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
 
-		self.Weapon:EmitSound(Sound('marker/pbfire.wav'))
-		self.Weapon:SetNextSecondaryFire(CurTime() + 0.10)
-		self.Weapon:SetNextPrimaryFire(CurTime() + 0.10)
-		self:ShootEffects()
-		self:TakePrimaryAmmo(1)
-	
-		if SERVER then
-	
+	self.Weapon:EmitSound(Sound('marker/pbfire.wav'))
+	self.Weapon:SetNextSecondaryFire(CurTime() + 0.10)
+	self.Weapon:SetNextPrimaryFire(CurTime() + 0.10)
+	self:ShootEffects()
+	self:TakePrimaryAmmo(0)
+
+	if SERVER then	
 		local pb = ents.Create('paint_ball')
 
-		local shotpos = self.Owner:GetShootPos()
-		shotpos = shotpos + self.Owner:GetForward() * 5
-		shotpos = shotpos + self.Owner:GetRight() * 9
-		shotpos = shotpos + self.Owner:GetUp() * -0.5
+		local shoot_pos = self.Owner:GetShootPos()
+		shoot_pos = shoot_pos + self.Owner:GetForward() * 10
+		shoot_pos = shoot_pos + self.Owner:GetRight() * 7
+		shoot_pos = shoot_pos + self.Owner:GetUp() * -0.75
 
-		pb:SetPos(shotpos)
-		pb:SetAngles(Angle(self.Owner:GetAimVector()))
+		local shoot_vector = self.Owner:GetEyeTrace().HitPos - shoot_pos
+
+		pb:SetPos(shoot_pos)
+		pb:SetAngles(Angle(shoot_vector))
 		pb:SetOwner(self.Owner)
 		pb:Spawn()
 
 		local phys = pb:GetPhysicsObject()
-		phys:ApplyForceCenter(self.Owner:GetAimVector() * 7000 )
+		phys:ApplyForceCenter(shoot_vector * 7000)
 	end
 end
 
@@ -138,13 +139,4 @@ if SERVER then
 		dmginfo:SetDamage(0)
 		return true
 	end)
-
-	-- marker gun should always be maxed out
-	hook.Add("Tick", "MarkerGunRefill", function()
-        for _, ply in pairs(player.GetAll()) do
-            if ply:Alive() and ply:IsTerror() and ply:GetSubRole() == ROLE_MARKER and ply:GetWeapon('weapon_ttt2_makergun') then
-                ply:GetWeapon('weapon_ttt2_makergun'):SetClip1(250)
-            end
-        end
-    end)
 end
