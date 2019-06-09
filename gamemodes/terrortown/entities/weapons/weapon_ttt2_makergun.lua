@@ -55,11 +55,11 @@ SWEP.Primary.Recoil		    = 1.5
 SWEP.Primary.Damage		    = 1
 SWEP.Primary.NumShot        = 1
 SWEP.Primary.Cone		    = 0.01
-SWEP.Primary.ClipSize	    = 60
-SWEP.Primary.AmmoSize       = 60
-SWEP.Primary.DefaultAmmo    = 60
 SWEP.Primary.Delay		    = 0.30
-SWEP.Primary.DefaultClip    = 60
+SWEP.Primary.ClipSize	    = 250
+SWEP.Primary.DefaultClip    = 250
+SWEP.Primary.AmmoSize       = 0
+SWEP.Primary.DefaultAmmo    = 0
 SWEP.Primary.Automatic	    = false
 SWEP.Primary.Ammo		    = 'none'
 
@@ -138,4 +138,13 @@ if SERVER then
 		dmginfo:SetDamage(0)
 		return true
 	end)
+
+	-- marker gun should always be maxed out
+	hook.Add("Tick", "MarkerGunRefill", function()
+        for _, ply in pairs(player.GetAll()) do
+            if ply:Alive() and ply:IsTerror() and ply:GetSubRole() == ROLE_MARKER and ply:GetWeapon('weapon_ttt2_makergun') then
+                ply:GetWeapon('weapon_ttt2_makergun'):SetClip1(250)
+            end
+        end
+    end)
 end

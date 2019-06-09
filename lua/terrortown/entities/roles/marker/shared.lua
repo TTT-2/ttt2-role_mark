@@ -76,13 +76,19 @@ if SERVER then
 		printrls[ROLE_MARKER] = true
 	end)
 
-	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun', function(ply, old, new)
+	local function InitRoleMarker(ply)
 		if ply:GetSubRole() ~= ROLE_MARKER then return end
-
 		ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
+	end
+
+	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
+		InitRoleMarker(ply)
+	end)
+	hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply, old, new) -- called on player respawn
+		InitRoleMarker(ply)
 	end)
 
-	hook.Add("TTTCheckForWin", "JesterCheckWin", function()
+	hook.Add("TTTCheckForWin", "MarkerCheckWin", function()
 		local player_alive = 0
 		local amnt_marker = 0
 		for _, p in ipairs(player.GetAll()) do

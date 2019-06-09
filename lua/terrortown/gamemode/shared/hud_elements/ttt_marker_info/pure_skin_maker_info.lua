@@ -38,7 +38,8 @@ if CLIENT then -- CLIENT
     end
 
     function HUDELEMENT:ShouldDraw()
-        return (GetRoundState() == ROUND_ACTIVE and LocalPlayer():GetSubRole() == ROLE_MARKER) or HUDEditor.IsEditing
+        local c = LocalPlayer()
+        return (GetRoundState() == ROUND_ACTIVE and LocalPlayer():GetSubRole() == ROLE_MARKER and c:Alive() and c:IsTerror()) or HUDEditor.IsEditing
 	end
     -- parameter overwrites end
 
