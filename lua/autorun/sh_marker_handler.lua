@@ -135,18 +135,14 @@ if SERVER then
 
         -- HANDLE DEATH OF MARKER
         if victim:GetSubRole() ~= ROLE_MARKER then return end
-        self:MarkerDied()
+        MARKER_DATA:MarkerDied()
     end)
 
-    hook.Add('PlayerSpawn', 'ttt2_role_marker_player_respawn', function(ply)
+    hook.Add('PlayerSpawn', 'ttt2_role_marker_player_respawn', function()
         MARKER_DATA:UpdateAfterChange()
     end)
 
-    hook.Add('TTTBeginRound', 'ttt2_role_marker_begin_round', function(ply)
-        MARKER_DATA:UpdateAfterChange()
-    end)
-    
-    hook.Add('TTT2UpdateSubrole', 'ttt2_role_marker_update_subrole', function(ply)
+    hook.Add('TTT2UpdateSubrole', 'ttt2_role_marker_update_subrole', function()
         MARKER_DATA:UpdateAfterChange()
     end)
 end
@@ -180,4 +176,8 @@ end
 
 hook.Add('TTTBeginRound', 'ttt2_role_marker_reset', function()
     MARKER_DATA:ClearMarkedPlayers()
+
+    if SERVER then
+        MARKER_DATA:UpdateAfterChange()
+    end
 end)
