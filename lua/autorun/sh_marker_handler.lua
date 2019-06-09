@@ -3,18 +3,34 @@ MARKER_DATA.marked_players = {}
 MARKER_DATA.marked_amount = 0
 
 if CLIENT then
+    hook.Add('Initialize', 'TTTInitMarkerMessageLang', function()
+		LANG.AddToLanguage('English', 'ttt2_marker_marked', 'It seems like a player was marked.')
+		LANG.AddToLanguage('English', 'ttt2_marker_died', 'It seems like a marked player died.')
+		LANG.AddToLanguage('Deutsch', 'ttt2_marker_marked', 'Es scheint so, als wäre ein weiterer Spieler markiert worden.')
+		LANG.AddToLanguage('Deutsch', 'ttt2_marker_died', 'Es scheint so, als wäre ein markierter Spieler gestorben.')
+    end)
+    
+
     net.Receive('ttt2_role_marker_new_marking', function()
         local marked_player = net.ReadEntity()
+        local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
-        MARKER_DATA.marked_players[tostring(marked_player:SteamID64() or marked_player:EntIndex())] = true
-        MARKER_DATA:Count()
+        if not MARKER_DATA.marked_players[marked_player_id] then
+            if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_marked')) end
+            MARKER_DATA.marked_players[marked_player_id] = true
+            MARKER_DATA:Count()
+        end
     end)
 
     net.Receive('ttt2_role_marker_remove_marking', function()
         local marked_player = net.ReadEntity()
+        local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
-        MARKER_DATA.marked_players[tostring(marked_player:SteamID64() or marked_player:EntIndex())] = nil
-        MARKER_DATA:Count()
+        if MARKER_DATA.marked_players[marked_player_id] then
+            if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_died')) end
+            MARKER_DATA.marked_players[marked_player_id] = nil
+            MARKER_DATA:Count()
+        end
     end)
 
     net.Receive('ttt2_role_marker_remove_all', function()
