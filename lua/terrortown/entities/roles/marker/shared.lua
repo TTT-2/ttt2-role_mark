@@ -97,7 +97,9 @@ if SERVER then
 	end)
 
 	hook.Add("TTTCheckForWin", "MarkerCheckWin", function()
-		if GetConVar('ttt_mark_pct_marked'):GetFloat() * MARKER_DATA:GetNoMarkerPlayersAlive() <= MARKER_DATA:GetMarkedAmount() then
+		if MARKER_DATA:GetNoMarkerPlayerAlive() == 0 or MARKER_DATA:GetMarkedAmount() == 0 then return end
+
+		if GetConVar('ttt_mark_pct_marked'):GetFloat() * MARKER_DATA:GetNoMarkerPlayerAlive() <= MARKER_DATA:GetMarkedAmount() then
 			return TEAM_MARKER
 		end
 	end)
