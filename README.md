@@ -1,6 +1,8 @@
-# Marke - A new Role for TTT2
+# Marker - A new Role for TTT2
 
 The marker plays in his own team and has the goal of marking other players with his fancy paintgun. Once he marked enough of them (by default all players except himself) he wins. Marked players get notified when they are marked, so they do know there's a marker active in this round (you can disable that). The marker can't win by killing people, he always looses when only he and maximal one other role is alive). If he's to slow with marking other players, he might be unable to mark enough of them. Once all markers are dead, all players are unmarked! Players that were marked but killed afterwards do not count to marked players.
+
+Additionally the marker sees in a special UI element how many players that aren't in his team are still alive. This gives him some interesting powers, but he should keep quiet about them because calling out that someone has died might reveal him.
 
 ## Conars
 
