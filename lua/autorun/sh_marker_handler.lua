@@ -123,6 +123,11 @@ if SERVER then
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
     end
 
+    function MARKER_DATA:MarkerDied()
+        if MARKER_DATA:MarkerAlive() then return end        
+        MARKER_DATA:UnmarkPlayers()
+    end
+
     hook.Add('PostPlayerDeath', 'ttt2_role_marker_death', function(victim, infl, attacker)
         -- HANDLE DEATH OF MARKED PLAYER
         MARKER_DATA:RemoveMarkedPlayer(victim)
@@ -130,9 +135,7 @@ if SERVER then
 
         -- HANDLE DEATH OF MARKER
         if victim:GetSubRole() ~= ROLE_MARKER then return end
-        if MARKER_DATA:MarkerAlive() then return end        
-        
-        MARKER_DATA:UnmarkPlayers()
+        self:MarkerDied()
     end)
 
     hook.Add('PlayerSpawn', 'ttt2_role_marker_player_respawn', function(ply)

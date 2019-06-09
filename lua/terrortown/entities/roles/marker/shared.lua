@@ -83,6 +83,14 @@ if SERVER then
 
 	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
 		InitRoleMarker(ply)
+
+		-- handle removing marker role
+		if new ~= ROLE_MARKER and old == ROLE_MARKER then
+			ply:StripWeapon('weapon_ttt2_makergun')
+
+			-- remove markings when no marker is alive
+			MARKER_DATA:MarkerDied()
+		end
 	end)
 	hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply, old, new) -- called on player respawn
 		InitRoleMarker(ply)
