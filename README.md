@@ -9,7 +9,7 @@ Besides the normal role convars found in ULX, there are these special convars:
 ```
 # should marked players get a symbol in their status display
   ttt_mark_show_sidebar [0/1] (default: 1)
-# should the marker be informed via a message when a player was marked / a marked player dies?
+# should the marker be informed via a message when a player was marked / a marked player dies
   ttt_mark_show_messages [0/1] (default: 1)
 # how many players have to be marked at least for the marker to win
   ttt_mark_min_alive [0..n] (default: 5)
