@@ -1,6 +1,6 @@
 SWEP.Base = 'weapon_tttbase'
 
-SWEP.Kind = WEAPON_EQUIP2
+SWEP.Kind = WEAPON_NONE
 
 if SERVER then
 	AddCSLuaFile('weapon_ttt2_makergun.lua')
@@ -15,7 +15,6 @@ if CLIENT then
 	SWEP.Instructions		= 'Shoot with primary and secondary fire.'
 	SWEP.CSMuzzleFlashes    = true
 	
-	SWEP.SlotPos			= 8
 	SWEP.Slot               = 7
 
 	SWEP.Icon = 'vgui/ttt/icon_markergun.png'
