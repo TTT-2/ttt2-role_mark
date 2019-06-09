@@ -18,7 +18,7 @@ if CLIENT then
 	SWEP.SlotPos			= 8
 	SWEP.Slot               = 7
 
-	SWEP.Icon = 'vgui/ttt/icon_markergun.vtf'
+	SWEP.Icon = 'vgui/ttt/icon_markergun.png'
 	
 	SWEP.EquipMenuData = {
 		type = 'Weapon',
@@ -49,6 +49,7 @@ SWEP.Weight			        = 5
 SWEP.AutoSwitchTo		    = false
 SWEP.AutoSwitchFrom		    = false
 SWEP.AllowDrop              = false
+SWEP.notBuyable             = true
 
 SWEP.Primary.Sound		    = Sound('marker/pbfire.wav')
 SWEP.Primary.Recoil		    = 1.5

@@ -89,20 +89,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTTCheckForWin", "MarkerCheckWin", function()
-		local player_alive = 0
-		local amnt_marker = 0
-		for _, p in ipairs(player.GetAll()) do
-			if p:Alive() and p:IsTerror() then
-				player_alive = player_alive + 1
-			end
-			if p:GetSubRole() == ROLE_MARKER then
-				amnt_marker = amnt_marker + 1
-			end
-		end
-
-		if player_alive < GetConVar('ttt_mark_min_alive'):GetInt() then return end
-
-		if GetConVar('ttt_mark_pct_marked'):GetFloat() * (player_alive - amnt_marker) <= MARKER_DATA.marked_amount then
+		if GetConVar('ttt_mark_pct_marked'):GetFloat() * MARKER_DATA:GetNoMarkerPlayersAlive() <= MARKER_DATA:GetMarkedAmount() then
 			return TEAM_MARKER
 		end
 	end)

@@ -11,4 +11,5 @@ end
 if SERVER then
     resource.AddFile('vgui/ttt/dynamic/roles/icon_mark.vmt')
     resource.AddFile('vgui/ttt/hud_icon_marked.png')
+    resource.AddFile('vgui/ttt/hud_icon_marked_end.png')
 end

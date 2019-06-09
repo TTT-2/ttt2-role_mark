@@ -7,11 +7,12 @@ HUDELEMENT.Base = base
 if CLIENT then -- CLIENT
     local const_defaults = {
         basepos = {x = 0, y = 0},
-        size = {w = 85, h = 40},
-        minsize = {w = 350, h = 213}
+        size = {w = 110, h = 40},
+        minsize = {w = 110, h = 40}
     }
 
     HUDELEMENT.marker_icon = Material("vgui/ttt/hud_icon_marked.png")
+    HUDELEMENT.marker_icon_end = Material("vgui/ttt/hud_icon_marked_end.png")
     
     function HUDELEMENT:Initialize()
 		self.scale = 1.0
@@ -53,8 +54,19 @@ if CLIENT then -- CLIENT
 		-- draw bg
         self:DrawBg(x, y, w, h, self.basecolor)
 
-        util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, 175)
-        self:AdvancedText(MARKER_DATA.marked_amount, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, self:GetDefaultFontColor(self.basecolor), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
+        local color = nil
+        if MARKER_DATA:AbleToWin() then
+            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, 175)
+            color = self:GetDefaultFontColor(self.basecolor)
+            color.a = 175
+        else
+            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 75)
+            color = self:GetDefaultFontColor(self.basecolor)
+            color.a = 75
+        end
+
+        local amnt_print = tostring(MARKER_DATA:GetMarkedAmount()) .. ' / ' .. tostring(MARKER_DATA:GetNoMarkerPlayerAlive())
+        self:AdvancedText(amnt_print, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
         
         -- draw border and shadow
         self:DrawLines(x, y, w, h, self.basecolor.a)
