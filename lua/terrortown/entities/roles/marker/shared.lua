@@ -79,13 +79,14 @@ if SERVER then
 
 		if not markers then return end
 
-		rls[ROLE_INNOCENT] = rls[ROLE_MARKER] + markers
+		rls[ROLE_INNOCENT] = rls[ROLE_INNOCENT] + markers
 		rls[ROLE_MARKER] = 0
 	end)
 
 	local function InitRoleMarker(ply)
 		if ply:GetSubRole() ~= ROLE_MARKER then return end
 		ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
+		ply:GiveEquipmentItem('item_ttt_radar')
 		ply:GiveEquipmentItem('item_ttt_armor')
 	end
 

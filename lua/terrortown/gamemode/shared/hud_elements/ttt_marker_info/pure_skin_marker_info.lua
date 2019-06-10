@@ -57,11 +57,11 @@ if CLIENT then -- CLIENT
         local color = nil
         if MARKER_DATA:AbleToWin() then
             util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, 175)
-            color = self:GetDefaultFontColor(self.basecolor)
+            color = table.Copy(self:GetDefaultFontColor(self.basecolor))
             color.a = 175
         else
             util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 75)
-            color = self:GetDefaultFontColor(self.basecolor)
+            color = table.Copy(self:GetDefaultFontColor(self.basecolor))
             color.a = 75
         end
 
