@@ -84,26 +84,26 @@ if SERVER then
 	end)
 
 	local function InitRoleMarker(ply)
-		if ply:GetSubRole() ~= ROLE_MARKER then return end
-		ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
-		ply:GiveEquipmentItem('item_ttt_radar')
-		ply:GiveEquipmentItem('item_ttt_armor')
-	end
-
-	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
-		InitRoleMarker(ply)
-
-		-- handle removing marker role
-		if new ~= ROLE_MARKER and old == ROLE_MARKER then
-			ply:StripWeapon('weapon_ttt2_makergun')
-
-			-- remove markings when no marker is alive
-			MARKER_DATA:MarkerDied()
-		end
-	end)
-	hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply, old, new) -- called on player respawn
-		InitRoleMarker(ply)
-	end)
+        ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
+        ply:GiveEquipmentItem('item_ttt_radar')
+        ply:GiveEquipmentItem('item_ttt_armor')
+    end
+ 
+    hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
+        if new == ROLE_MARKER then
+            InitRoleMarker(ply)
+        elseif old == ROLE_MARKER then
+            ply:StripWeapon('weapon_ttt2_makergun')
+ 
+            -- remove markings when no marker is alive
+            MARKER_DATA:MarkerDied()
+        end
+    end)
+   
+    hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply, old, new) -- called on player respawn
+        if ply:GetSubRole() ~= ROLE_MARKER then return end
+        InitRoleMarker(ply)
+    end)
 
 	hook.Add("TTTCheckForWin", "MarkerCheckWin", function()
 		if not MARKER_DATA:AbleToWin() then return end
