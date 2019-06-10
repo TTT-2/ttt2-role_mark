@@ -1,8 +1,10 @@
 MARKER_DATA = {}
 MARKER_DATA.marked_players = {}
-MARKER_DATA.marked_amount = 0
-MARKER_DATA.player_alive = 0
+MARKER_DATA.amount_marked = 0
+MARKER_DATA.amount_marker_alive = 0
+MARKER_DATA.amount_no_marker_alive = 0
 MARKER_DATA.able_to_win = true
+MARKER_DATA.amount_to_win = 0
 
 if CLIENT then
     hook.Add('Initialize', 'TTTInitMarkerMessageLang', function()
@@ -48,8 +50,10 @@ if CLIENT then
     end)
 
     net.Receive('ttt2_role_marker_update', function()
-        MARKER_DATA.player_alive = net.ReadUInt(16)
+        MARKER_DATA.nmarker_alive = net.ReadUInt(16)
+        MARKER_DATA.amount_no_marker_alive = net.ReadUInt(16)
         MARKER_DATA.able_to_win = net.ReadBool()
+        MARKER_DATA.amount_to_win = net.ReadUInt(16)
     end)
 end
 
@@ -98,20 +102,6 @@ if SERVER then
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
     end
 
-    function MARKER_DATA:NumMarkerAlive()
-        local amount = 0
-        for _, p in ipairs(player.GetAll()) do
-            if p:GetSubRole() == ROLE_MARKER and p:Alive() and p:IsTerror() then 
-                amount = amount + 1
-            end
-        end
-        return amount
-    end
-
-    function MARKER_DATA:MarkerAlive()
-        return self:NumMarkerAlive() > 0
-    end
-
     function MARKER_DATA:UpdateAfterChange()
         -- player alive
         local player_alive, amnt_marker = 0, 0
@@ -123,20 +113,27 @@ if SERVER then
 				amnt_marker = amnt_marker + 1
 			end
         end
-        self.player_alive = player_alive - amnt_marker
+        self.amount_marker_alive = amnt_marker
+        self.amount_no_marker_alive = player_alive - amnt_marker
 
-        -- able to win
-        self.able_to_win = self.player_alive >= GetConVar('ttt_mark_min_alive'):GetInt()
+        -- able to win (over max threshold)
+        self.able_to_win = self:AmountNoMarkerAlive() >= GetConVar('ttt_mark_min_alive'):GetInt()
+
+        -- amount to win
+        local amount_by_pct_marked = math.ceil(GetConVar('ttt_mark_pct_marked'):GetFloat() * self:AmountNoMarkerAlive())
+        self.amount_to_win = math.max(amount_by_pct_marked, GetConVar('ttt_mark_min_alive'):GetInt())
 
         -- sync to client
         net.Start('ttt2_role_marker_update')
-        net.WriteUInt(self.player_alive, 16)
+        net.WriteUInt(self.amount_marker_alive, 16)
+        net.WriteUInt(self.amount_no_marker_alive, 16)
         net.WriteBool(self.able_to_win)
+        net.WriteUInt(self.amount_to_win, 16)
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
     end
 
     function MARKER_DATA:MarkerDied()
-        if MARKER_DATA:MarkerAlive() then return end        
+        if MARKER_DATA:IsMarkerAlive() then return end        
         MARKER_DATA:UnmarkPlayers()
     end
 
@@ -164,26 +161,40 @@ function MARKER_DATA:Count()
     for i,_ in pairs(MARKER_DATA.marked_players) do
         marked_amount = marked_amount + 1
     end
-    self.marked_amount = marked_amount
+    self.amount_marked = marked_amount
 end
 
 function MARKER_DATA:ClearMarkedPlayers()
     self.marked_players = {}
-    self.marked_amount = 0
-    self.player_alive = 0
+    self.amount_marked = 0
+    self.amount_marker_alive = 0
+    self.amount_no_marker_alive = 0
     self.able_to_win = true
+    self.amount_to_win = 0
 end
 
-function MARKER_DATA:GetNoMarkerPlayerAlive()
-    return self.player_alive
+function MARKER_DATA:AmountNoMarkerAlive()
+    return self.amount_no_marker_alive
+end
+
+function MARKER_DATA:AmountMarkerAlive()
+    return self.amount_marker_alive
+end
+
+function MARKER_DATA:IsMarkerAlive()
+    return self:AmountMarkerAlive() > 0
 end
 
 function MARKER_DATA:GetMarkedAmount()
-    return self.marked_amount
+    return self.amount_marked
 end
 
 function MARKER_DATA:AbleToWin()
     return self.able_to_win
+end
+
+function MARKER_DATA:AmountToWin()
+    return self.amount_to_win
 end
 
 hook.Add('TTTBeginRound', 'ttt2_role_marker_reset', function()

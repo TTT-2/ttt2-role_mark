@@ -60,12 +60,12 @@ if CLIENT then -- CLIENT
             color = table.Copy(self:GetDefaultFontColor(self.basecolor))
             color.a = 175
         else
-            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 75)
+            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 50)
             color = table.Copy(self:GetDefaultFontColor(self.basecolor))
-            color.a = 75
+            color.a = 50
         end
 
-        local amnt_print = tostring(MARKER_DATA:GetMarkedAmount()) .. ' / ' .. tostring(MARKER_DATA:GetNoMarkerPlayerAlive())
+        local amnt_print = tostring(MARKER_DATA:GetMarkedAmount()) .. ' / ' .. tostring(MARKER_DATA:AmountToWin())
         self:AdvancedText(amnt_print, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
         
         -- draw border and shadow
