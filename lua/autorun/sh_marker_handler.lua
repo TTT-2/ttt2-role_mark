@@ -116,14 +116,19 @@ if SERVER then
         self.amount_marker_alive = amnt_marker
         self.amount_no_marker_alive = player_alive - amnt_marker
 
-        -- able to win (over max threshold)
-        self.able_to_win = self:AmountNoMarkerAlive() >= GetConVar('ttt_mark_min_alive'):GetInt()
-
+        
         -- amount to win
-        self.amount_to_win = math.ceil(GetConVar('ttt_mark_pct_marked'):GetFloat() * self:AmountNoMarkerAlive())
-        self.amount_to_win = math.max(self.amount_to_win, GetConVar('ttt_mark_min_alive'):GetInt())
-        self.amount_to_win = math.min(self.amount_to_win, GetConVar('ttt_mark_max_to_mark'):GetInt())
-
+        if GetConVar('ttt_mark_fixed_mark_amount'):GetInt() == -1 then
+            self.amount_to_win = math.ceil(GetConVar('ttt_mark_pct_marked'):GetFloat() * self:AmountNoMarkerAlive())
+            self.amount_to_win = math.max(self.amount_to_win, GetConVar('ttt_mark_min_alive'):GetInt())
+            self.amount_to_win = math.min(self.amount_to_win, GetConVar('ttt_mark_max_to_mark'):GetInt())
+        else
+            self.amount_to_win = GetConVar('ttt_mark_fixed_mark_amount'):GetInt()
+        end
+        
+        -- able to win (over max threshold, should be overwritten by fixed amount)
+        self.able_to_win = self:AmountNoMarkerAlive() >= math.min(GetConVar('ttt_mark_min_alive'):GetInt(), self.amount_to_win)
+        
         -- sync to client
         net.Start('ttt2_role_marker_update')
         net.WriteUInt(self.amount_marker_alive, 16)

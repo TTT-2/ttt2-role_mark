@@ -19,6 +19,8 @@ Besides the normal role convars found in ULX, there are these special convars:
   ttt_mark_max_to_mark [0..n] (default: 9)
 # which percentage of alive non marker players have to be marked in order to win?
   ttt_mark_pct_marked [0.0..1.0] (def: 1.0)
+# set to a specific max value if you do not want to used a scaled max value at all, set to -1 to used scaled max
+  ttt_mark_fixed_mark_amount [-1..n] (def: -1)
 # sets how much damage the marker should receive. 0 is no damage, 1 is full damage
   ttt_mark_scale_dmg [0.0..1.0] (def: 0.1)
 # sets if the marker should be able to deal any damage
