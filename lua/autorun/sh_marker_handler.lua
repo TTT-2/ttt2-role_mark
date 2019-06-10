@@ -17,6 +17,8 @@ if CLIENT then
         local marked_player = net.ReadEntity()
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
+        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
+
         if not MARKER_DATA.marked_players[marked_player_id] then
             if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_marked')) end
             MARKER_DATA.marked_players[marked_player_id] = true
@@ -27,6 +29,8 @@ if CLIENT then
     net.Receive('ttt2_role_marker_remove_marking', function()
         local marked_player = net.ReadEntity()
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
+
+        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
 
         if MARKER_DATA.marked_players[marked_player_id] then
             if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_died')) end
