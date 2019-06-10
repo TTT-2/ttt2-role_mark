@@ -79,6 +79,7 @@ if SERVER then
 	local function InitRoleMarker(ply)
 		if ply:GetSubRole() ~= ROLE_MARKER then return end
 		ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
+		ply:GiveEquipmentItem('item_ttt_armor')
 	end
 
 	hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
@@ -87,6 +88,7 @@ if SERVER then
 		-- handle removing marker role
 		if new ~= ROLE_MARKER and old == ROLE_MARKER then
 			ply:StripWeapon('weapon_ttt2_makergun')
+			ply:StripItem('item_ttt_armor')
 
 			-- remove markings when no marker is alive
 			MARKER_DATA:MarkerDied()
