@@ -17,4 +17,6 @@ Besides the normal role convars found in ULX, there are these special convars:
   ttt_mark_min_alive [0..n] (default: 4)
 # which percentage of alive non marker players have to be marked in order to win?
   ttt_mark_pct_marked [0.0..1.0] (def: 1.0)
+# sets how much damage the marker should receive. 0 is no damage, 1 is full damage
+  ttt_mark_scale_dmg [0.0..1.0] (def: 0.1)
 ```

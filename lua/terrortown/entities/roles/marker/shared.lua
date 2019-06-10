@@ -105,12 +105,18 @@ if SERVER then
         InitRoleMarker(ply)
     end)
 
-	hook.Add("TTTCheckForWin", "MarkerCheckWin", function()
+	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
 		if not MARKER_DATA:AbleToWin() then return end
 
 		if GetConVar('ttt_mark_pct_marked'):GetFloat() * MARKER_DATA:GetNoMarkerPlayerAlive() <= MARKER_DATA:GetMarkedAmount() then
 			if MARKER_DATA:GetNoMarkerPlayerAlive() == 0 or MARKER_DATA:GetMarkedAmount() == 0 then return end
 			return TEAM_MARKER
 		end
+	end)
+
+	hook.Add('ScalePlayerDamage', 'TTT2MarkerReduceDamage', function(ply, hitgroup, dmginfo)
+		if ply:GetSubRole() ~= ROLE_MARKER then return end
+
+		dmginfo:ScaleDamage(GetConVar('ttt_mark_scale_dmg'):GetFloat())
 	end)
 end
