@@ -74,6 +74,13 @@ if SERVER then
 	-- modify roles table of rolesetup addon
 	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rls, printrls)
 		printrls[ROLE_MARKER] = true
+
+		local markers = rls[ROLE_MARKER]
+
+		if not markers then return end
+
+		rls[ROLE_INNOCENT] = rls[ROLE_MARKER] + markers
+		rls[ROLE_MARKER] = 0
 	end)
 
 	local function InitRoleMarker(ply)
@@ -88,7 +95,6 @@ if SERVER then
 		-- handle removing marker role
 		if new ~= ROLE_MARKER and old == ROLE_MARKER then
 			ply:StripWeapon('weapon_ttt2_makergun')
-			ply:StripItem('item_ttt_armor')
 
 			-- remove markings when no marker is alive
 			MARKER_DATA:MarkerDied()
