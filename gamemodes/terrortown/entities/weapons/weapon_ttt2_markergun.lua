@@ -3,7 +3,7 @@ SWEP.Base = 'weapon_tttbase'
 SWEP.Kind = WEAPON_NONE
 
 if SERVER then
-	AddCSLuaFile('weapon_ttt2_makergun.lua')
+	AddCSLuaFile('weapon_ttt2_markergun.lua')
 end
 
 if CLIENT then
@@ -119,7 +119,7 @@ if SERVER then
 
 		local weap = attacker:GetActiveWeapon()
 
-		if weap:GetClass() ~= 'weapon_ttt2_makergun' then return end
+		if weap:GetClass() ~= 'weapon_ttt2_markergun' then return end
 
 		-- show player that they are marked
 		if GetConVar('ttt_mark_show_sidebar'):GetBool() and ply:GetSubRole() ~= ROLE_MARKER then

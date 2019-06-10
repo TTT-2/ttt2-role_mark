@@ -84,16 +84,15 @@ if SERVER then
 	end)
 
 	local function InitRoleMarker(ply)
-        ply:GiveEquipmentWeapon('weapon_ttt2_makergun')
-        ply:GiveEquipmentItem('item_ttt_radar')
-        ply:GiveEquipmentItem('item_ttt_armor')
+        ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
+		ply:GiveEquipmentItem('item_ttt_radar')
     end
  
     hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
         if new == ROLE_MARKER then
             InitRoleMarker(ply)
         elseif old == ROLE_MARKER then
-            ply:StripWeapon('weapon_ttt2_makergun')
+            ply:StripWeapon('weapon_ttt2_markergun')
  
             -- remove markings when no marker is alive
             MARKER_DATA:MarkerDied()
@@ -114,9 +113,25 @@ if SERVER then
 		end
 	end)
 
-	hook.Add('ScalePlayerDamage', 'TTT2MarkerReduceDamage', function(ply, hitgroup, dmginfo)
+	hook.Add('ScalePlayerDamage', 'TTT2MarkerReduceTakenDamage', function(ply, hitgroup, dmginfo)
+		if GetRoundState() ~= ROUND_ACTIVE or not ply or not IsValid(ply)
+			or not ply:IsPlayer() or not IsValid(ply:GetActiveWeapon()) then return end
+
 		if ply:GetSubRole() ~= ROLE_MARKER then return end
 
 		dmginfo:ScaleDamage(GetConVar('ttt_mark_scale_dmg'):GetFloat())
+	end)
+
+	hook.Add('ScalePlayerDamage', 'TTT2MarkerMakeNoDamage', function(ply, hitgroup, dmginfo)
+		local attacker = dmginfo:GetAttacker()
+		if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker)
+			or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
+
+		if attacker:GetSubRole() ~= ROLE_MARKER then return end
+
+		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return end
+
+		dmginfo:SetDamage(0)
+		return true
 	end)
 end
