@@ -80,7 +80,7 @@ function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
 
 	self.Weapon:EmitSound(Sound('marker/pbfire.wav'))
-	self.Weapon:SetNextPrimaryFire(CurTime() + 0.75)
+	self.Weapon:SetNextPrimaryFire(CurTime() + 0.25)
 	self:ShootEffects()
 	self:TakePrimaryAmmo(0)
 
