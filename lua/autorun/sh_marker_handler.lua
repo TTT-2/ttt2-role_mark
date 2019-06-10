@@ -15,6 +15,8 @@ if CLIENT then
 
     net.Receive('ttt2_role_marker_new_marking', function()
         local marked_player = net.ReadEntity()
+        if not marked_player or not marked_player:IsPlayer() then return end
+
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
         if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
@@ -28,6 +30,8 @@ if CLIENT then
 
     net.Receive('ttt2_role_marker_remove_marking', function()
         local marked_player = net.ReadEntity()
+        if not marked_player or not marked_player:IsPlayer() then return end
+
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
         if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
@@ -56,6 +60,8 @@ if SERVER then
     util.AddNetworkString('ttt2_role_marker_update')
 
     function MARKER_DATA:SetMarkedPlayer(ply)
+        if not ply or not ply:IsPlayer() then return end
+
         MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = true
 
         net.Start('ttt2_role_marker_new_marking')
@@ -66,6 +72,8 @@ if SERVER then
     end
 
     function MARKER_DATA:RemoveMarkedPlayer(ply)
+        if not ply or not ply:IsPlayer() then return end
+
         MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = nil
 
         net.Start('ttt2_role_marker_remove_marking')
