@@ -13,8 +13,10 @@ Besides the normal role convars found in ULX, there are these special convars:
   ttt_mark_show_sidebar [0/1] (default: 1)
 # should the marker be informed via a message when a player was marked / a marked player dies
   ttt_mark_show_messages [0/1] (default: 1)
-# what is the lower limit when the marker is unable to win, set too 0 to disable
+# what is the lower limit when the marker is unable to win, set to 0 to disable
   ttt_mark_min_alive [0..n] (default: 4)
+# the upper limit of how many players have to be marked, set to high number to disable
+  ttt_mark_max_to_mark [0..n] (default: 9)
 # which percentage of alive non marker players have to be marked in order to win?
   ttt_mark_pct_marked [0.0..1.0] (def: 1.0)
 # sets how much damage the marker should receive. 0 is no damage, 1 is full damage

@@ -120,8 +120,9 @@ if SERVER then
         self.able_to_win = self:AmountNoMarkerAlive() >= GetConVar('ttt_mark_min_alive'):GetInt()
 
         -- amount to win
-        local amount_by_pct_marked = math.ceil(GetConVar('ttt_mark_pct_marked'):GetFloat() * self:AmountNoMarkerAlive())
-        self.amount_to_win = math.max(amount_by_pct_marked, GetConVar('ttt_mark_min_alive'):GetInt())
+        self.amount_to_win = math.ceil(GetConVar('ttt_mark_pct_marked'):GetFloat() * self:AmountNoMarkerAlive())
+        self.amount_to_win = math.max(self.amount_to_win, GetConVar('ttt_mark_min_alive'):GetInt())
+        self.amount_to_win = math.min(self.amount_to_win, GetConVar('ttt_mark_max_to_mark'):GetInt())
 
         -- sync to client
         net.Start('ttt2_role_marker_update')
