@@ -1,6 +1,10 @@
 if SERVER then
+	resource.AddFile('materials/vgui/ttt/dynamic/roles/icon_mark.vmt')
+    resource.AddFile('materials/vgui/ttt/hud_icon_marked.png')
+    resource.AddFile('materials/vgui/ttt/hud_icon_marked_end.png')
 	resource.AddFile("materials/vgui/ttt/icon_markergun.png")
 
+	-- paintgun and paintball files
 	resource.AddFile("materials/models/paintball.vmt")
 
 	resource.AddFile("materials/models/weapons/blazer.vmt")
