@@ -203,6 +203,12 @@ function MARKER_DATA:AmountToWin()
     return self.amount_to_win
 end
 
+function MARKER_DATA:IsMarked(ply)
+    local steamid = tostring(ply:SteamID64() or ply:EntIndex())
+
+    return MARKER_DATA.marked_players[steamid] or false
+end
+
 hook.Add('TTTBeginRound', 'ttt2_role_marker_reset', function()
     MARKER_DATA:ClearMarkedPlayers()
 

@@ -2,7 +2,7 @@
 
 The marker plays in his own team and has the goal of marking other players with his fancy paintgun. Once he marked enough of them (by default all players except himself) he wins. Marked players get notified when they are marked, so they do know there's a marker active in this round (you can disable that). The marker can't win by killing people in fact by default he can't deal any damage at all, he always looses when only he and maximal one other role is alive. Therefore he plays nicely alongside the jester, since then there are two roles that do not deal any damage, one of which should be killed and one shouldn't. If he's too slow with marking other players, he might be unable to mark enough of them. Once all markers are dead, all players are unmarked! Players that were marked but killed afterwards do not count to marked players.
 
-Additionally the marker sees in a special UI element how many players he has to mark. And since this number is scaled by the number of players that are alive, he can get a sense of how many players are still alive. This gives him some interesting powers, but he should keep quiet about them because calling out that someone has died might reveal him. By default, he only receives 10 percent of dealt damage.
+Additionally the marker sees in a special UI element how many players he has to mark. And since this number is scaled by the number of players that are alive, he can get a sense of how many players are still alive. This gives him some interesting powers, but he should keep quiet about them because calling out that someone has died might reveal him. Marked players do not deal any damage at all to him and he wears a body armor to protect himself.
 
 ## Convars
 
@@ -21,8 +21,8 @@ Besides the normal role convars found in ULX, there are these special convars:
   ttt_mark_pct_marked [0.0..1.0] (def: 1.0)
 # set to a specific max value if you do not want to used a scaled max value at all, set to -1 to used scaled max
   ttt_mark_fixed_mark_amount [-1..n] (def: -1)
-# sets how much damage the marker should receive. 0 is no damage, 1 is full damage
-  ttt_mark_scale_dmg [0.0..1.0] (def: 0.1)
 # sets if the marker should be able to deal any damage
   ttt_mark_deal_no_damage [0/1] (def: 1)
+# sets if marked players should be able to deal any damage to the marker
+  ttt_mark_take_no_damage [0/1] (def: 1)
 ```

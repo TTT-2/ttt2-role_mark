@@ -85,6 +85,7 @@ if SERVER then
 
 	local function InitRoleMarker(ply)
         ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
+		ply:GiveEquipmentItem('item_ttt_armor')
 		ply:GiveEquipmentItem('item_ttt_radar')
     end
  
@@ -113,25 +114,39 @@ if SERVER then
 		end
 	end)
 
-	hook.Add('ScalePlayerDamage', 'TTT2MarkerReduceTakenDamage', function(ply, hitgroup, dmginfo)
-		if GetRoundState() ~= ROUND_ACTIVE or not ply or not IsValid(ply)
-			or not ply:IsPlayer() or not IsValid(ply:GetActiveWeapon()) then return end
+	hook.Add("PlayerShouldTakeDamage", "TTT2MarkerDealNoDamage", function(ply, attacker)
+		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return true end
 
-		if ply:GetSubRole() ~= ROLE_MARKER then return end
+		if not ply or not IsValid(ply) or not ply:IsPlayer() then
+			return true
+		end
 
-		dmginfo:ScaleDamage(GetConVar('ttt_mark_scale_dmg'):GetFloat())
+		if not attacker or not IsValid(attacker) or not attacker:IsPlayer() then
+			return true
+		end
+
+		if ttacker:GetSubRole() == ROLE_MARKER and attacker ~= ply then
+			return false
+		end
+
+		return true			
 	end)
 
-	hook.Add('ScalePlayerDamage', 'TTT2MarkerMakeNoDamage', function(ply, hitgroup, dmginfo)
-		local attacker = dmginfo:GetAttacker()
-		if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker)
-			or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
+	hook.Add("PlayerShouldTakeDamage", "TTT2MarkerTakeNoDamage", function(ply, attacker)
+		if not GetConVar('ttt_mark_take_no_damage'):GetBool() then return true end
 
-		if attacker:GetSubRole() ~= ROLE_MARKER then return end
+		if not ply or not IsValid(ply) or not ply:IsPlayer() then
+			return true
+		end
 
-		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return end
+		if not attacker or not IsValid(attacker) or not attacker:IsPlayer() then
+			return true
+		end
 
-		dmginfo:SetDamage(0)
-		return true
+		if ply:GetSubRole() == ROLE_MARKER and attacker ~= ply and MARKER_DATA:IsMarked(attacker) then
+			return false
+		end
+
+		return true			
 	end)
 end
