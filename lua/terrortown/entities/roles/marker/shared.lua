@@ -84,7 +84,8 @@ if SERVER then
 	end)
 
 	local function InitRoleMarker(ply)
-        ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
+		ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
+		ply:GiveEquipmentWeapon('weapon_ttt2_markerdefi')
 		ply:GiveEquipmentItem('item_ttt_armor')
 		ply:GiveEquipmentItem('item_ttt_radar')
     end

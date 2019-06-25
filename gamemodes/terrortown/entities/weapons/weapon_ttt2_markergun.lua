@@ -24,7 +24,7 @@ if CLIENT then
 		desc = 'ttt2_paintgun_desc'
 	}
 	
-	hook.Add('Initialize', 'TTTInitMarkerLang', function()
+	hook.Add('Initialize', 'TTTInitMarkerGunLang', function()
 		LANG.AddToLanguage('English', 'ttt2_paintgun_desc', 'Shoot a player to mark hin')
 		LANG.AddToLanguage('Deutsch', 'ttt2_paintgun_desc', 'Schieße auf einen Spieler, um ihn zu markieren.')
 	end)

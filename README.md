@@ -25,4 +25,6 @@ Besides the normal role convars found in ULX, there are these special convars:
   ttt_mark_deal_no_damage [0/1] (def: 1)
 # sets if marked players should be able to deal any damage to the marker
   ttt_mark_take_no_damage [0/1] (def: 1)
+# defines the factor to calculate the amount of defis; set to 0 to disable
+  ttt_mark_defi_factor [0.0..1.0] (def: 0.34)
 ```
