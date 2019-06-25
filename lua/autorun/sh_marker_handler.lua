@@ -66,6 +66,11 @@ if SERVER then
     function MARKER_DATA:SetMarkedPlayer(ply)
         if not ply or not ply:IsPlayer() then return end
 
+        -- show player that they are marked
+		if GetConVar('ttt_mark_show_sidebar'):GetBool() then
+			self:MarkPlayer(ply)
+		end
+
         MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = true
 
         net.Start('ttt2_role_marker_new_marking')

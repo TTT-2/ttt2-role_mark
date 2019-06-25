@@ -121,11 +121,6 @@ if SERVER then
 
 		if weap:GetClass() ~= 'weapon_ttt2_markergun' then return end
 
-		-- show player that they are marked
-		if GetConVar('ttt_mark_show_sidebar'):GetBool() and ply:GetSubRole() ~= ROLE_MARKER then
-			MARKER_DATA:MarkPlayer(ply)
-		end
-
 		-- send to marker that he has marked another player
 		if ply:GetSubRole() ~= ROLE_MARKER then
 			MARKER_DATA:SetMarkedPlayer(ply)

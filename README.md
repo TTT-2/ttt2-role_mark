@@ -4,6 +4,8 @@ The marker plays in his own team and has the goal of marking other players with 
 
 Additionally the marker sees in a special UI element how many players he has to mark. And since this number is scaled by the number of players that are alive, he can get a sense of how many players are still alive. This gives him some interesting powers, but he should keep quiet about them because calling out that someone has died might reveal him. Marked players do not deal any damage at all to him and he wears a body armor to protect himself.
 
+The marker spawns with a marker defi that allows him to revive dead players. Revived players keep their role but spawn as marked. Since nobody knows if he is a traitor, a survivalist or a marker he can confuse others really fast.
+
 ## Convars
 
 Besides the normal role convars found in ULX, there are these special convars:
