@@ -95,13 +95,14 @@ if SERVER then
             InitRoleMarker(ply)
         elseif old == ROLE_MARKER then
             ply:StripWeapon('weapon_ttt2_markergun')
+            ply:StripWeapon('weapon_ttt2_markerdefi')
  
             -- remove markings when no marker is alive
             MARKER_DATA:MarkerDied()
         end
     end)
    
-    hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply, old, new) -- called on player respawn
+    hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply) -- called on player respawn
         if ply:GetSubRole() ~= ROLE_MARKER then return end
         InitRoleMarker(ply)
     end)
@@ -114,14 +115,6 @@ if SERVER then
 			return TEAM_MARKER
 		end
 	end)
-
-	--local function DealNoDamage(ply, attacker)
-
-	--end
-
-	--local function TakeNoDamage(ply, attacker)
-
-	--end
 
 	hook.Add('PlayerShouldTakeDamage', 'TTT2MarkerDealNoDamage', function(ply, attacker)
 		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return end

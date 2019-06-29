@@ -1,4 +1,4 @@
-local base = 'pure_skin_element'
+local base = 'octagonal_element'
 
 DEFINE_BASECLASS(base)
 
@@ -7,9 +7,13 @@ HUDELEMENT.Base = base
 if CLIENT then -- CLIENT
     local const_defaults = {
         basepos = {x = 0, y = 0},
-        size = {w = 110, h = 40},
-        minsize = {w = 110, h = 40}
+        size = {w = 120, h = 40},
+        minsize = {w = 120, h = 40}
     }
+
+    local pad = 10
+
+    local dark_overlay = Color(0, 0, 0, 100)
 
     HUDELEMENT.marker_icon = Material("vgui/ttt/hud_icon_marked.png")
     HUDELEMENT.marker_icon_end = Material("vgui/ttt/hud_icon_marked_end.png")
@@ -17,20 +21,12 @@ if CLIENT then -- CLIENT
     function HUDELEMENT:PreInitialize()
         BaseClass.PreInitialize(self)
         
-        local hud = huds.GetStored("pure_skin")
+        local hud = huds.GetStored("octagonal")
         if hud then
             hud:ForceElement(self.id)
         end
-
-        -- set as fallback default
-        local supported = {"pure_skin", "octagonal"}
-        for _,v in pairs(huds.GetList()) do
-            if not supported[v.id] then
-                huds.GetStored(v.id):ForceElement(self.id)
-            end
-        end
 	end
-
+    
     function HUDELEMENT:Initialize()
 		self.scale = 1.0
 		self.basecolor = self:GetHUDBasecolor()
@@ -39,7 +35,8 @@ if CLIENT then -- CLIENT
     end
 
     function HUDELEMENT:PerformLayout()
-		self.basecolor = self:GetHUDBasecolor()
+        self.basecolor = self:GetHUDBasecolor()
+        self.pad = pad * self.scale
 
 		BaseClass.PerformLayout(self)
 	end
@@ -70,22 +67,20 @@ if CLIENT then -- CLIENT
 		
 		-- draw bg
         self:DrawBg(x, y, w, h, self.basecolor)
+        self:DrawBg(x, y, self.pad, h, dark_overlay)
 
         local color = nil
         if MARKER_DATA:AbleToWin() then
-            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, 175)
+            util.DrawFilteredTexturedRect(x + self.pad + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, 175)
             color = table.Copy(self:GetDefaultFontColor(self.basecolor))
             color.a = 175
         else
-            util.DrawFilteredTexturedRect(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 50)
+            util.DrawFilteredTexturedRect(x + self.pad + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, 50)
             color = table.Copy(self:GetDefaultFontColor(self.basecolor))
             color.a = 50
         end
 
         local amnt_print = tostring(MARKER_DATA:GetMarkedAmount()) .. ' / ' .. tostring(MARKER_DATA:AmountToWin())
-        self:AdvancedText(amnt_print, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
-        
-        -- draw border and shadow
-        self:DrawLines(x, y, w, h, self.basecolor.a)
+        self:AdvancedText(amnt_print, 'OctagonalBar', x + self.pad +  46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, false, self.scale)
     end
 end
