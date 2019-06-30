@@ -23,12 +23,12 @@ if CLIENT then -- CLIENT
         end
 
         -- set as fallback default
-        local supported = {"pure_skin", "octagonal"}
-        for _,v in pairs(huds.GetList()) do
-            if not supported[v.id] then
-                huds.GetStored(v.id):ForceElement(self.id)
-            end
-        end
+        -- local supported = {"pure_skin", "octagonal"}
+        -- for _,v in pairs(huds.GetList()) do
+        --     if not supported[v.id] then
+        --         huds.GetStored(v.id):ForceElement(self.id)
+        --     end
+        -- end
 	end
 
     function HUDELEMENT:Initialize()

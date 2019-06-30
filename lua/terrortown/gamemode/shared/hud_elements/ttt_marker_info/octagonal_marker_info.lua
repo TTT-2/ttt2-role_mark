@@ -25,6 +25,9 @@ if CLIENT then -- CLIENT
         if hud then
             hud:ForceElement(self.id)
         end
+
+        -- set as NOT fallback default
+        self.disabledUnlessForced = true
 	end
     
     function HUDELEMENT:Initialize()

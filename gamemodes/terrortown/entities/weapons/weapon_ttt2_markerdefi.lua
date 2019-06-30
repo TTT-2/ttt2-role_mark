@@ -26,7 +26,7 @@ if CLIENT then
 		desc = ''
 	}
 
-    SWEP.Icon = 'vgui/ttt/vadim_defib'
+    SWEP.Icon = 'vgui/ttt/marker_defi'
     
     hook.Add('Initialize', 'TTTInitMarkerDefiLang', function()
 		LANG.AddToLanguage('English', 'ttt2_markerdefi_desc', 'Revives dead people as marked players. They keep their role.')
@@ -71,8 +71,8 @@ local mutate = {
 }
 
 -- content
-resource.AddSingleFile('materials/vgui/ttt/vadim_defib.vtf')
-resource.AddSingleFile('materials/vgui/ttt/vadim_defib.vmt')
+resource.AddSingleFile('materials/vgui/ttt/marker_defi.vtf')
+resource.AddSingleFile('materials/vgui/ttt/marker_defi.vmt')
 
 local beep = Sound('buttons/button17.wav')
 local hum = Sound('items/nvg_on.wav')
@@ -81,8 +81,8 @@ local revived = Sound('items/smallmedkit1.wav')
 
 SWEP.Kind = WEAPON_EQUIP2
 
-hook.Add('TTT2RolesLoaded', 'TTTHAddNecroDefiTONecro', function()
-	local wep = weapons.GetStored('weapon_ttth_necrodefi')
+hook.Add('TTT2RolesLoaded', 'TTT2MarkerDefi', function()
+	local wep = weapons.GetStored('weapon_ttt2_markerdefi')
 	if wep then
 		wep.CanBuy = {ROLE_NECROMANCER}
 	end
