@@ -22,13 +22,8 @@ if CLIENT then -- CLIENT
             hud:ForceElement(self.id)
         end
 
-        -- set as fallback default
-        -- local supported = {"pure_skin", "octagonal"}
-        -- for _,v in pairs(huds.GetList()) do
-        --     if not supported[v.id] then
-        --         huds.GetStored(v.id):ForceElement(self.id)
-        --     end
-        -- end
+        -- set as fallback default, other skins have to be set to true!
+        self.disabledUnlessForced = false
 	end
 
     function HUDELEMENT:Initialize()
