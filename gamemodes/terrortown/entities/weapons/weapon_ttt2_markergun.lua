@@ -20,7 +20,7 @@ if CLIENT then
 	SWEP.Icon = 'vgui/ttt/icon_markergun.png'
 	
 	SWEP.EquipMenuData = {
-		type = 'Weapon',
+		type = 'item_weapon',
 		desc = 'ttt2_paintgun_desc'
 	}
 	
