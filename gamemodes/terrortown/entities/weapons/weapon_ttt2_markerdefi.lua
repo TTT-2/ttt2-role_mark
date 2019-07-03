@@ -22,8 +22,8 @@ if CLIENT then
 	SWEP.ViewModelFlip = false
 
 	SWEP.EquipMenuData = {
-		type = 'ttt2_markerdefi_desc',
-		desc = ''
+		type = 'item_weapon',
+		desc = 'ttt2_markerdefi_desc'
 	}
 
     SWEP.Icon = 'vgui/ttt/marker_defi'
