@@ -78,7 +78,7 @@ if CLIENT then -- CLIENT
         end
 
         local amnt_print = tostring(MARKER_DATA:GetMarkedAmount()) .. ' / ' .. tostring(MARKER_DATA:AmountToWin())
-        self:AdvancedText(amnt_print, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
+        draw.AdvancedText(amnt_print, 'PureSkinBar', x + 46 * self.scale, y + 9 * self.scale, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, true, self.scale)
         
         -- draw border and shadow
         self:DrawLines(x, y, w, h, self.basecolor.a)
