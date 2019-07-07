@@ -40,7 +40,7 @@ if CLIENT then -- CLIENT
 	end
     
     function HUDELEMENT:GetDefaults()
-		const_defaults['basepos'] = {x = math.Round(ScrW() - (10 * self.scale + self.size.w)), y = math.Round(ScrH() * 0.5 - self.size.h * 0.5)}
+		const_defaults['basepos'] = {x = math.Round(ScrW() - (10 * self.scale + self.size.w)), y = math.Round(ScrH() * 0.5 - self.size.h * 0.5 + 25)}
 
 		return const_defaults
 	end

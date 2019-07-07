@@ -55,6 +55,27 @@ if CLIENT then
         MARKER_DATA.able_to_win = net.ReadBool()
         MARKER_DATA.amount_to_win = net.ReadUInt(16)
     end)
+
+    net.Receive('ttt2_role_marker_scoreboard', function()
+        MARKER_DATA:UpdateScoreboard()
+    end)
+
+    hook.Add('TTTScoreboardColumns', 'ttt2_marked_players_column', function(pnl)
+        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
+        pnl:AddColumn('Marked', function(ply, label)         
+            if MARKER_DATA:IsMarked(ply) then
+                return 'yes'
+            else
+                return '-'
+            end
+        end, 65)
+    end)
+
+    -- the brother column should only be visible when you're in the brotherhood
+    function MARKER_DATA:UpdateScoreboard()
+        GAMEMODE:ScoreboardCreate()
+        GAMEMODE:ScoreboardHide()
+    end
 end
 
 if SERVER then
@@ -62,6 +83,7 @@ if SERVER then
     util.AddNetworkString('ttt2_role_marker_remove_marking')
     util.AddNetworkString('ttt2_role_marker_remove_all')
     util.AddNetworkString('ttt2_role_marker_update')
+    util.AddNetworkString('ttt2_role_marker_scoreboard')
 
     function MARKER_DATA:SetMarkedPlayer(ply)
         if not ply or not ply:IsPlayer() then return end
@@ -148,6 +170,14 @@ if SERVER then
         MARKER_DATA:UnmarkPlayers()
     end
 
+    function MARKER_DATA:UpdateScoreboard()
+        -- needs a short time so that the marker has received his role
+        timer.Simple(0.1, function()
+            net.Start('ttt2_role_marker_scoreboard')
+            net.Send(player.GetAll())
+        end)
+    end
+
     hook.Add('PostPlayerDeath', 'ttt2_role_marker_death', function(victim, infl, attacker)
         -- HANDLE DEATH OF MARKED PLAYER
         MARKER_DATA:RemoveMarkedPlayer(victim)
@@ -164,6 +194,15 @@ if SERVER then
 
     hook.Add('TTT2UpdateSubrole', 'ttt2_role_marker_update_subrole', function()
         MARKER_DATA:UpdateAfterChange()
+    end)
+
+    hook.Add('TTTEndRound', 'ttt2_role_marker_round_end', function() 
+        MARKER_DATA:UpdateScoreboard()
+    end)
+
+    hook.Add('TTT2UpdateSubrole', 'ttt2_role_marker_role_change', function(ply, old, new)
+        if new ~= ROLE_MARKER and old ~= ROLE_MARKER then return end
+        MARKER_DATA:UpdateScoreboard()
     end)
 end
 
