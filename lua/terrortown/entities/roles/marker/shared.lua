@@ -102,9 +102,11 @@ if SERVER then
         end
     end)
    
-    hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply) -- called on player respawn
-        if ply:GetSubRole() ~= ROLE_MARKER then return end
-        InitRoleMarker(ply)
+	hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply) -- called on player respawn
+		timer.Simple(0.5, function()
+			if ply:GetSubRole() ~= ROLE_MARKER then return end
+			InitRoleMarker(ply)
+		end)
     end)
 
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
