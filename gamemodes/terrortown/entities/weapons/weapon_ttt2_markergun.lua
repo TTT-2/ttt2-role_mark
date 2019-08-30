@@ -122,7 +122,7 @@ if SERVER then
 		if weap:GetClass() ~= 'weapon_ttt2_markergun' then return end
 
 		-- send to marker that he has marked another player
-		if ply:GetSubRole() ~= ROLE_MARKER then
+		if ply:GetTeam() ~= TEAM_MARKER then
 			MARKER_DATA:SetMarkedPlayer(ply)
 		end
 		

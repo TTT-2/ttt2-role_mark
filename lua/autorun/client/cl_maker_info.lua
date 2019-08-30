@@ -3,7 +3,7 @@ if CLIENT then
     function DrawMarkerInfo()
         local client = LocalPlayer()
 
-        if client:GetSubRole() ~= ROLE_MARKER then return end
+        if client:GetTeam() ~= TEAM_MARKER then return end
         
         local tracedata = {}
         tracedata.start = client:GetShootPos()

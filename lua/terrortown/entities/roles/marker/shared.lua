@@ -118,27 +118,37 @@ if SERVER then
 		end
 	end)
 
-	hook.Add('PlayerShouldTakeDamage', 'TTT2MarkerDealNoDamage', function(ply, attacker)
+	hook.Add('EntityTakeDamage', 'TTT2MarkerDealNoDamage', function(ply, dmginfo)
+		if not ply:IsPlayer() then return end
+
 		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return end
 
 		if not ply or not IsValid(ply) or not ply:IsPlayer() then return end
 
+		local attacker = dmginfo:GetAttacker()
+
 		if not attacker or not IsValid(attacker) or not attacker:IsPlayer() then return end
 
-		if attacker:GetSubRole() == ROLE_MARKER and attacker ~= ply then
-			return false
+		if attacker:GetTeam() == TEAM_MARKER and attacker ~= ply then
+			dmginfo:ScaleDamage(0)
+			dmginfo:SetDamage(0)
 		end
 	end)
 
-	hook.Add('PlayerShouldTakeDamage', 'TTT2MarkerTakeNoDamage', function(ply, attacker)
+	hook.Add('EntityTakeDamage', 'TTT2MarkerTakeNoDamage', function(ply, dmginfo)
+		if not ply:IsPlayer() then return end
+
 		if not GetConVar('ttt_mark_take_no_damage'):GetBool() then return true end
 
 		if not ply or not IsValid(ply) or not ply:IsPlayer() then return end
 
+		local attacker = dmginfo:GetAttacker()
+
 		if not attacker or not IsValid(attacker) or not attacker:IsPlayer() then return end
 
-		if ply:GetSubRole() == ROLE_MARKER and attacker ~= ply and MARKER_DATA:IsMarked(attacker) then
-			return false
+		if ply:GetTeam() == TEAM_MARKER and attacker ~= ply and MARKER_DATA:IsMarked(attacker) then
+			dmginfo:ScaleDamage(0)
+			dmginfo:SetDamage(0)
 		end		
 	end)
 end

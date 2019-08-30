@@ -61,7 +61,12 @@ if CLIENT then
     end)
 
     hook.Add('TTTScoreboardColumns', 'ttt2_marked_players_column', function(pnl)
-        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
+        local client = LocalPlayer()
+
+        -- this prevention is needed when a player connects in the moment that a round starts
+        if not client or not IsValid(client) or not client:IsPlayer() then return end
+        
+        if client:GetSubRole() ~= ROLE_MARKER then return end
         pnl:AddColumn('Marked', function(ply, label)         
             if MARKER_DATA:IsMarked(ply) then
                 return 'yes'
@@ -136,7 +141,7 @@ if SERVER then
 			if p:Alive() and p:IsTerror() then
 				player_alive = player_alive + 1
 			end
-			if p:Alive() and p:IsTerror() and p:GetSubRole() == ROLE_MARKER then
+			if p:Alive() and p:IsTerror() and p:GetTeam() == TEAM_MARKER then
 				amnt_marker = amnt_marker + 1
 			end
         end
@@ -184,7 +189,7 @@ if SERVER then
         MARKER_DATA:UpdateAfterChange()
 
         -- HANDLE DEATH OF MARKER
-        if victim:GetSubRole() ~= ROLE_MARKER then return end
+        if victim:GetTeam() ~= TEAM_MARKER then return end
         MARKER_DATA:MarkerDied()
     end)
 
@@ -203,6 +208,26 @@ if SERVER then
     hook.Add('TTT2UpdateSubrole', 'ttt2_role_marker_role_change', function(ply, old, new)
         if new ~= ROLE_MARKER and old ~= ROLE_MARKER then return end
         MARKER_DATA:UpdateScoreboard()
+    end)
+
+    -- handle marker-pirate interaction
+    hook.Add('TTT2UpdateTeam', 'ttt2_role_marker_team_change', function(ply, old, new)
+        print("update team hook called")
+        if ply:GetSubRole() ~= ROLE_PIRATE and ply:GetSubRole() ~= ROLE_PIRATE_CAPTAIN then return end
+
+        print("is pirate")
+        -- give/remove equipment when a pirate joins/leaves the marker team
+        if new ~= TEAM_MARKER and old == TEAM_MARKER then
+            ply:StripWeapon('weapon_ttt2_markergun')
+        elseif new == TEAM_MARKER and old ~= TEAM_MARKER then
+            ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
+        end
+
+        -- recount marker team
+        MARKER_DATA:UpdateAfterChange()
+
+        -- recheck if markers could still win since pirate team change gets triggered after marker died
+        MARKER_DATA:MarkerDied()
     end)
 end
 

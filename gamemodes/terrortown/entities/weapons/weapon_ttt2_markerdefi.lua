@@ -237,23 +237,6 @@ if SERVER then
 
 		local credits = CORPSE.GetCredits(body, 0) or 0
 
-		MARKER_DATA:SetMarkedPlayer(ply)
-
-		if ply:GetSubRole() == ROLE_ZOMBIE and CORPSE.GetFound(body, false) then
-			local plys = {}
-
-			for _, v in ipairs(player.GetAll()) do
-				if v:GetSubRole() ~= ROLE_ZOMBIE then
-					table.insert(plys, v)
-				end
-			end
-
-			net.Start('TTT_Defib_Hide')
-			net.WriteEntity(ply)
-			net.WriteBool(true)
-			net.Send(plys)
-		end
-
 		net.Start('TTT_Defib_Revived')
 		net.WriteBool(true)
 		net.Send(ply)
@@ -273,6 +256,11 @@ if SERVER then
 		if self:Clip1() < 1 then
 			self:Remove()
 		end
+
+		-- mark revived player
+		timer.Simple(0.1, function()
+			MARKER_DATA:SetMarkedPlayer(ply)
+		end)
 	end
 
 	function SWEP:Defib()
