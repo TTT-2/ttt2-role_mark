@@ -21,7 +21,7 @@ if CLIENT then
 
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
-        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
+        if LocalPlayer():GetTeam() ~= TEAM_MARKER then return end
 
         if not MARKER_DATA.marked_players[marked_player_id] then
             if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_marked')) end
@@ -36,7 +36,7 @@ if CLIENT then
 
         local marked_player_id = tostring(marked_player:SteamID64() or marked_player:EntIndex())
 
-        if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
+        if LocalPlayer():GetTeam() ~= TEAM_MARKER then return end
 
         if MARKER_DATA.marked_players[marked_player_id] then
             if GetConVar('ttt_mark_show_messages'):GetBool() then MSTACK:AddMessage(LANG.GetTranslation('ttt2_marker_died')) end
@@ -66,7 +66,7 @@ if CLIENT then
         -- this prevention is needed when a player connects in the moment that a round starts
         if not client or not IsValid(client) or not client:IsPlayer() then return end
         
-        if client:GetSubRole() ~= ROLE_MARKER then return end
+        if client:GetTeam() ~= TEAM_MARKER then return end
         pnl:AddColumn('Marked', function(ply, label)         
             if MARKER_DATA:IsMarked(ply) then
                 return 'yes'
@@ -212,10 +212,7 @@ if SERVER then
 
     -- handle marker-pirate interaction
     hook.Add('TTT2UpdateTeam', 'ttt2_role_marker_team_change', function(ply, old, new)
-        print("update team hook called")
         if ply:GetSubRole() ~= ROLE_PIRATE and ply:GetSubRole() ~= ROLE_PIRATE_CAPTAIN then return end
-
-        print("is pirate")
         -- give/remove equipment when a pirate joins/leaves the marker team
         if new ~= TEAM_MARKER and old == TEAM_MARKER then
             ply:StripWeapon('weapon_ttt2_markergun')
@@ -223,11 +220,18 @@ if SERVER then
             ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
         end
 
+        -- remove marking of pirate
+        MARKER_DATA:RemoveMarkedPlayer(ply)
+        STATUS:RemoveStatus(ply, 'ttt2_role_marker_marked')
+
         -- recount marker team
         MARKER_DATA:UpdateAfterChange()
 
         -- recheck if markers could still win since pirate team change gets triggered after marker died
         MARKER_DATA:MarkerDied()
+
+        -- update scoreboard
+        MARKER_DATA:UpdateScoreboard()
     end)
 end
 
