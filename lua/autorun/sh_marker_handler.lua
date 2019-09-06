@@ -76,7 +76,7 @@ if CLIENT then
         end, 65)
     end)
 
-    -- the brother column should only be visible when you're in the brotherhood
+    -- the marked column should only be visible when you're in the marker team
     function MARKER_DATA:UpdateScoreboard()
         GAMEMODE:ScoreboardCreate()
         GAMEMODE:ScoreboardHide()
