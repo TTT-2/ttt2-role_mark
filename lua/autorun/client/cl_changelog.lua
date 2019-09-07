@@ -34,6 +34,14 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
         <ul>
             <li>Fixed pirate-marker interaction</li>
             <li>Fixed scoreboard sometimes causing erros</li>
+            <li>Improved marker radar to show different types based on this goal</li>
+            <ul>
+                <li>Corpses are shown in a light gray</li>
+                <li>Marked players are shown in violet</li>
+                <li>Other players are shown in green</li>
+                <li>Players in the TEAM_MARKER are hidden in this radar</li> 
+            </ul>
+            <li>Improved loadout, prevents wrong loadout when a player was a marker in the previous round</li>
         </ul>
-    ]], os.time({year = 2019, month = 09, day = 06}))
+    ]], os.time({year = 2019, month = 09, day = 07}))
 end)
