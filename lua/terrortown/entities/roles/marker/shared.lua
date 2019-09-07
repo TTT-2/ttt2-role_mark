@@ -35,7 +35,6 @@ ROLE.conVarData = {
 }
 
 hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
-
 	if CLIENT then
 		LANG.AddToLanguage('English', MARKER.name, 'Marker')
 		LANG.AddToLanguage('English', TEAM_MARKER, 'TEAM marker')
@@ -51,9 +50,6 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 		LANG.AddToLanguage('English', 'ev_win_' .. TEAM_MARKER, 'The evil Marker won the round!')
 		LANG.AddToLanguage('English', 'credit_' .. MARKER.abbr .. '_all', 'Markers, you have been awarded {num} equipment credit(s) for your performance.')
 
-		---------------------------------
-
-		-- maybe this language as well...
 		LANG.AddToLanguage('Deutsch', MARKER.name, 'Markierer')
 		LANG.AddToLanguage('Deutsch', TEAM_MARKER, 'TEAM Markierer')
 		LANG.AddToLanguage('Deutsch', 'info_popup_' .. MARKER.name,
@@ -88,25 +84,31 @@ if SERVER then
 		ply:GiveEquipmentWeapon('weapon_ttt2_markerdefi')
 		ply:GiveEquipmentItem('item_ttt_armor')
 		ply:GiveEquipmentItem('item_ttt_radar')
-    end
+	end
+	
+	local function DeinitRoleMarker(ply)
+		ply:StripWeapon('weapon_ttt2_markergun')
+		ply:StripWeapon('weapon_ttt2_markerdefi')
+		ply:RemoveEquipmentItem('item_ttt_armor')
+		ply:RemoveEquipmentItem('item_ttt_radar')
+	end
  
-    hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGivePaintGun_UpdateSubtole', function(ply, old, new) -- called on normal role set
+    hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGiveEquipment_UpdateSubtole', function(ply, old, new) -- called on normal role set
         if new == ROLE_MARKER then
             InitRoleMarker(ply)
         elseif old == ROLE_MARKER then
-            ply:StripWeapon('weapon_ttt2_markergun')
-            ply:StripWeapon('weapon_ttt2_markerdefi')
+            DeinitRoleMarker(ply)
  
             -- remove markings when no marker is alive
             MARKER_DATA:MarkerDied()
         end
     end)
-   
-	hook.Add('PlayerSpawn', 'TTT2MarkerGivePaintGun_PlayerSpawn', function(ply) -- called on player respawn
-		timer.Simple(0.5, function()
-			if ply:GetSubRole() ~= ROLE_MARKER then return end
-			InitRoleMarker(ply)
-		end)
+
+	hook.Add('PlayerSpawn', 'TTT2MarkerGiveEquipment_PlayerSpawn', function(ply) -- called on player (re-)spawn
+		if GetRoundState() ~= ROUND_ACTIVE then return end
+		if ply:GetSubRole() ~= ROLE_MARKER then return end
+
+		InitRoleMarker(ply)
     end)
 
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
