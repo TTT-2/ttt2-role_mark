@@ -9,6 +9,7 @@ ROLE.Base = 'ttt_role_base'
 ROLE.color = Color(125, 70, 135, 255) -- ...
 ROLE.dkcolor = Color(90, 45, 100, 255) -- ...
 ROLE.bgcolor = Color(160, 115, 165, 255) -- ...
+ROLE.radarColor = Color(160, 115, 165, 255)
 ROLE.abbr = 'mark' -- abbreviation
 ROLE.surviveBonus = 0 -- bonus multiplier for every survive while another player was killed
 ROLE.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
@@ -67,6 +68,52 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 end) 
 
 if SERVER then
+	-- giving the marker a custom radar, it does not show other players in the marker team
+	-- the radar has three modes:
+	-- - marked players (rolecolor)
+	-- - dead players (gray)
+	-- - unmarked players (default radar color)
+	ROLE.CustomRadar = function(ply)
+		local targets = {}
+
+		-- get corpses
+		local corpses = ents.FindByClass("prop_ragdoll")
+
+		for _, c in ipairs(corpses) do
+			local pos = c:LocalToWorld(c:OBBCenter())
+
+			pos.x = math.Round(pos.x)
+			pos.y = math.Round(pos.y)
+			pos.z = math.Round(pos.z)
+
+			table.insert(targets, {subrole = -1, pos = pos})
+		end
+
+		-- get players alive
+		for _, p in ipairs(player.GetAll()) do
+			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false) or not p:IsPlayer()) then
+				local pos = p:LocalToWorld(p:OBBCenter())
+
+				-- Round off, easier to send and inaccuracy does not matter
+				pos.x = math.Round(pos.x)
+				pos.y = math.Round(pos.y)
+				pos.z = math.Round(pos.z)
+
+				local subrole
+
+				if MARKER_DATA:IsMarked(p) then
+					subrole = ROLE_MARKER
+				else
+					subrole = ROLE_INNOCENT
+				end
+
+				table.insert(targets, {subrole = subrole, pos = pos})
+			end
+		end
+
+		return targets
+	end
+
 	-- modify roles table of rolesetup addon
 	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rls, printrls)
 		printrls[ROLE_MARKER] = true
