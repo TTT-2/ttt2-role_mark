@@ -20,8 +20,8 @@ ROLE.preventTraitorAloneCredits = true
 ROLE.preventWin = true
 
 roles.InitCustomTeam(ROLE.name, {
-    icon = 'vgui/ttt/dynamic/roles/icon_mark',
-    color = ROLE.color
+	icon = 'vgui/ttt/dynamic/roles/icon_mark',
+	color = ROLE.color
 })
 ROLE.defaultTeam = TEAM_MARKER
 
@@ -139,26 +139,22 @@ if SERVER then
 		ply:RemoveEquipmentItem('item_ttt_armor')
 		ply:RemoveEquipmentItem('item_ttt_radar')
 	end
- 
-    hook.Add('TTT2UpdateSubrole', 'TTT2MarkerGiveEquipment_UpdateSubtole', function(ply, old, new) -- called on normal role set
-        if new == ROLE_MARKER then
-            InitRoleMarker(ply)
-        elseif old == ROLE_MARKER then
-            DeinitRoleMarker(ply)
- 
-            -- remove markings when no marker is alive
-            MARKER_DATA:MarkerDied()
-        end
-    end)
 
-	-- this hook is called on player (re-)spawn after the player is initialized and the loadout is removed
-	hook.Add('PlayerLoadout', 'TTT2MarkerGiveEquipment_PlayerSpawn', function(ply)
-		if GetRoundState() ~= ROUND_ACTIVE then return end
-		if ply:GetSubRole() ~= ROLE_MARKER then return end
+	hook.Add('TTT2GiveRoleLoadout', 'ttt2_marker_loadout_give', function(ply, isRoleChange, role, team)
+		if role ~= ROLE_MARKER then return end
 
 		InitRoleMarker(ply)
 	end)
 
+	hook.Add('TTT2RemoveRoleLoadout', 'ttt2_marker_loadout_remove', function(ply, isRoleChange, role, team)
+		if role ~= ROLE_MARKER then return end
+
+		DeinitRoleMarker(ply)
+
+		-- remove markings when no marker is alive
+		MARKER_DATA:MarkerDied(ply)
+	end)
+ 
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
 		if not MARKER_DATA:AbleToWin() then return end
 
