@@ -34,7 +34,7 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
         <ul>
             <li>Fixed pirate-marker interaction</li>
             <li>Fixed scoreboard sometimes causing erros</li>
-            <li>Improved marker radar to show different types based on this goal</li>
+            <li>Improved marker radar to show different types based on their goal:</li>
             <ul>
                 <li>Corpses are shown in a light gray</li>
                 <li>Marked players are shown in violet</li>
