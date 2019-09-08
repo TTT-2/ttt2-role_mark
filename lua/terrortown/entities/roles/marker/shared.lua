@@ -151,15 +151,13 @@ if SERVER then
         end
     end)
 
-	hook.Add('PlayerSpawn', 'TTT2MarkerGiveEquipment_PlayerSpawn', function(ply) -- called on player (re-)spawn
-		-- this is an ugly workaround, since on calling of the player respawn hook, the player can not yet receive items
-		timer.Simple(0.1, function()
-			if GetRoundState() ~= ROUND_ACTIVE then return end
-			if ply:GetSubRole() ~= ROLE_MARKER then return end
+	-- this hook is called on player (re-)spawn after the player is initialized and the loadout is removed
+	hook.Add('PlayerLoadout', 'TTT2MarkerGiveEquipment_PlayerSpawn', function(ply)
+		if GetRoundState() ~= ROUND_ACTIVE then return end
+		if ply:GetSubRole() ~= ROLE_MARKER then return end
 
-			InitRoleMarker(ply)
-		end)
-    end)
+		InitRoleMarker(ply)
+	end)
 
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
 		if not MARKER_DATA:AbleToWin() then return end
