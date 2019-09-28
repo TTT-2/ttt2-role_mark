@@ -139,21 +139,17 @@ if SERVER then
 		ply:RemoveEquipmentItem('item_ttt_armor')
 		ply:RemoveEquipmentItem('item_ttt_radar')
 	end
-
-	hook.Add('TTT2GiveRoleLoadout', 'ttt2_marker_loadout_give', function(ply, isRoleChange, role, team)
-		if role ~= ROLE_MARKER then return end
-
+	
+	function ROLE:GiveRoleLoadout(ply, isRoleChange)
 		InitRoleMarker(ply)
-	end)
+	end
 
-	hook.Add('TTT2RemoveRoleLoadout', 'ttt2_marker_loadout_remove', function(ply, isRoleChange, role, team)
-		if role ~= ROLE_MARKER then return end
-
+	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
 		DeinitRoleMarker(ply)
-
+ 
 		-- remove markings when no marker is alive
-		MARKER_DATA:MarkerDied(ply)
-	end)
+		MARKER_DATA:MarkerDied()
+	end
  
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
 		if not MARKER_DATA:AbleToWin() then return end

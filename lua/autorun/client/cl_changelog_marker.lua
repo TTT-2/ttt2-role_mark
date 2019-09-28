@@ -41,7 +41,7 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
                 <li>Other players are shown in green</li>
                 <li>Players in the TEAM_MARKER are hidden in this radar</li> 
             </ul>
-            <li>Improved loadout by using the new loadout hooks, prevents wrong loadout when a player was a marker in the previous round and other item raceconditions.</li>
+            <li>Improved loadout by using other hooks, prevents wrong loadout when a player was a marker in the previous round</li>
         </ul>
-    ]], os.time({year = 2019, month = 09, day = 08}))
+    ]], os.time({year = 2019, month = 09, day = 11}))
 end)
