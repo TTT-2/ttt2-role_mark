@@ -73,7 +73,7 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 end)
 
 if CLIENT then
-	hook.Add("TTTBodySearchPopulate", "JuggernogNewCorpseIcon", function(search, raw)
+	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
 		if not raw.owner.was_marked then return end
 
 		local highest_id = 0
@@ -81,7 +81,7 @@ if CLIENT then
 			highest_id = math.max(highest_id, v.p)
 		end
 
-		search.eq_juggernognew = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt2_marker_was_marked"), p = highest_id + 1}
+		search.was_marked = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt2_marker_was_marked"), p = highest_id + 1}
 	end)
 end
 
