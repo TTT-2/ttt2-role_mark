@@ -6,9 +6,9 @@ end
 
 ROLE.Base = 'ttt_role_base'
 
-ROLE.color = Color(125, 70, 135, 255) -- ...
-ROLE.dkcolor = Color(90, 45, 100, 255) -- ...
-ROLE.bgcolor = Color(160, 115, 165, 255) -- ...
+ROLE.color = Color(125, 70, 135, 255)
+ROLE.dkcolor = Color(90, 45, 100, 255)
+ROLE.bgcolor = Color(160, 115, 165, 255)
 ROLE.radarColor = Color(160, 115, 165, 255)
 ROLE.abbr = 'mark' -- abbreviation
 ROLE.surviveBonus = 0 -- bonus multiplier for every survive while another player was killed
@@ -37,6 +37,7 @@ ROLE.conVarData = {
 
 hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 	if CLIENT then
+		-- Role specific language elements
 		LANG.AddToLanguage('English', MARKER.name, 'Marker')
 		LANG.AddToLanguage('English', TEAM_MARKER, 'TEAM marker')
 		LANG.AddToLanguage('English', 'info_popup_' .. MARKER.name,
@@ -64,8 +65,25 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 		LANG.AddToLanguage('Deutsch', 'win_' .. TEAM_MARKER, 'Der Marker hat gewonnen!') -- teamname
 		LANG.AddToLanguage('Deutsch', 'ev_win_' .. TEAM_MARKER, 'Der böse Marker hat die Runde gewonnen!')
 		LANG.AddToLanguage('Deutsch', 'credit_' .. MARKER.abbr .. '_all', 'Marker, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben.')
+
+		-- other role language elements
+		LANG.AddToLanguage("English", "ttt2_marker_was_marked", "This player seems to be covered in color. They were marked!")
+		LANG.AddToLanguage("Deutsch", "ttt2_marker_was_marked", "Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!")
 	end
-end) 
+end)
+
+if CLIENT then
+	hook.Add("TTTBodySearchPopulate", "JuggernogNewCorpseIcon", function(search, raw)
+		if not raw.owner.was_marked then return end
+
+		local highest_id = 0
+		for _, v in pairs(search) do
+			highest_id = math.max(highest_id, v.p)
+		end
+
+		search.eq_juggernognew = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt2_marker_was_marked"), p = highest_id + 1}
+	end)
+end
 
 if SERVER then
 	-- giving the marker a custom radar, it does not show other players in the marker team

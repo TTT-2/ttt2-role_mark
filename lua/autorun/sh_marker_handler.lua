@@ -60,6 +60,14 @@ if CLIENT then
         MARKER_DATA:UpdateScoreboard()
     end)
 
+    net.Receive('ttt2_role_marker_corpse_update', function()
+        local ply = net.ReadEntity()
+
+        if not ply or not ply:IsPlayer() then return end
+
+        ply.was_marked = net.ReadBool()
+    end)
+
     hook.Add('TTTScoreboardColumns', 'ttt2_marked_players_column', function(pnl)
         local client = LocalPlayer()
 
@@ -89,6 +97,7 @@ if SERVER then
     util.AddNetworkString('ttt2_role_marker_remove_all')
     util.AddNetworkString('ttt2_role_marker_update')
     util.AddNetworkString('ttt2_role_marker_scoreboard')
+    util.AddNetworkString('ttt2_role_marker_corpse_update')
 
     function MARKER_DATA:SetMarkedPlayer(ply)
         if not ply or not ply:IsPlayer() then return end
@@ -105,6 +114,25 @@ if SERVER then
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
         
         self:Count()
+    end
+
+    function MARKER_DATA:PrepareCorpseOnDeath(ply)
+        if not ply or not ply:IsPlayer() then return end
+        if not self:IsMarked(ply) then return end
+
+        net.Start('ttt2_role_marker_corpse_update')
+        net.WriteEntity(ply)
+        net.WriteBool(true)
+        net.Broadcast()
+    end
+
+    function MARKER_DATA:ResetCorpseOnSpawn(ply)
+        if not ply or not ply:IsPlayer() then return end
+
+        net.Start('ttt2_role_marker_corpse_update')
+        net.WriteEntity(ply)
+        net.WriteBool(false)
+        net.Broadcast()
     end
 
     function MARKER_DATA:RemoveMarkedPlayer(ply)
@@ -185,6 +213,7 @@ if SERVER then
 
     hook.Add('PostPlayerDeath', 'ttt2_role_marker_death', function(victim, infl, attacker)
         -- HANDLE DEATH OF MARKED PLAYER
+        MARKER_DATA:PrepareCorpseOnDeath(victim)
         MARKER_DATA:RemoveMarkedPlayer(victim)
         MARKER_DATA:UpdateAfterChange()
 
@@ -193,7 +222,8 @@ if SERVER then
         MARKER_DATA:MarkerDied()
     end)
 
-    hook.Add('PlayerSpawn', 'ttt2_role_marker_player_respawn', function()
+    hook.Add('PlayerSpawn', 'ttt2_role_marker_player_respawn', function(ply)
+        MARKER_DATA:ResetCorpseOnSpawn(ply)
         MARKER_DATA:UpdateAfterChange()
     end)
 
