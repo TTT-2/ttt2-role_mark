@@ -198,7 +198,7 @@ if SERVER then
 	hook.Add('EntityTakeDamage', 'TTT2MarkerTakeNoDamage', function(ply, dmginfo)
 		if not ply:IsPlayer() then return end
 
-		if not GetConVar('ttt_mark_take_no_damage'):GetBool() then return true end
+		if not GetConVar('ttt_mark_take_no_damage'):GetBool() then return end
 
 		if not ply or not IsValid(ply) or not ply:IsPlayer() then return end
 
