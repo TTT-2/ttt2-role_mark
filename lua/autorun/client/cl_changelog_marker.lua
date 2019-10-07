@@ -44,4 +44,13 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
             <li>Improved loadout by using other hooks, prevents wrong loadout when a player was a marker in the previous round</li>
         </ul>
     ]], os.time({year = 2019, month = 09, day = 11}))
+
+    AddChange("TTT2 Role Marker - v1.4", [[
+        <ul>
+            <li>Using new loadout functions that allow item giving without raceconditions</li>
+            <li>Giving the marker 60 armor points on spawn</li>
+            <li>Fixed a convar error where setting it to 0 disabled all damage taken on the server</li>
+            <li>Added "was marked" indicator to body search</li>
+        </ul>
+    ]], os.time({year = 2019, month = 10, day = 07}))
 end)

@@ -23,19 +23,24 @@ roles.InitCustomTeam(ROLE.name, {
 	icon = 'vgui/ttt/dynamic/roles/icon_mark',
 	color = ROLE.color
 })
-ROLE.defaultTeam = TEAM_MARKER
 
-ROLE.conVarData = {
-	pct = 0.15, -- necessary: percentage of getting this role selected (per player)
-	maximum = 1, -- maximum amount of roles in a round
-	minPlayers = 7, -- minimum amount of players until this role is able to get selected
-	credits = 0, -- the starting credits of a specific role
-	shopFallback = SHOP_DISABLED,
-	togglable = true, -- option to toggle a role for a client if possible (F1 menu)
-	random = 33
-}
+function ROLE:PreInitialize()
+	self.defaultTeam = TEAM_MARKER
 
-hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
+	self.conVarData = {
+		pct = 0.15, -- necessary: percentage of getting this role selected (per player)
+		maximum = 1, -- maximum amount of roles in a round
+		minPlayers = 7, -- minimum amount of players until this role is able to get selected
+		credits = 0, -- the starting credits of a specific role
+		shopFallback = SHOP_DISABLED,
+		togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+		random = 33
+	}
+end
+
+function ROLE:Initialize()
+	roles.SetBaseRole(self, ROLE_MARKER)
+
 	if CLIENT then
 		-- Role specific language elements
 		LANG.AddToLanguage('English', MARKER.name, 'Marker')
@@ -70,7 +75,7 @@ hook.Add('TTT2FinishedLoading', 'MarkInitT', function()
 		LANG.AddToLanguage("English", "ttt2_marker_was_marked", "This player seems to be covered in color. They were marked!")
 		LANG.AddToLanguage("Deutsch", "ttt2_marker_was_marked", "Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!")
 	end
-end)
+end
 
 if CLIENT then
 	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
@@ -147,14 +152,14 @@ if SERVER then
 	local function InitRoleMarker(ply)
 		ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
 		ply:GiveEquipmentWeapon('weapon_ttt2_markerdefi')
-		ply:GiveEquipmentItem('item_ttt_armor')
+		ply:GiveArmor(60)
 		ply:GiveEquipmentItem('item_ttt_radar')
 	end
 	
 	local function DeinitRoleMarker(ply)
 		ply:StripWeapon('weapon_ttt2_markergun')
 		ply:StripWeapon('weapon_ttt2_markerdefi')
-		ply:RemoveEquipmentItem('item_ttt_armor')
+		ply:RemoveArmor(60)
 		ply:RemoveEquipmentItem('item_ttt_radar')
 	end
 	
