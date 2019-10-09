@@ -7,3 +7,17 @@ CreateConVar('ttt_mark_fixed_mark_amount', -1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar('ttt_mark_deal_no_damage', 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar('ttt_mark_take_no_damage', 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar('ttt_mark_defi_factor', 0.34, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+
+hook.Add("TTTUlxDynamicRCVars", "ttt2_ulx_dynamic_marker_convars", function(tbl)
+    tbl[ROLE_MARKER] = tbl[ROLE_MARKER] or {}
+
+    table.insert(tbl[ROLE_MARKER], {cvar = 'ttt_mark_show_sidebar', checkbox = true, desc = 'ttt_mark_show_sidebar (def. 1)'})
+    table.insert(tbl[ROLE_MARKER], {cvar = 'ttt_mark_show_messages', checkbox = true, desc = 'ttt_mark_show_messages (def. 1)'})
+    table.insert(tbl[ROLE_MARKER], {cvar = 'ttt_mark_deal_no_damage', checkbox = true, desc = 'ttt_mark_deal_no_damage (def. 1)'})
+    table.insert(tbl[ROLE_MARKER], {cvar = 'ttt_mark_take_no_damage', checkbox = true, desc = 'ttt_mark_take_no_damage (def. 1)'})
+    table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_min_alive", slider = true, min = 0, max = 25, decimal = 0, desc = "ttt_mark_min_alive (def. 4)"})
+    table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_max_to_mark", slider = true, min = 0, max = 25, decimal = 0, desc = "ttt_mark_max_to_mark (def. 9)"})
+    table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_pct_marked", slider = true, min = 0, max = 1, decimal = 2, desc = "ttt_mark_pct_marked (def. 0.75)"})
+    table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_fixed_mark_amount", slider = true, min = -1, max = 25, decimal = 0, desc = "ttt_mark_fixed_mark_amount (def. -1)"})
+    table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_defi_factor", slider = true, min = 0, max = 1, decimal = 2, desc = "ttt_mark_defi_factor (def. 0.34)"})
+end)
