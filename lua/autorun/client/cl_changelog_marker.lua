@@ -53,4 +53,11 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
             <li>Added "was marked" indicator to body search</li>
         </ul>
     ]], os.time({year = 2019, month = 10, day = 07}))
+
+    AddChange("TTT2 Role Marker - v1.5", [[
+        <ul>
+            <li>Fixing a bug with the inspection of dead bodies when the player has respawned</li>
+            <li>Adding role specific convars to ulx</li>
+        </ul>
+    ]], os.time({year = 2019, month = 10, day = 09}))
 end)
