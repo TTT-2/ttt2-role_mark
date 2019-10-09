@@ -80,6 +80,7 @@ end
 
 if CLIENT then
 	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
+		if not raw.owner then return end
 		if not raw.owner.was_marked then return end
 
 		local highest_id = 0
