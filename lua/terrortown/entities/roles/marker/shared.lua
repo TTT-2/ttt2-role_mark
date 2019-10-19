@@ -40,8 +40,6 @@ function ROLE:PreInitialize()
 end
 
 function ROLE:Initialize()
-	roles.SetBaseRole(self, ROLE_MARKER)
-
 	if CLIENT then
 		-- Role specific language elements
 		LANG.AddToLanguage('English', MARKER.name, 'Marker')
