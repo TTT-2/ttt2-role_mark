@@ -109,7 +109,7 @@ if SERVER then
 			pos.y = math.Round(pos.y)
 			pos.z = math.Round(pos.z)
 
-			table.insert(targets, {subrole = -1, pos = pos})
+			targets[#targets + 1] = {subrole = -1, pos = pos}
 		end
 
 		-- get players alive
@@ -130,8 +130,21 @@ if SERVER then
 					subrole = ROLE_INNOCENT
 				end
 
-				table.insert(targets, {subrole = subrole, pos = pos})
+				targets[#targets + 1] = {subrole = subrole, pos = pos}
 			end
+		end
+
+		-- get decoys
+		local decoys = ents.FindByClass("ttt_decoy")
+		for _, decoy in ipairs(decoys) do
+			local pos = decoy:LocalToWorld(decoy:OBBCenter())
+
+			-- Round off, easier to send and inaccuracy does not matter
+			pos.x = math.Round(pos.x)
+			pos.y = math.Round(pos.y)
+			pos.z = math.Round(pos.z)
+
+			targets[#targets + 1] = {subrole = ROLE_INNOCENT, pos = pos}
 		end
 
 		return targets
