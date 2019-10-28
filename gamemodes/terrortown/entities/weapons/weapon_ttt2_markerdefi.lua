@@ -100,7 +100,7 @@ local DEFIB_BUSY = 1
 local DEFIB_ERROR = 2
 
 function SWEP:Initialize()
-    self:SetHoldType(self.HoldType)
+	self:SetHoldType(self.HoldType)
 
 	local ammo = MARKER_DATA:AmountToWin() * GetConVar('ttt_mark_defi_factor'):GetFloat()
 	ammo = math.max(1, ammo)

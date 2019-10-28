@@ -8,10 +8,13 @@ MARKER_DATA.amount_to_win = 0
 
 if CLIENT then
     hook.Add('Initialize', 'TTTInitMarkerMessageLang', function()
-		LANG.AddToLanguage('English', 'ttt2_marker_marked', 'It seems like a player was marked.')
-		LANG.AddToLanguage('English', 'ttt2_marker_died', 'It seems like a marked player died.')
-		LANG.AddToLanguage('Deutsch', 'ttt2_marker_marked', 'Es scheint so, als wäre ein weiterer Spieler markiert worden.')
-		LANG.AddToLanguage('Deutsch', 'ttt2_marker_died', 'Es scheint so, als wäre ein markierter Spieler gestorben.')
+        LANG.AddToLanguage('English', 'ttt2_marker_marked', 'It seems like a player was marked.')
+        LANG.AddToLanguage('English', 'ttt2_marker_died', 'It seems like a marked player died.')
+        LANG.AddToLanguage('English', 'ttt_marker_player_marked', '(PLAYER IS MARKED)')
+
+        LANG.AddToLanguage('Deutsch', 'ttt2_marker_marked', 'Es scheint so, als wäre ein weiterer Spieler markiert worden.')
+        LANG.AddToLanguage('Deutsch', 'ttt2_marker_died', 'Es scheint so, als wäre ein markierter Spieler gestorben.')
+        LANG.AddToLanguage('Deutsch', 'ttt_marker_player_marked', '(SPIELER IST MARKIERT)')
     end)
     
 
@@ -75,7 +78,7 @@ if CLIENT then
         if not client or not IsValid(client) or not client:IsPlayer() then return end
         
         if client:GetTeam() ~= TEAM_MARKER then return end
-        pnl:AddColumn('Marked', function(ply, label)         
+        pnl:AddColumn('Marked', function(ply, label)
             if MARKER_DATA:IsMarked(ply) then
                 return 'yes'
             else
@@ -103,14 +106,14 @@ if SERVER then
         if not ply or not ply:IsPlayer() then return end
 
         -- show player that they are marked
-		if GetConVar('ttt_mark_show_sidebar'):GetBool() then
-			self:MarkPlayer(ply)
-		end
+        if GetConVar('ttt_mark_show_sidebar'):GetBool() then
+            self:MarkPlayer(ply)
+        end
 
         MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = true
 
         net.Start('ttt2_role_marker_new_marking')
-		net.WriteEntity(ply)
+        net.WriteEntity(ply)
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
         
         self:Count()
@@ -141,7 +144,7 @@ if SERVER then
         MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = nil
 
         net.Start('ttt2_role_marker_remove_marking')
-		net.WriteEntity(ply)
+        net.WriteEntity(ply)
         net.Send(player.GetAll()) -- send to all players, only markers will handle the data
 
         self:Count()
@@ -165,13 +168,13 @@ if SERVER then
     function MARKER_DATA:UpdateAfterChange()
         -- player alive
         local player_alive, amnt_marker = 0, 0
-		for _, p in ipairs(player.GetAll()) do
-			if p:Alive() and p:IsTerror() then
-				player_alive = player_alive + 1
-			end
-			if p:Alive() and p:IsTerror() and p:GetTeam() == TEAM_MARKER then
-				amnt_marker = amnt_marker + 1
-			end
+        for _, p in ipairs(player.GetAll()) do
+            if p:Alive() and p:IsTerror() then
+                player_alive = player_alive + 1
+            end
+            if p:Alive() and p:IsTerror() and p:GetTeam() == TEAM_MARKER then
+                amnt_marker = amnt_marker + 1
+            end
         end
         self.amount_marker_alive = amnt_marker
         self.amount_no_marker_alive = player_alive - amnt_marker
