@@ -68,11 +68,11 @@ if CLIENT then -- CLIENT
 
         local color = nil
         if MARKER_DATA:AbleToWin() then
-            color = table.Copy(draw.GetDefaultColor(self.basecolor))
+            color = table.Copy(util.GetDefaultColor(self.basecolor))
             color.a = 175
             draw.FilteredShadowedTexture(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon, color.a, color, self.scale)
         else
-            color = table.Copy(draw.GetDefaultColor(self.basecolor))
+            color = table.Copy(util.GetDefaultColor(self.basecolor))
             color.a = 50
             draw.FilteredShadowedTexture(x + 8 * self.scale, y + 5 * self.scale, 30 * self.scale, 30 * self.scale, self.marker_icon_end, color.a, color, self.scale)
         end
