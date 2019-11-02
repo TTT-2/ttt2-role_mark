@@ -1,7 +1,8 @@
-local color_player_marked = Color(MARKER.bgcolor.r, MARKER.bgcolor.g, MARKER.bgcolor.b, 75)
-
 -- handle looking at sodas
 hook.Add('TTTRenderEntityInfo', 'ttt2_marker_highlight_players', function(data, params)
+    -- while client is setting up, ignore missing MARKER
+    if not MARKER then return end
+
     local client = LocalPlayer()
     local obsTgt = client:GetObserverTarget()
 
@@ -18,6 +19,6 @@ hook.Add('TTTRenderEntityInfo', 'ttt2_marker_highlight_players', function(data, 
 
     params.displayInfo.icon[#params.displayInfo.icon + 1] = {
         material = MARKER.iconMaterial,
-        color = color_player_marked
+        color = Color(MARKER.bgcolor.r, MARKER.bgcolor.g, MARKER.bgcolor.b, 75)
     }
 end)
