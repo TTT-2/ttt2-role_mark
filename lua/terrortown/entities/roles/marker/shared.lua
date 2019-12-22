@@ -13,9 +13,6 @@ roles.InitCustomTeam(ROLE.name, {
 
 function ROLE:PreInitialize()
 	self.color = Color(125, 70, 135, 255)
-	self.dkcolor = Color(90, 45, 100, 255)
-	self.bgcolor = Color(160, 115, 165, 255)
-	self.radarColor = Color(160, 115, 165, 255)
 
 	self.abbr = 'mark'
 	self.surviveBonus = 0
@@ -48,7 +45,7 @@ function ROLE:Initialize()
 			[[You are the Marker!
 			Try to mark all players! It's hard, but don't wait until only a few players are left...]])
 		LANG.AddToLanguage('English', 'body_found_' .. MARKER.abbr, 'They were a Marker.')
-		LANG.AddToLanguage('English', 'search_role_' .. MARKER.abbr, 'This person was a marker!')
+		LANG.AddToLanguage('English', 'search_role_' .. MARKER.abbr, 'This person was a Marker!')
 		LANG.AddToLanguage('English', 'target_' .. MARKER.name, 'Marker')
 		LANG.AddToLanguage('English', 'ttt2_desc_' .. MARKER.name, [[The Marker needs to win alone!]])
 		LANG.AddToLanguage('English', 'hilite_win_' .. TEAM_MARKER, 'THE MARKER WON') -- name of base role of a team
@@ -71,13 +68,13 @@ function ROLE:Initialize()
 		LANG.AddToLanguage('Deutsch', 'credit_' .. MARKER.abbr .. '_all', 'Marker, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben.')
 
 		-- other role language elements
-		LANG.AddToLanguage("English", "ttt2_marker_was_marked", "This player seems to be covered in color. They were marked!")
-		LANG.AddToLanguage("Deutsch", "ttt2_marker_was_marked", "Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!")
+		LANG.AddToLanguage('English', 'ttt2_marker_was_marked', 'This player seems to be covered in color. They were marked!')
+		LANG.AddToLanguage('Deutsch', 'ttt2_marker_was_marked', 'Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!')
 	end
 end
 
 if CLIENT then
-	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
+	hook.Add('TTTBodySearchPopulate', 'ttt2_role_marker_add_marked_indicator', function(search, raw)
 		if not raw.owner then return end
 		if not raw.owner.was_marked then return end
 
@@ -86,7 +83,7 @@ if CLIENT then
 			highest_id = math.max(highest_id, v.p)
 		end
 
-		search.was_marked = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt2_marker_was_marked"), p = highest_id + 1}
+		search.was_marked = {img = 'vgui/ttt/player_marked.png', text = LANG.GetTranslation('ttt2_marker_was_marked'), p = highest_id + 1}
 	end)
 end
 
@@ -100,7 +97,7 @@ if SERVER then
 		local targets = {}
 
 		-- get corpses
-		local corpses = ents.FindByClass("prop_ragdoll")
+		local corpses = ents.FindByClass('prop_ragdoll')
 
 		for _, c in ipairs(corpses) do
 			local pos = c:LocalToWorld(c:OBBCenter())
@@ -114,7 +111,7 @@ if SERVER then
 
 		-- get players alive
 		for _, p in ipairs(player.GetAll()) do
-			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false) or not p:IsPlayer()) then
+			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool('disguised', false) or not p:IsPlayer()) then
 				local pos = p:LocalToWorld(p:OBBCenter())
 
 				-- Round off, easier to send and inaccuracy does not matter
@@ -135,7 +132,7 @@ if SERVER then
 		end
 
 		-- get decoys
-		local decoys = ents.FindByClass("ttt_decoy")
+		local decoys = ents.FindByClass('ttt_decoy')
 		for _, decoy in ipairs(decoys) do
 			local pos = decoy:LocalToWorld(decoy:OBBCenter())
 
@@ -168,25 +165,25 @@ if SERVER then
 		ply:GiveArmor(60)
 		ply:GiveEquipmentItem('item_ttt_radar')
 	end
-	
+
 	local function DeinitRoleMarker(ply)
 		ply:StripWeapon('weapon_ttt2_markergun')
 		ply:StripWeapon('weapon_ttt2_markerdefi')
 		ply:RemoveArmor(60)
 		ply:RemoveEquipmentItem('item_ttt_radar')
 	end
-	
+
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
 		InitRoleMarker(ply)
 	end
 
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
 		DeinitRoleMarker(ply)
- 
+
 		-- remove markings when no marker is alive
 		MARKER_DATA:MarkerDied()
 	end
- 
+
 	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
 		if not MARKER_DATA:AbleToWin() then return end
 
@@ -227,6 +224,6 @@ if SERVER then
 		if ply:GetTeam() == TEAM_MARKER and attacker ~= ply and MARKER_DATA:IsMarked(attacker) then
 			dmginfo:ScaleDamage(0)
 			dmginfo:SetDamage(0)
-		end		
+		end
 	end)
 end
