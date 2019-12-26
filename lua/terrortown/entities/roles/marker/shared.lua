@@ -70,6 +70,12 @@ function ROLE:Initialize()
 		-- other role language elements
 		LANG.AddToLanguage('English', 'ttt2_marker_was_marked', 'This player seems to be covered in color. They were marked!')
 		LANG.AddToLanguage('Deutsch', 'ttt2_marker_was_marked', 'Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!')
+
+		LANG.AddToLanguage('English', 'ttt_marker_player_deal_no_damage', 'You are a marker, you can\'t deal any damage!')
+		LANG.AddToLanguage('Deutsch', 'ttt_marker_player_deal_no_damage', 'Du bist ein Markierer, du kannst keinen Schaden machen!')
+
+		LANG.AddToLanguage('English', 'ttt_marker_player_take_no_damage', 'This player is marked and can\'t hurt you!')
+		LANG.AddToLanguage('Deutsch', 'ttt_marker_player_take_no_damage', 'Dieser Spieler ist markiert und kann dich nicht verletzen!')
 	end
 end
 
