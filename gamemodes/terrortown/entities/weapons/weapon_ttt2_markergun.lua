@@ -14,16 +14,16 @@ if CLIENT then
 	SWEP.Purpose			= ''
 	SWEP.Instructions		= 'Shoot with primary and secondary fire.'
 	SWEP.CSMuzzleFlashes    = true
-	
+
 	SWEP.Slot               = 7
 
 	SWEP.Icon = 'vgui/ttt/icon_markergun.png'
-	
+
 	SWEP.EquipMenuData = {
 		type = 'item_weapon',
 		desc = 'ttt2_paintgun_desc'
 	}
-	
+
 	hook.Add('Initialize', 'TTTInitMarkerGunLang', function()
 		LANG.AddToLanguage('English', 'ttt2_paintgun_desc', 'Shoot a player to mark hin')
 		LANG.AddToLanguage('Deutsch', 'ttt2_paintgun_desc', 'Schieße auf einen Spieler, um ihn zu markieren.')
@@ -69,7 +69,7 @@ SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo		    = 'none'
 
 function SWEP:Reload()
-	self.Weapon:DefaultReload(ACT_VM_RELOAD);
+	self:DefaultReload(ACT_VM_RELOAD);
 end
 
 function SWEP:OnDrop()
@@ -79,12 +79,12 @@ end
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
 
-	self.Weapon:EmitSound(Sound('marker/pbfire.wav'))
-	self.Weapon:SetNextPrimaryFire(CurTime() + 0.25)
+	self:EmitSound(Sound('marker/pbfire.wav'))
+	self:SetNextPrimaryFire(CurTime() + 0.25)
 	self:ShootEffects()
 	self:TakePrimaryAmmo(0)
 
-	if SERVER then	
+	if SERVER then
 		local pb = ents.Create('paint_ball')
 
 		local shoot_pos = self.Owner:GetShootPos()
@@ -105,7 +105,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:ShootEffects()
-	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self.Owner:MuzzleFlash()
 end
@@ -125,8 +125,9 @@ if SERVER then
 		if ply:GetTeam() ~= TEAM_MARKER then
 			MARKER_DATA:SetMarkedPlayer(ply)
 		end
-		
+
 		dmginfo:SetDamage(0)
+
 		return true
 	end)
 end

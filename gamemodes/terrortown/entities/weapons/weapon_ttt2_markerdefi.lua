@@ -26,9 +26,9 @@ if CLIENT then
 		desc = 'ttt2_markerdefi_desc'
 	}
 
-    SWEP.Icon = 'vgui/ttt/marker_defi'
-    
-    hook.Add('Initialize', 'TTTInitMarkerDefiLang', function()
+	SWEP.Icon = 'vgui/ttt/marker_defi'
+
+	hook.Add('Initialize', 'TTTInitMarkerDefiLang', function()
 		LANG.AddToLanguage('English', 'ttt2_markerdefi_desc', 'Revives dead people as marked players. They keep their role.')
 		LANG.AddToLanguage('Deutsch', 'ttt2_markerdefi_desc', 'Belebt tote Spieler als markierte Spieler wieder. Sie behalten ihre Rolle.')
 	end)
@@ -201,7 +201,7 @@ if SERVER then
 					newPos = v - Vector(0, 0, midsize.z * 0.5)
 				end
 			end
-		until(not util.IsInWorld(newPos) or IsStucking(owner, newPos))
+		until (not util.IsInWorld(newPos) or IsStucking(owner, newPos))
 
 		return newPos or false
 	end
