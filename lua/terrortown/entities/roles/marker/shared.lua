@@ -107,7 +107,7 @@ if SERVER then
 
 		for _, c in ipairs(corpses) do
 			-- make sure it is a player corpse and not a random map ragdoll
-			if not t.player_ragdoll then continue end
+			if not c.player_ragdoll then continue end
 
 			local pos = c:LocalToWorld(c:OBBCenter())
 
