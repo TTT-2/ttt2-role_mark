@@ -1,5 +1,5 @@
 -- handle looking at sodas
-hook.Add('TTTRenderEntityInfo', 'ttt2_marker_highlight_players', function(tData)
+hook.Add("TTTRenderEntityInfo", "ttt2_marker_highlight_players", function(tData)
 	-- while client is setting up, ignore missing MARKER
 	if not MARKER then return end
 
@@ -10,9 +10,9 @@ hook.Add('TTTRenderEntityInfo', 'ttt2_marker_highlight_players', function(tData)
 
 	if LocalPlayer():GetSubRole() ~= ROLE_MARKER then return end
 
-	if GetGlobalBool('ttt_mark_deal_no_damage', false) then
+	if GetGlobalBool("ttt_mark_deal_no_damage", false) then
 		tData:AddDescriptionLine(
-			LANG.GetTranslation('ttt_marker_player_deal_no_damage'),
+			LANG.GetTranslation("ttt_marker_player_deal_no_damage"),
 			COLOR_RED
 		)
 	end
@@ -20,15 +20,15 @@ hook.Add('TTTRenderEntityInfo', 'ttt2_marker_highlight_players', function(tData)
 	-- only add further text to marked players
 	if not MARKER_DATA:IsMarked(ent) then return end
 
-	if GetGlobalBool('ttt_mark_take_no_damage', false) then
+	if GetGlobalBool("ttt_mark_take_no_damage", false) then
 		tData:AddDescriptionLine(
-			LANG.GetTranslation('ttt_marker_player_take_no_damage'),
+			LANG.GetTranslation("ttt_marker_player_take_no_damage"),
 			COLOR_GREEN
 		)
 	end
 
 	tData:AddDescriptionLine(
-		LANG.GetTranslation('ttt_marker_player_marked'),
+		LANG.GetTranslation("ttt_marker_player_marked"),
 		MARKER.ltcolor
 	)
 

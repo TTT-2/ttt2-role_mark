@@ -65,7 +65,9 @@ function ENT:Touch(ent)
 end
 
 function ENT:Use(activator, caller)
+
 end
 
 function ENT:Think()
+
 end

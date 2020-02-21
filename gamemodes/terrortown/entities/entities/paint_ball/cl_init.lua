@@ -29,9 +29,9 @@ function ENT:Draw()
 	// Fake motion blur
 	for i = 1, 10 do
 		local col = Color(lcolor.x, lcolor.y, lcolor.z, 200 / i)
+
 		render.DrawSprite(pos + vel * ( i * -0.005), 1, 1, col)
 	end
 
 	render.DrawSprite(pos, 1, 1, lcolor)
 end
-

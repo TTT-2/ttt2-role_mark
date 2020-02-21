@@ -1,32 +1,32 @@
-SWEP.Base = 'weapon_tttbase'
+SWEP.Base = "weapon_tttbase"
 
 SWEP.Kind = WEAPON_NONE
 
 if SERVER then
-	AddCSLuaFile('weapon_ttt2_markergun.lua')
+	AddCSLuaFile("weapon_ttt2_markergun.lua")
 end
 
 if CLIENT then
-	SWEP.Category			= 'Paintball SWEPs'
-	SWEP.PrintName			= 'Marker Gun'
-	SWEP.Author				= 'TTT2 Team'
-	SWEP.Contact			= ''
-	SWEP.Purpose			= ''
-	SWEP.Instructions		= 'Shoot with primary and secondary fire.'
+	SWEP.Category			= "Paintball SWEPs"
+	SWEP.PrintName			= "Marker Gun"
+	SWEP.Author				= "TTT2 Team"
+	SWEP.Contact			= ""
+	SWEP.Purpose			= ""
+	SWEP.Instructions		= "Shoot with primary and secondary fire."
 	SWEP.CSMuzzleFlashes    = true
 
 	SWEP.Slot               = 7
 
-	SWEP.Icon = 'vgui/ttt/icon_markergun.png'
+	SWEP.Icon = "vgui/ttt/icon_markergun.png"
 
 	SWEP.EquipMenuData = {
-		type = 'item_weapon',
-		desc = 'ttt2_paintgun_desc'
+		type = "item_weapon",
+		desc = "ttt2_paintgun_desc"
 	}
 
-	hook.Add('Initialize', 'TTTInitMarkerGunLang', function()
-		LANG.AddToLanguage('English', 'ttt2_paintgun_desc', 'Shoot a player to mark hin')
-		LANG.AddToLanguage('Deutsch', 'ttt2_paintgun_desc', 'Schieße auf einen Spieler, um ihn zu markieren.')
+	hook.Add("Initialize", "TTTInitMarkerGunLang", function()
+		LANG.AddToLanguage("English", "ttt2_paintgun_desc", "Shoot a player to mark hin")
+		LANG.AddToLanguage("Deutsch", "ttt2_paintgun_desc", "Schieße auf einen Spieler, um ihn zu markieren.")
 	end)
 end
 
@@ -36,9 +36,9 @@ SWEP.data.newclip           = false
 SWEP.Spawnable			    = true
 SWEP.AdminSpawnable		    = true
 
-SWEP.HoldType			    = 'pistol'
-SWEP.ViewModel			    = 'models/Weapons/v_blazer.mdl'
-SWEP.WorldModel			    = 'models/Weapons/w_blazer.mdl'
+SWEP.HoldType			    = "pistol"
+SWEP.ViewModel			    = "models/Weapons/v_blazer.mdl"
+SWEP.WorldModel			    = "models/Weapons/w_blazer.mdl"
 SWEP.ViewModelFlip		    = false
 
 SWEP.Drawammo               = true
@@ -50,7 +50,7 @@ SWEP.AutoSwitchFrom		    = false
 SWEP.AllowDrop              = false
 SWEP.notBuyable             = true
 
-SWEP.Primary.Sound		    = Sound('marker/pbfire.wav')
+SWEP.Primary.Sound		    = Sound("marker/pbfire.wav")
 SWEP.Primary.Recoil		    = 1.5
 SWEP.Primary.Damage		    = 1
 SWEP.Primary.NumShot        = 1
@@ -61,12 +61,12 @@ SWEP.Primary.DefaultClip    = 250
 SWEP.Primary.AmmoSize       = 0
 SWEP.Primary.DefaultAmmo    = 0
 SWEP.Primary.Automatic	    = false
-SWEP.Primary.Ammo		    = 'none'
+SWEP.Primary.Ammo		    = "none"
 
 SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic	= false
-SWEP.Secondary.Ammo		    = 'none'
+SWEP.Secondary.Ammo		    = "none"
 
 function SWEP:Reload()
 	self:DefaultReload(ACT_VM_RELOAD);
@@ -79,13 +79,13 @@ end
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
 
-	self:EmitSound(Sound('marker/pbfire.wav'))
+	self:EmitSound(Sound("marker/pbfire.wav"))
 	self:SetNextPrimaryFire(CurTime() + 0.25)
 	self:ShootEffects()
 	self:TakePrimaryAmmo(0)
 
 	if SERVER then
-		local pb = ents.Create('paint_ball')
+		local pb = ents.Create("paint_ball")
 
 		local shoot_pos = self.Owner:GetShootPos()
 		shoot_pos = shoot_pos + self.Owner:GetForward() * 10
@@ -112,14 +112,14 @@ end
 
 -- marker handling
 if SERVER then
-	hook.Add('ScalePlayerDamage', 'MarkerHitReg', function(ply, hitgroup, dmginfo)
+	hook.Add("ScalePlayerDamage", "MarkerHitReg", function(ply, hitgroup, dmginfo)
 		local attacker = dmginfo:GetAttacker()
 		if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker)
 			or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
 
 		local weap = attacker:GetActiveWeapon()
 
-		if weap:GetClass() ~= 'weapon_ttt2_markergun' then return end
+		if weap:GetClass() ~= "weapon_ttt2_markergun" then return end
 
 		-- send to marker that he has marked another player
 		if ply:GetTeam() ~= TEAM_MARKER then

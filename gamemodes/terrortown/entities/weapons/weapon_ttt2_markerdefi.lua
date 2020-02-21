@@ -1,20 +1,20 @@
 --- Defib v2 (revision 20170303)
 
--- This code is copyright (c) 2016-2017 all rights reserved - 'Vadim' @ jmwparq@gmail.com
+-- This code is copyright (c) 2016-2017 all rights reserved - "Vadim" @ jmwparq@gmail.com
 -- (Re)sale of this code and/or products containing part of this code is strictly prohibited
--- Exclusive rights to usage of this product in 'Trouble in Terrorist Town' are given to:
--- - The Garry's Mod community
+-- Exclusive rights to usage of this product in "Trouble in Terrorist Town" are given to:
+-- - The Garry"s Mod community
 -- Modified the mechanics to work as zombie reviving swep
 
 if SERVER then
 	AddCSLuaFile()
 end
 
-SWEP.HoldType = 'pistol'
+SWEP.HoldType = "pistol"
 SWEP.LimitedStock = true
 
 if CLIENT then
-	SWEP.PrintName = 'Marker\'s Defi'
+	SWEP.PrintName = "Marker's Defi"
 	SWEP.Slot = 7
 
 	SWEP.ViewModelFOV = 78
@@ -22,28 +22,23 @@ if CLIENT then
 	SWEP.ViewModelFlip = false
 
 	SWEP.EquipMenuData = {
-		type = 'item_weapon',
-		desc = 'ttt2_markerdefi_desc'
+		type = "item_weapon",
+		desc = "ttt_markerdefi_desc"
 	}
 
-	SWEP.Icon = 'vgui/ttt/marker_defi'
-
-	hook.Add('Initialize', 'TTTInitMarkerDefiLang', function()
-		LANG.AddToLanguage('English', 'ttt2_markerdefi_desc', 'Revives dead people as marked players. They keep their role.')
-		LANG.AddToLanguage('Deutsch', 'ttt2_markerdefi_desc', 'Belebt tote Spieler als markierte Spieler wieder. Sie behalten ihre Rolle.')
-	end)
+	SWEP.Icon = "vgui/ttt/marker_defi"
 end
 
 SWEP.notBuyable = true
 
-SWEP.Base = 'weapon_tttbase'
+SWEP.Base = "weapon_tttbase"
 
 SWEP.Primary.Recoil = 0
 SWEP.Primary.ClipSize = 1
 SWEP.Primary.DefaultClip = 1
 SWEP.Primary.Automatic = false
 SWEP.Primary.Delay = 1
-SWEP.Primary.Ammo = 'none'
+SWEP.Primary.Ammo = "none"
 
 SWEP.Secondary.Recoil = 0
 SWEP.Secondary.ClipSize = -1
@@ -57,40 +52,40 @@ SWEP.Charge = 0
 SWEP.Timer = -1
 
 -- settings
-local maxdist = CreateConVar('ttt_defib_maxdist', '64', {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local charge = CreateConVar('ttt_defib_chargetime', '3', {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local mutateok = CreateConVar('ttt_defib_allowmutate', '1', {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local mutatemax = CreateConVar('ttt_defib_mutatemaxscale', '2', {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local spawnhealth = CreateConVar('ttt_defib_spawnhealth', '100', {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
+local maxdist = CreateConVar("ttt_defib_maxdist", "64", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
+local charge = CreateConVar("ttt_defib_chargetime", "3", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
+local mutateok = CreateConVar("ttt_defib_allowmutate", "1", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
+local mutatemax = CreateConVar("ttt_defib_mutatemaxscale", "2", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
+local spawnhealth = CreateConVar("ttt_defib_spawnhealth", "100", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
 
 local mutate = {
-	['models/props_junk/watermelon01.mdl'] = true,
-	['models/props/cs_italy/orange.mdl'] = true,
-	['models/props/cs_italy/bananna.mdl'] = true,
-	['models/props/cs_italy/bananna_bunch.mdl'] = true
+	["models/props_junk/watermelon01.mdl"] = true,
+	["models/props/cs_italy/orange.mdl"] = true,
+	["models/props/cs_italy/bananna.mdl"] = true,
+	["models/props/cs_italy/bananna_bunch.mdl"] = true
 }
 
 -- content
-resource.AddSingleFile('materials/vgui/ttt/marker_defi.vtf')
-resource.AddSingleFile('materials/vgui/ttt/marker_defi.vmt')
+resource.AddSingleFile("materials/vgui/ttt/marker_defi.vtf")
+resource.AddSingleFile("materials/vgui/ttt/marker_defi.vmt")
 
-local beep = Sound('buttons/button17.wav')
-local hum = Sound('items/nvg_on.wav')
-local zap = Sound('ambient/energy/zap7.wav')
-local revived = Sound('items/smallmedkit1.wav')
+local beep = Sound("buttons/button17.wav")
+local hum = Sound("items/nvg_on.wav")
+local zap = Sound("ambient/energy/zap7.wav")
+local revived = Sound("items/smallmedkit1.wav")
 
 SWEP.Kind = WEAPON_EQUIP2
 
-hook.Add('TTT2RolesLoaded', 'TTT2MarkerDefi', function()
-	local wep = weapons.GetStored('weapon_ttt2_markerdefi')
+hook.Add("TTT2RolesLoaded", "TTT2MarkerDefi", function()
+	local wep = weapons.GetStored("weapon_ttt2_markerdefi")
 	if wep then
 		wep.CanBuy = {ROLE_NECROMANCER}
 	end
 end)
 
 SWEP.UseHands = true
-SWEP.ViewModel = 'models/weapons/v_c4.mdl'
-SWEP.WorldModel = 'models/weapons/w_c4.mdl'
+SWEP.ViewModel = "models/weapons/v_c4.mdl"
+SWEP.WorldModel = "models/weapons/w_c4.mdl"
 
 SWEP.AutoSpawnable = false
 SWEP.NoSights = true
@@ -102,16 +97,16 @@ local DEFIB_ERROR = 2
 function SWEP:Initialize()
 	self:SetHoldType(self.HoldType)
 
-	local ammo = MARKER_DATA:AmountToWin() * GetConVar('ttt_mark_defi_factor'):GetFloat()
+	local ammo = MARKER_DATA:AmountToWin() * GetConVar("ttt_mark_defi_factor"):GetFloat()
 	ammo = math.max(1, ammo)
 
 	self:SetClip1(ammo)
 end
 
 function SWEP:SetupDataTables()
-	self:NetworkVar('Int', 0, 'State')
-	self:NetworkVar('Float', 1, 'Begin')
-	self:NetworkVar('String', 0, 'Message')
+	self:NetworkVar("Int", 0, "State")
+	self:NetworkVar("Float", 1, "Begin")
+	self:NetworkVar("String", 0, "Message")
 end
 
 local function braindead(body)
@@ -129,7 +124,7 @@ end
 local function bodyply(body)
 	local ply = false
 
-	if body.sid == 'BOT' then
+	if body.sid == "BOT" then
 		ply = player.GetByUniqueID(body.uqid)
 	else
 		ply = player.GetBySteamID64(body.sid64)
@@ -160,8 +155,8 @@ local function IsStucking(ply, pos)
 end
 
 if SERVER then
-	util.AddNetworkString('TTT_Defib_Hide')
-	util.AddNetworkString('TTT_Defib_Revived')
+	util.AddNetworkString("TTT_Defib_Hide")
+	util.AddNetworkString("TTT_Defib_Revived")
 
 	local offsets = {}
 
@@ -209,7 +204,7 @@ if SERVER then
 	function SWEP:Reset()
 		self:SetState(DEFIB_IDLE)
 		self:SetBegin(-1)
-		self:SetMessage('')
+		self:SetMessage("")
 
 		self.Target = nil
 	end
@@ -237,7 +232,7 @@ if SERVER then
 
 		local credits = CORPSE.GetCredits(body, 0) or 0
 
-		net.Start('TTT_Defib_Revived')
+		net.Start("TTT_Defib_Revived")
 		net.WriteBool(true)
 		net.Send(ply)
 
@@ -249,7 +244,7 @@ if SERVER then
 
 		body:Remove()
 
-		self.Owner:ConCommand('lastinv')
+		self.Owner:ConCommand("lastinv")
 
 		self:SetClip1(self:Clip1() - 1)
 
@@ -267,7 +262,7 @@ if SERVER then
 		sound.Play(zap, self.Target:GetPos(), 75, math.random(95, 105), 1)
 
 		if not self.Target or not IsValid(self.Target) or braindead(self.Target) then
-			self:Error('SUBJECT BRAINDEAD')
+			self:Error("SUBJECT BRAINDEAD")
 
 			return
 		end
@@ -277,13 +272,13 @@ if SERVER then
 		local ply = bodyply(self.Target)
 
 		if not ply or not IsValid(ply) then
-			self:Error('INVALID TARGET')
+			self:Error("INVALID TARGET")
 
 			return
 		end
 
 		if ply:GetSubRole() == ROLE_MARKER then
-			self:Error('Do you think you can revive an other marker?')
+			self:Error("Do you think you can revive an other marker?")
 
 			return
 		end
@@ -296,20 +291,20 @@ if SERVER then
 		local ply = bodyply(body)
 
 		if not ply or not IsValid(ply) then
-			self:Error('INVALID TARGET')
+			self:Error("INVALID TARGET")
 
 			return
 		end
 
 		if ply:GetSubRole() == ROLE_MARKER then
-			self:Error('Do you think you can revive an other marker?')
+			self:Error("Do you think you can revive an other marker?")
 
 			return
 		end
 
 		self:SetState(DEFIB_BUSY)
 		self:SetBegin(CurTime())
-		self:SetMessage('DEFIBRILLATING ' .. string.upper(ply:Nick()))
+		self:SetMessage("DEFIBRILLATING " .. string.upper(ply:Nick()))
 
 		self.Owner:EmitSound(hum, 75, math.random(98, 102), 1)
 
@@ -322,14 +317,14 @@ if SERVER then
 			if self:GetBegin() + charge:GetFloat() <= CurTime() then
 				self:Defib()
 			elseif not self.Owner:KeyDown(IN_ATTACK) or self.Owner:GetEyeTrace(MASK_SHOT_HULL).Entity ~= self.Target then
-				self:Error('DEFIBRILLATION ABORTED')
+				self:Error("DEFIBRILLATION ABORTED")
 			end
 		end
 	end
 end
 
 if CLIENT then
-	net.Receive('TTT_Defib_Hide', function(len, ply)
+	net.Receive("TTT_Defib_Hide", function(len, ply)
 		if ply or len <= 0 then return end
 
 		local hply = net.ReadEntity()
@@ -337,15 +332,15 @@ if CLIENT then
 		hply.DefibHide = net.ReadBool()
 	end)
 
-	net.Receive('TTT_Defib_Revived', function(len, ply)
+	net.Receive("TTT_Defib_Revived", function(len, ply)
 		if ply or len <= 0 then return end
 
 		surface.PlaySound(revived)
 	end)
 
-	hook.Remove('TTTEndRound', 'RemoveDefibHide')
+	hook.Remove("TTTEndRound", "RemoveDefibHide")
 
-	hook.Add('TTTEndRound', 'RemoveDefibHide', function()
+	hook.Add("TTTEndRound", "RemoveDefibHide", function()
 		for _, v in ipairs(player.GetAll()) do
 			v.DefibHide = nil
 		end
@@ -386,7 +381,7 @@ if CLIENT then
 			surface.DrawOutlinedRect(x - w * 0.5, y - h, w, h)
 			surface.DrawRect(x - w * 0.5, y - h, w * cc, h)
 
-			surface.SetFont('TabLarge')
+			surface.SetFont("TabLarge")
 			surface.SetTextColor(255, 255, 255, 180)
 			surface.SetTextPos((x - w * 0.5) + 3, y - h - 15)
 			surface.DrawText(self:GetMessage())
@@ -395,7 +390,7 @@ if CLIENT then
 			surface.DrawOutlinedRect(x - w * 0.5, y - h, w, h)
 			surface.DrawRect(x - w * 0.5, y - h, w, h)
 
-			surface.SetFont('TabLarge')
+			surface.SetFont("TabLarge")
 			surface.SetTextColor(255, 255, 255, 180)
 			surface.SetTextPos((x - w * 0.5) + 3, y - h - 15)
 			surface.DrawText(self:GetMessage())
@@ -416,12 +411,12 @@ function SWEP:PrimaryAttack()
 		local ent = tr.Entity
 
 		if IsValid(ent) then
-			if ent:GetClass() == 'prop_physics' and mutate[ent:GetModel()] and mutateok:GetInt() > 0 then
+			if ent:GetClass() == "prop_physics" and mutate[ent:GetModel()] and mutateok:GetInt() > 0 then
 				ent:EmitSound(zap, 75, math.random(98, 102))
 				ent:SetModelScale(math.min(mutatemax:GetFloat(), ent:GetModelScale() + 0.25), 1)
-			elseif ent:GetClass() == 'prop_ragdoll' and validbody(ent) then
+			elseif ent:GetClass() == "prop_ragdoll" and validbody(ent) then
 				if braindead(ent) then
-					self:Error('SUBJECT BRAINDEAD')
+					self:Error("SUBJECT BRAINDEAD")
 
 					return
 				else
@@ -430,7 +425,7 @@ function SWEP:PrimaryAttack()
 					if self.Location then
 						self:Begin(ent, tr.PhysicsBone)
 					else
-						self:Error('INSUFFICIENT ROOM')
+						self:Error("INSUFFICIENT ROOM")
 
 						return
 					end

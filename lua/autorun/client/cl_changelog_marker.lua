@@ -60,4 +60,13 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
 			<li>Adding role specific convars to ulx</li>
 		</ul>
 	]], os.time({year = 2019, month = 10, day = 09}))
+
+	AddChange("TTT2 Role Marker - v1.6", [[
+		<ul>
+			<li>Switched to new TTT2 addon language system</li>
+			<li>added targetID support</li>
+			<li>marker radar now respects decoys</li>
+			<li>only detect player ragdolls</li>
+		</ul>
+	]], os.time({year = 2020, month = 02, day = 21}))
 end)

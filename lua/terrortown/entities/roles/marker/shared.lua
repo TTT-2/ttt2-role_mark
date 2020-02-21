@@ -1,20 +1,20 @@
 if SERVER then
 	AddCSLuaFile()
 
-	resource.AddFile('materials/vgui/ttt/dynamic/roles/icon_mark')
+	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_mark")
 end
 
-ROLE.Base = 'ttt_role_base'
+ROLE.Base = "ttt_role_base"
 
 roles.InitCustomTeam(ROLE.name, {
-	icon = 'vgui/ttt/dynamic/roles/icon_mark',
+	icon = "vgui/ttt/dynamic/roles/icon_mark",
 	color = Color(125, 70, 135, 255)
 })
 
 function ROLE:PreInitialize()
 	self.color = Color(125, 70, 135, 255)
 
-	self.abbr = 'mark'
+	self.abbr = "mark"
 	self.surviveBonus = 0
 	self.scoreKillsMultiplier = 1
 	self.scoreTeamKillsMultiplier = -16
@@ -36,51 +36,8 @@ function ROLE:PreInitialize()
 	}
 end
 
-function ROLE:Initialize()
-	if CLIENT then
-		-- Role specific language elements
-		LANG.AddToLanguage('English', MARKER.name, 'Marker')
-		LANG.AddToLanguage('English', TEAM_MARKER, 'TEAM marker')
-		LANG.AddToLanguage('English', 'info_popup_' .. MARKER.name,
-			[[You are the Marker!
-			Try to mark all players! It's hard, but don't wait until only a few players are left...]])
-		LANG.AddToLanguage('English', 'body_found_' .. MARKER.abbr, 'They were a Marker.')
-		LANG.AddToLanguage('English', 'search_role_' .. MARKER.abbr, 'This person was a Marker!')
-		LANG.AddToLanguage('English', 'target_' .. MARKER.name, 'Marker')
-		LANG.AddToLanguage('English', 'ttt2_desc_' .. MARKER.name, [[The Marker needs to win alone!]])
-		LANG.AddToLanguage('English', 'hilite_win_' .. TEAM_MARKER, 'THE MARKER WON') -- name of base role of a team
-		LANG.AddToLanguage('English', 'win_' .. TEAM_MARKER, 'The Marker has won!') -- teamname
-		LANG.AddToLanguage('English', 'ev_win_' .. TEAM_MARKER, 'The evil Marker won the round!')
-		LANG.AddToLanguage('English', 'credit_' .. MARKER.abbr .. '_all', 'Markers, you have been awarded {num} equipment credit(s) for your performance.')
-
-		LANG.AddToLanguage('Deutsch', MARKER.name, 'Markierer')
-		LANG.AddToLanguage('Deutsch', TEAM_MARKER, 'TEAM Markierer')
-		LANG.AddToLanguage('Deutsch', 'info_popup_' .. MARKER.name,
-			[[Du bist ein Markierer!
-			Versuche alle anderen spieler zu markieren! Aber warte nicht so lange bis nur noch ein paar Spieler übrig sind...]])
-		LANG.AddToLanguage('Deutsch', 'body_found_' .. MARKER.abbr, 'Er war ein Markierer...')
-		LANG.AddToLanguage('Deutsch', 'search_role_' .. MARKER.abbr, 'Diese Person war ein Markierer!')
-		LANG.AddToLanguage('Deutsch', 'target_' .. MARKER.name, 'Markierer')
-		LANG.AddToLanguage('Deutsch', 'ttt2_desc_' .. MARKER.name, [[Der Markierer muss alleine gewinnen!]])
-		LANG.AddToLanguage('Deutsch', 'hilite_win_' .. TEAM_MARKER, 'THE MARKER WON') -- name of base role of a team
-		LANG.AddToLanguage('Deutsch', 'win_' .. TEAM_MARKER, 'Der Marker hat gewonnen!') -- teamname
-		LANG.AddToLanguage('Deutsch', 'ev_win_' .. TEAM_MARKER, 'Der böse Marker hat die Runde gewonnen!')
-		LANG.AddToLanguage('Deutsch', 'credit_' .. MARKER.abbr .. '_all', 'Marker, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben.')
-
-		-- other role language elements
-		LANG.AddToLanguage('English', 'ttt2_marker_was_marked', 'This player seems to be covered in color. They were marked!')
-		LANG.AddToLanguage('Deutsch', 'ttt2_marker_was_marked', 'Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!')
-
-		LANG.AddToLanguage('English', 'ttt_marker_player_deal_no_damage', 'You are a marker, you can\'t deal any damage!')
-		LANG.AddToLanguage('Deutsch', 'ttt_marker_player_deal_no_damage', 'Du bist ein Markierer, du kannst keinen Schaden machen!')
-
-		LANG.AddToLanguage('English', 'ttt_marker_player_take_no_damage', 'This player is marked and can\'t hurt you!')
-		LANG.AddToLanguage('Deutsch', 'ttt_marker_player_take_no_damage', 'Dieser Spieler ist markiert und kann dich nicht verletzen!')
-	end
-end
-
 if CLIENT then
-	hook.Add('TTTBodySearchPopulate', 'ttt2_role_marker_add_marked_indicator', function(search, raw)
+	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
 		if not raw.owner then return end
 		if not raw.owner.was_marked then return end
 
@@ -89,7 +46,7 @@ if CLIENT then
 			highest_id = math.max(highest_id, v.p)
 		end
 
-		search.was_marked = {img = 'vgui/ttt/player_marked.png', text = LANG.GetTranslation('ttt2_marker_was_marked'), p = highest_id + 1}
+		search.was_marked = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt_marker_was_marked"), p = highest_id + 1}
 	end)
 end
 
@@ -103,7 +60,7 @@ if SERVER then
 		local targets = {}
 
 		-- get corpses
-		local corpses = ents.FindByClass('prop_ragdoll')
+		local corpses = ents.FindByClass("prop_ragdoll")
 
 		for _, c in ipairs(corpses) do
 			-- make sure it is a player corpse and not a random map ragdoll
@@ -120,7 +77,7 @@ if SERVER then
 
 		-- get players alive
 		for _, p in ipairs(player.GetAll()) do
-			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool('disguised', false) or not p:IsPlayer()) then
+			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false) or not p:IsPlayer()) then
 				local pos = p:LocalToWorld(p:OBBCenter())
 
 				-- Round off, easier to send and inaccuracy does not matter
@@ -141,7 +98,7 @@ if SERVER then
 		end
 
 		-- get decoys
-		local decoys = ents.FindByClass('ttt_decoy')
+		local decoys = ents.FindByClass("ttt_decoy")
 		for _, decoy in ipairs(decoys) do
 			local pos = decoy:LocalToWorld(decoy:OBBCenter())
 
@@ -157,7 +114,7 @@ if SERVER then
 	end
 
 	-- modify roles table of rolesetup addon
-	hook.Add('TTTAModifyRolesTable', 'ModifyRoleMarkToInno', function(rls, printrls)
+	hook.Add("TTTAModifyRolesTable", "ModifyRoleMarkToInno", function(rls, printrls)
 		printrls[ROLE_MARKER] = true
 
 		local markers = rls[ROLE_MARKER]
@@ -169,17 +126,17 @@ if SERVER then
 	end)
 
 	local function InitRoleMarker(ply)
-		ply:GiveEquipmentWeapon('weapon_ttt2_markergun')
-		ply:GiveEquipmentWeapon('weapon_ttt2_markerdefi')
+		ply:GiveEquipmentWeapon("weapon_ttt2_markergun")
+		ply:GiveEquipmentWeapon("weapon_ttt2_markerdefi")
 		ply:GiveArmor(60)
-		ply:GiveEquipmentItem('item_ttt_radar')
+		ply:GiveEquipmentItem("item_ttt_radar")
 	end
 
 	local function DeinitRoleMarker(ply)
-		ply:StripWeapon('weapon_ttt2_markergun')
-		ply:StripWeapon('weapon_ttt2_markerdefi')
+		ply:StripWeapon("weapon_ttt2_markergun")
+		ply:StripWeapon("weapon_ttt2_markerdefi")
 		ply:RemoveArmor(60)
-		ply:RemoveEquipmentItem('item_ttt_radar')
+		ply:RemoveEquipmentItem("item_ttt_radar")
 	end
 
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
@@ -193,19 +150,20 @@ if SERVER then
 		MARKER_DATA:MarkerDied()
 	end
 
-	hook.Add('TTTCheckForWin', 'TTT2MarkerCheckWin', function()
+	hook.Add("TTTCheckForWin", "TTT2MarkerCheckWin", function()
 		if not MARKER_DATA:AbleToWin() then return end
 
 		if MARKER_DATA:GetMarkedAmount() >= MARKER_DATA:AmountToWin() then
 			if MARKER_DATA:AmountNoMarkerAlive() == 0 or MARKER_DATA:GetMarkedAmount() == 0 then return end
+
 			return TEAM_MARKER
 		end
 	end)
 
-	hook.Add('EntityTakeDamage', 'TTT2MarkerDealNoDamage', function(ply, dmginfo)
+	hook.Add("EntityTakeDamage", "TTT2MarkerDealNoDamage", function(ply, dmginfo)
 		if not ply:IsPlayer() then return end
 
-		if not GetConVar('ttt_mark_deal_no_damage'):GetBool() then return end
+		if not GetConVar("ttt_mark_deal_no_damage"):GetBool() then return end
 
 		if not ply or not IsValid(ply) or not ply:IsPlayer() then return end
 
@@ -219,10 +177,10 @@ if SERVER then
 		end
 	end)
 
-	hook.Add('EntityTakeDamage', 'TTT2MarkerTakeNoDamage', function(ply, dmginfo)
+	hook.Add("EntityTakeDamage", "TTT2MarkerTakeNoDamage", function(ply, dmginfo)
 		if not ply:IsPlayer() then return end
 
-		if not GetConVar('ttt_mark_take_no_damage'):GetBool() then return end
+		if not GetConVar("ttt_mark_take_no_damage"):GetBool() then return end
 
 		if not ply or not IsValid(ply) or not ply:IsPlayer() then return end
 
