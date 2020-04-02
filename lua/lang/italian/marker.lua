@@ -12,11 +12,8 @@ L["ttt2_desc_" .. MARKER.name] = [[Il marker deve vincere da solo!]]
 L["hilite_win_" .. TEAM_MARKER] = "IL MARKER HA VINTO"
 L["win_" .. TEAM_MARKER] = "Il Marker ha vinto!"
 L["ev_win_" .. TEAM_MARKER] = "Il Marker malvagio ha vinto round!"
-if num == 1 then
-	L["credit_" .. MARKER.abbr .. "_all"] = "Marker, vi è stato dato {num} equipment credito per la vostra performance."
-else
-	L["credit_" .. MARKER.abbr .. "_all"] = "Marker, vi sono stati dati {num} equipment crediti per la vostra performance."
-end
+L["credit_" .. MARKER.abbr .. "_all"] = "Marker, vi sono stati dati {num} credito/i per la vostra performance."
+
 -- OTHER ROLE LANGUAGE STRINGS
 L["ttt_marker_was_marked"] = "Questo giocatore sembra essere pieno di vernice. È stato marcato!"
 L["ttt_marker_player_deal_no_damage"] = "Sei un marker, non puoi fare danno!"
