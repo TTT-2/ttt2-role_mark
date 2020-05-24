@@ -113,6 +113,8 @@ if SERVER then
 		return targets
 	end
 
+	ROLE.radarTime = 10
+
 	-- modify roles table of rolesetup addon
 	hook.Add("TTTAModifyRolesTable", "ModifyRoleMarkToInno", function(rls, printrls)
 		printrls[ROLE_MARKER] = true
