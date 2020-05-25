@@ -202,14 +202,10 @@ if SERVER then
 	end
 
 	function SWEP:StopSound(soundName)
-		if not GetConVar("ttt_defibrillator_play_sounds"):GetBool() then return end
-
 		self:GetOwner():StopSound(sounds[soundName])
 	end
 
 	function SWEP:PlaySound(soundName)
-		if not GetConVar("ttt_defibrillator_play_sounds"):GetBool() then return end
-
 		self:GetOwner():EmitSound(sounds[soundName])
 	end
 
