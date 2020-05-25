@@ -1,37 +1,56 @@
---- Defib v2 (revision 20170303)
-
--- This code is copyright (c) 2016-2017 all rights reserved - "Vadim" @ jmwparq@gmail.com
--- (Re)sale of this code and/or products containing part of this code is strictly prohibited
--- Exclusive rights to usage of this product in "Trouble in Terrorist Town" are given to:
--- - The Garry"s Mod community
--- Modified the mechanics to work as zombie reviving swep
-
 if SERVER then
 	AddCSLuaFile()
+
+	resource.AddFile("materials/gui/ttt/icon_markerdefi.vmt")
 end
 
-SWEP.HoldType = "pistol"
-SWEP.LimitedStock = true
+local DEFI_IDLE = 0
+local DEFI_BUSY = 1
+local DEFI_CHARGE = 2
+
+local DEFI_ERROR_NO_SPACE = 1
+local DEFI_ERROR_TOO_FAST = 2
+local DEFI_ERROR_LOST_TARGET = 3
+local DEFI_ERROR_NO_VALID_PLY = 4
+local DEFI_ERROR_ALREADY_REVIVING = 5
+local DEFI_ERROR_FAILED = 6
+
+local sounds = {
+	empty = Sound("Weapon_SMG1.Empty"),
+	beep = Sound("buttons/button17.wav"),
+	hum = Sound("items/nvg_on.wav"),
+	zap = Sound("ambient/energy/zap7.wav"),
+	revived = Sound("items/smallmedkit1.wav")
+}
+
+SWEP.Base = "weapon_tttbase"
 
 if CLIENT then
-	SWEP.PrintName = "Marker's Defi"
-	SWEP.Slot = 7
-
 	SWEP.ViewModelFOV = 78
 	SWEP.DrawCrosshair = false
 	SWEP.ViewModelFlip = false
 
 	SWEP.EquipMenuData = {
 		type = "item_weapon",
-		desc = "ttt_markerdefi_desc"
+		name = "weapon_markerdefi_name",
+		desc = "weapon_markerdefi_desc"
 	}
 
-	SWEP.Icon = "vgui/ttt/marker_defi"
+	SWEP.Icon = "vgui/ttt/icon_markerdefi"
 end
 
-SWEP.notBuyable = true
+SWEP.Kind = WEAPON_EQUIP2
+SWEP.CanBuy = nil
 
-SWEP.Base = "weapon_tttbase"
+SWEP.UseHands = true
+SWEP.ViewModel = "models/weapons/v_c4.mdl"
+SWEP.WorldModel = "models/weapons/w_c4.mdl"
+
+SWEP.AutoSpawnable = false
+SWEP.NoSights = true
+
+SWEP.HoldType = "pistol"
+SWEP.LimitedStock = true
 
 SWEP.Primary.Recoil = 0
 SWEP.Primary.ClipSize = 1
@@ -44,403 +63,333 @@ SWEP.Secondary.Recoil = 0
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
-SWEP.Secondary.Delay = 1.25
-
-SWEP.AllowDrop = false
+SWEP.Secondary.Delay = 0.5
 
 SWEP.Charge = 0
 SWEP.Timer = -1
 
--- settings
-local maxdist = CreateConVar("ttt_defib_maxdist", "64", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local charge = CreateConVar("ttt_defib_chargetime", "3", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local mutateok = CreateConVar("ttt_defib_allowmutate", "1", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local mutatemax = CreateConVar("ttt_defib_mutatemaxscale", "2", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-local spawnhealth = CreateConVar("ttt_defib_spawnhealth", "100", {FCVAR_ARCHIVE, FCVAR_SERVER_CAN_EXECUTE})
-
-local mutate = {
-	["models/props_junk/watermelon01.mdl"] = true,
-	["models/props/cs_italy/orange.mdl"] = true,
-	["models/props/cs_italy/bananna.mdl"] = true,
-	["models/props/cs_italy/bananna_bunch.mdl"] = true
-}
-
--- content
-resource.AddSingleFile("materials/vgui/ttt/marker_defi.vtf")
-resource.AddSingleFile("materials/vgui/ttt/marker_defi.vmt")
-
-local beep = Sound("buttons/button17.wav")
-local hum = Sound("items/nvg_on.wav")
-local zap = Sound("ambient/energy/zap7.wav")
-local revived = Sound("items/smallmedkit1.wav")
-
-SWEP.Kind = WEAPON_EQUIP2
-
-hook.Add("TTT2RolesLoaded", "TTT2MarkerDefi", function()
-	local wep = weapons.GetStored("weapon_ttt2_markerdefi")
-	if wep then
-		wep.CanBuy = {ROLE_NECROMANCER}
-	end
-end)
-
-SWEP.UseHands = true
-SWEP.ViewModel = "models/weapons/v_c4.mdl"
-SWEP.WorldModel = "models/weapons/w_c4.mdl"
-
-SWEP.AutoSpawnable = false
-SWEP.NoSights = true
-
-local DEFIB_IDLE = 0
-local DEFIB_BUSY = 1
-local DEFIB_ERROR = 2
-
-function SWEP:Initialize()
-	self:SetHoldType(self.HoldType)
-
-	local ammo = MARKER_DATA:AmountToWin() * GetConVar("ttt_mark_defi_factor"):GetFloat()
-	ammo = math.max(1, ammo)
-
-	self:SetClip1(ammo)
-end
-
-function SWEP:SetupDataTables()
-	self:NetworkVar("Int", 0, "State")
-	self:NetworkVar("Float", 1, "Begin")
-	self:NetworkVar("String", 0, "Message")
-end
-
-local function braindead(body)
-	if not IsValid(body) or not body.sid64 or not player.GetBySteamID64(body.sid64) then
-		return true
-	end
-
-	return false
-end
-
-local function validbody(body)
-	return CORPSE.GetPlayerNick(body, false) ~= false
-end
-
-local function bodyply(body)
-	local ply = false
-
-	if body.sid == "BOT" then
-		ply = player.GetByUniqueID(body.uqid)
-	else
-		ply = player.GetBySteamID64(body.sid64)
-	end
-
-	if not IsValid(ply) then
-		return false
-	end
-
-	return ply
-end
-
-local function IsStucking(ply, pos)
-	local tracedata = {}
-	tracedata.start = pos
-	tracedata.endpos = pos
-	tracedata.filter = ply
-	tracedata.mins = ply:OBBMins()
-	tracedata.maxs = ply:OBBMaxs()
-
-	local trace = util.TraceHull(tracedata)
-
-	if trace.Entity and (trace.Entity:IsWorld() or trace.Entity:IsValid()) then
-		return true
-	end
-
-	return false
-end
+SWEP.AllowDrop = false
 
 if SERVER then
-	util.AddNetworkString("TTT_Defib_Hide")
-	util.AddNetworkString("TTT_Defib_Revived")
+	util.AddNetworkString("RequestMarkerRevivalStatus")
+	util.AddNetworkString("ReceiveMarkerRevivalStatus")
 
-	local offsets = {}
+	function SWEP:Initialize()
+		local ammo = math.max(1, MARKER_DATA:AmountToWin() * GetConVar("ttt_mark_defi_factor"):GetFloat())
 
-	for i = 0, 360, 15 do
-		table.insert(offsets, Vector(math.sin(i), math.cos(i), 0))
+		self:SetClip1(ammo)
 	end
 
-	function SWEP:FindRespawnLocation()
-		local owner = self:GetOwner()
-		local pos = owner:GetPos()
-		local maxRepeats = 50
-		local newPos
+	function SWEP:OnDrop()
+		self.BaseClass.OnDrop(self)
 
-		repeat
-			maxRepeats = maxRepeats - 1
+		self:Remove()
+	end
 
-			if maxRepeats <= 0 then break end
-
-			local midsize = Vector(33, 33, 74)
-			local tstart = pos + Vector(0, 0, midsize.z * 0.5)
-
-			for i = 1, #offsets do
-				local o = offsets[i]
-				local v = tstart + o * midsize * 1.5
-
-				local t = {
-					start = v,
-					endpos = v,
-					filter = target,
-					mins = midsize * -0.5,
-					maxs = midsize * 0.5
-				}
-
-				local tr = util.TraceHull(t)
-
-				if not tr.Hit then
-					newPos = v - Vector(0, 0, midsize.z * 0.5)
-				end
-			end
-		until (not util.IsInWorld(newPos) or IsStucking(owner, newPos))
-
-		return newPos or false
+	function SWEP:SetState(state)
+		self:SetNWInt("defi_state", state or DEFI_IDLE)
 	end
 
 	function SWEP:Reset()
-		self:SetState(DEFIB_IDLE)
-		self:SetBegin(-1)
-		self:SetMessage("")
+		self:SetState(DEFI_IDLE)
 
-		self.Target = nil
+		self.defiTarget = nil
+		self.defiBone = nil
+		self.defiStart = 0
+
+		self.defiTimer = nil
 	end
 
-	function SWEP:Error(msg)
-		self:SetState(DEFIB_ERROR)
-		self:SetBegin(CurTime())
-		self:SetMessage(msg)
+	function SWEP:Error(type)
+		self:SetState(DEFI_CHARGE)
+		self:StopSound("hum")
+		self:PlaySound("beep")
 
-		self.Owner:EmitSound(beep, 60, 50, 1)
+		self.defiTarget = nil
+		self.defiTimer = "defi_reset_timer_" .. self:EntIndex()
 
-		self.Target = nil
+		if timer.Exists(self.defiTimer) then return end
 
-		timer.Simple(charge:GetFloat() * 0.75, function()
-			if IsValid(self) then
-				self:Reset()
-			end
+		timer.Create(self.defiTimer, GetConVar("ttt_mark_defi_error_time"):GetFloat(), 1, function()
+			if not IsValid(self) then return end
+
+			self:Reset()
 		end)
+
+		self:Message(type)
 	end
 
-	function SWEP:DoRespawn(body)
-		local ply = bodyply(body)
+	function SWEP:Message(type)
+		local owner = self:GetOwner()
 
-		if not ply then return end
+		if type == DEFI_ERROR_NO_SPACE then
+			LANG.Msg(owner, "markerdefi_error_no_space", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_TOO_FAST then
+			LANG.Msg(owner, "markerdefi_error_too_fast", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_LOST_TARGET then
+			LANG.Msg(owner, "markerdefi_error_lost_target", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_NO_VALID_PLY then
+			LANG.Msg(owner, "markerdefi_error_no_valid_ply", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_ALREADY_REVIVING then
+			LANG.Msg(owner, "markerdefi_error_already_reviving", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_FAILED then
+			LANG.Msg(owner, "markerdefi_error_failed", nil, MSG_MSTACK_WARN)
+		end
+	end
 
-		local credits = CORPSE.GetCredits(body, 0) or 0
+	function SWEP:BeginRevival(ragdoll, bone)
+		local ply = CORPSE.GetPlayer(ragdoll)
 
-		net.Start("TTT_Defib_Revived")
-		net.WriteBool(true)
-		net.Send(ply)
+		if not IsValid(ply) then
+			self:Error(DEFI_ERROR_NO_VALID_PLY)
 
-		ply:SpawnForRound(true)
-		ply:SetCredits(credits)
-		ply:SetPos(self.Location or body:GetPos())
-		ply:SetEyeAngles(Angle(0, body:GetAngles().y, 0))
-		ply:SetHealth(spawnhealth:GetInt())
+			return
+		end
 
-		body:Remove()
+		if ply:IsReviving() then
+			self:Error(DEFI_ERROR_ALREADY_REVIVING)
 
-		self.Owner:ConCommand("lastinv")
+			return
+		end
+
+		local reviveTime = GetConVar("ttt_mark_defi_revive_time"):GetFloat()
+
+		self:SetState(DEFI_BUSY)
+		self:SetStartTime(CurTime())
+		self:SetReviveTime(reviveTime)
+		self:PlaySound("hum")
+
+		-- start revival
+		ply:Revive(
+			reviveTime,
+			function(p)
+				-- mark revived player
+				timer.Simple(0.1, function()
+					MARKER_DATA:SetMarkedPlayer(p)
+				end)
+			end,
+			nil,
+			true,
+			true
+		)
+		ply:SendRevivalReason("revived_by_marker", {name = self:GetOwner():Nick()})
+
+		self.defiTarget = ragdoll
+		self.defiBone = bone
+	end
+
+	function SWEP:FinishRevival()
+		self:Reset()
 
 		self:SetClip1(self:Clip1() - 1)
 
 		if self:Clip1() < 1 then
 			self:Remove()
-		end
 
-		-- mark revived player
-		timer.Simple(0.1, function()
-			MARKER_DATA:SetMarkedPlayer(ply)
-		end)
+			RunConsoleCommand("lastinv")
+		end
 	end
 
-	function SWEP:Defib()
-		sound.Play(zap, self.Target:GetPos(), 75, math.random(95, 105), 1)
+	function SWEP:CancelRevival()
+		local ply = CORPSE.GetPlayer(self.defiTarget)
 
-		if not self.Target or not IsValid(self.Target) or braindead(self.Target) then
-			self:Error("SUBJECT BRAINDEAD")
-
-			return
-		end
-
-		if not IsFirstTimePredicted() then return end
-
-		local ply = bodyply(self.Target)
-
-		if not ply or not IsValid(ply) then
-			self:Error("INVALID TARGET")
-
-			return
-		end
-
-		if ply:GetSubRole() == ROLE_MARKER then
-			self:Error("Do you think you can revive an other marker?")
-
-			return
-		end
-
-		self:DoRespawn(self.Target)
 		self:Reset()
+
+		if not IsValid(ply) then return end
+
+		ply:CancelRevival()
+		ply:SendRevivalReason(nil)
 	end
 
-	function SWEP:Begin(body, bone)
-		local ply = bodyply(body)
+	function SWEP:StopSound(soundName)
+		if not GetConVar("ttt_defibrillator_play_sounds"):GetBool() then return end
 
-		if not ply or not IsValid(ply) then
-			self:Error("INVALID TARGET")
+		self:GetOwner():StopSound(sounds[soundName])
+	end
 
-			return
-		end
+	function SWEP:PlaySound(soundName)
+		if not GetConVar("ttt_defibrillator_play_sounds"):GetBool() then return end
 
-		if ply:GetSubRole() == ROLE_MARKER then
-			self:Error("Do you think you can revive an other marker?")
+		self:GetOwner():EmitSound(sounds[soundName])
+	end
 
-			return
-		end
+	function SWEP:SetStartTime(time)
+		self:SetNWFloat("defi_start_time", time or 0)
+	end
 
-		self:SetState(DEFIB_BUSY)
-		self:SetBegin(CurTime())
-		self:SetMessage("DEFIBRILLATING " .. string.upper(ply:Nick()))
-
-		self.Owner:EmitSound(hum, 75, math.random(98, 102), 1)
-
-		self.Target = body
-		self.Bone = bone
+	function SWEP:SetReviveTime(time)
+		self:SetNWFloat("defi_revive_time", time or 0)
 	end
 
 	function SWEP:Think()
-		if self:GetState() == DEFIB_BUSY then
-			if self:GetBegin() + charge:GetFloat() <= CurTime() then
-				self:Defib()
-			elseif not self.Owner:KeyDown(IN_ATTACK) or self.Owner:GetEyeTrace(MASK_SHOT_HULL).Entity ~= self.Target then
-				self:Error("DEFIBRILLATION ABORTED")
-			end
+		if self:GetState() ~= DEFI_BUSY then return end
+
+		local owner = self:GetOwner()
+
+		if CurTime() >= self:GetStartTime() + GetConVar("ttt_mark_defi_revive_time"):GetFloat() - 0.01 then
+			self:FinishRevival()
+		elseif not owner:KeyDown(IN_ATTACK) or owner:GetEyeTrace(MASK_SHOT_HULL).Entity ~= self.defiTarget then
+			self:CancelRevival()
+			self:Error(DEFI_ERROR_LOST_TARGET)
 		end
 	end
+
+	function SWEP:PrimaryAttack()
+		local owner = self:GetOwner()
+
+		local trace = owner:GetEyeTrace(MASK_SHOT_HULL)
+		local distance = trace.StartPos:Distance(trace.HitPos)
+		local ent = trace.Entity
+
+		if distance > 100 or not IsValid(ent)
+			or ent:GetClass() ~= "prop_ragdoll"
+			or not CORPSE.IsValidBody(ent)
+		then
+			self:PlaySound("empty")
+
+			return
+		end
+
+		local spawnPoint = spawn.MakeSpawnPointSafe(CORPSE.GetPlayer(ent), ent:GetPos())
+
+		if self:GetState() ~= DEFI_IDLE then
+			self:Error(DEFI_ERROR_TOO_FAST)
+
+			return
+		end
+
+		if not spawnPoint then
+			self:Error(DEFI_ERROR_NO_SPACE)
+		else
+			self:BeginRevival(ent, trace.PhysicsBone)
+		end
+	end
+
+	net.Receive("RequestMarkerRevivalStatus", function(_, requester)
+		local ply = net.ReadEntity()
+
+		if not IsValid(ply) then return end
+
+		net.Start("ReceiveMarkerRevivalStatus")
+		net.WriteEntity(ply)
+		net.WriteBool(ply:IsReviving())
+		net.Send(requester)
+	end)
 end
 
-if CLIENT then
-	net.Receive("TTT_Defib_Hide", function(len, ply)
-		if ply or len <= 0 then return end
-
-		local hply = net.ReadEntity()
-
-		hply.DefibHide = net.ReadBool()
-	end)
-
-	net.Receive("TTT_Defib_Revived", function(len, ply)
-		if ply or len <= 0 then return end
-
-		surface.PlaySound(revived)
-	end)
-
-	hook.Remove("TTTEndRound", "RemoveDefibHide")
-
-	hook.Add("TTTEndRound", "RemoveDefibHide", function()
-		for _, v in ipairs(player.GetAll()) do
-			v.DefibHide = nil
-		end
-	end)
-
-	oldScoreGroup = oldScoreGroup or ScoreGroup
-
-	function ScoreGroup(ply)
-		if ply.DefibHide then
-			return GROUP_FOUND
-		end
-
-		return oldScoreGroup(ply)
-	end
-
-	function SWEP:DrawHUD()
-		local state = self:GetState()
-
-		self.BaseClass.DrawHUD(self)
-
-		if state == DEFIB_IDLE then return end
-
-		local time = self:GetBegin() + charge:GetFloat()
-
-		local x = ScrW() * 0.5
-		local y = ScrH() * 0.5
-
-		y = y + y / 3
-
-		local w, h = 255, 20
-
-		if state == DEFIB_BUSY then
-			if time < 0 then return end
-
-			local cc = math.min(1, 1 - (time - CurTime()) / charge:GetFloat())
-
-			surface.SetDrawColor(0, 255, 0, 155)
-			surface.DrawOutlinedRect(x - w * 0.5, y - h, w, h)
-			surface.DrawRect(x - w * 0.5, y - h, w * cc, h)
-
-			surface.SetFont("TabLarge")
-			surface.SetTextColor(255, 255, 255, 180)
-			surface.SetTextPos((x - w * 0.5) + 3, y - h - 15)
-			surface.DrawText(self:GetMessage())
-		elseif state == DEFIB_ERROR then
-			surface.SetDrawColor(200 + math.sin(CurTime() * 32) * 50, 0, 0, 155)
-			surface.DrawOutlinedRect(x - w * 0.5, y - h, w, h)
-			surface.DrawRect(x - w * 0.5, y - h, w, h)
-
-			surface.SetFont("TabLarge")
-			surface.SetTextColor(255, 255, 255, 180)
-			surface.SetTextPos((x - w * 0.5) + 3, y - h - 15)
-			surface.DrawText(self:GetMessage())
-		end
-	end
-end
-
-function SWEP:PrimaryAttack()
-	if SERVER then
-		if self:GetState() ~= DEFIB_IDLE then return end
-
-		self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-
-		local tr = self.Owner:GetEyeTrace(MASK_SHOT_HULL)
-
-		if tr.HitPos:Distance(self.Owner:GetPos()) > maxdist:GetInt() or GetRoundState() ~= ROUND_ACTIVE then return end
-
-		local ent = tr.Entity
-
-		if IsValid(ent) then
-			if ent:GetClass() == "prop_physics" and mutate[ent:GetModel()] and mutateok:GetInt() > 0 then
-				ent:EmitSound(zap, 75, math.random(98, 102))
-				ent:SetModelScale(math.min(mutatemax:GetFloat(), ent:GetModelScale() + 0.25), 1)
-			elseif ent:GetClass() == "prop_ragdoll" and validbody(ent) then
-				if braindead(ent) then
-					self:Error("SUBJECT BRAINDEAD")
-
-					return
-				else
-					self.Location = self:FindRespawnLocation()
-
-					if self.Location then
-						self:Begin(ent, tr.PhysicsBone)
-					else
-						self:Error("INSUFFICIENT ROOM")
-
-						return
-					end
-				end
-			end
-		end
-	else
-		return false
-	end
-end
-
+-- do not play sound when swep is empty
 function SWEP:DryFire()
 	return false
 end
 
-function SWEP:OnDrop()
-	self:Remove()
+function SWEP:GetState()
+	return self:GetNWInt("defi_state", DEFI_IDLE)
+end
+
+function SWEP:GetStartTime()
+	return self:GetNWFloat("defi_start_time", 0)
+end
+
+function SWEP:GetReviveTime()
+	return self:GetNWFloat("defi_revive_time", 0)
+end
+
+if CLIENT then
+	function SWEP:PrimaryAttack()
+
+	end
+
+	local colorGreen = Color(36, 160, 30)
+
+	local materialMarker = Material("vgui/ttt/dynamic/roles/icon_mark")
+
+	local function IsPlayerReviving(ply)
+		if not ply.defi_lastRequest or ply.defi_lastRequest < CurTime() + 0.3 then
+			net.Start("RequestMarkerRevivalStatus")
+			net.WriteEntity(ply)
+			net.SendToServer()
+
+			ply.defi_lastRequest = CurTime()
+		end
+
+		return ply.defi_isRevining or false
+	end
+
+	net.Receive("ReceiveMarkerRevivalStatus", function()
+		local ply = net.ReadEntity()
+
+		if not IsValid(ply) then return end
+
+		ply.defi_isRevining = net.ReadBool()
+	end)
+
+	hook.Add("TTTRenderEntityInfo", "ttt2_markerdefibrillator_display_info", function(tData)
+		local ent = tData:GetEntity()
+		local client = LocalPlayer()
+		local activeWeapon = client:GetActiveWeapon()
+
+		-- has to be a ragdoll
+		if ent:GetClass() ~= "prop_ragdoll" or not CORPSE.IsValidBody(ent) then return end
+
+		-- player has to hold a defibrillator
+		if not IsValid(activeWeapon) or activeWeapon:GetClass() ~= "weapon_ttt2_markerdefi" then return end
+
+		-- ent has to be in usable range
+		if tData:GetEntityDistance() > 100 then return end
+
+		if activeWeapon:GetState() == DEFI_CHARGE then
+			tData:AddDescriptionLine(
+				LANG.TryTranslation("markerdefi_charging"),
+				COLOR_ORANGE
+			)
+
+			tData:SetOutlineColor(COLOR_ORANGE)
+
+			return
+		end
+
+		local ply = CORPSE.GetPlayer(ent)
+
+		if activeWeapon:GetState() ~= DEFI_BUSY and IsValid(ply) and IsPlayerReviving(ply) then
+			tData:AddDescriptionLine(
+				LANG.TryTranslation("markerdefi_player_already_reviving"),
+				COLOR_ORANGE
+			)
+
+			tData:SetOutlineColor(COLOR_ORANGE)
+
+			return
+		end
+
+		tData:AddDescriptionLine(
+			LANG.GetParamTranslation("markerdefi_hold_key_to_revive", {key = Key("+attack", "LEFT MOUSE")}),
+			colorGreen,
+			{materialMarker}
+		)
+
+		if activeWeapon:GetState() ~= DEFI_BUSY then return end
+
+		local progress = (CurTime() - activeWeapon:GetStartTime()) / activeWeapon:GetReviveTime()
+		local timeLeft = activeWeapon:GetReviveTime() - (CurTime() - activeWeapon:GetStartTime())
+
+		local x = 0.5 * ScrW()
+		local y = 0.5 * ScrH()
+		local w, h = 0.2 * ScrW(), 0.025 * ScrH()
+
+		y = 0.95 * y
+
+		surface.SetDrawColor(50, 50, 50, 220)
+		surface.DrawRect(x - 0.5 * w, y - h, w, h)
+		surface.SetDrawColor(clr(colorGreen))
+		surface.DrawOutlinedRect(x - 0.5 * w, y - h, w, h)
+		surface.SetDrawColor(clr(ColorAlpha(colorGreen, (0.5 + 0.15 * math.sin(CurTime() * 4)) * 255)))
+		surface.DrawRect(x - 0.5 * w + 2, y - h + 2, w * progress - 4, h - 4)
+
+		tData:AddDescriptionLine(
+			LANG.GetParamTranslation("markerdefi_revive_progress", {time = math.Round(timeLeft, 1)}),
+			colorGreen
+		)
+
+		tData:SetOutlineColor(colorGreen)
+	end)
 end

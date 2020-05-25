@@ -7,10 +7,12 @@ CreateConVar("ttt_mark_fixed_mark_amount", -1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar("ttt_mark_deal_no_damage", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar("ttt_mark_take_no_damage", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 CreateConVar("ttt_mark_defi_factor", 0.34, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+CreateConVar("ttt_mark_defi_revive_time", 2.0, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
+CreateConVar("ttt_mark_defi_error_time", 1.0, {FCVAR_NOTIFY, FCVAR_ARCHIVE})
 
 if SERVER then
 	-- ConVar replication is broken in GMod, so we do this, at least Alf added a hook!
-	-- I don"t like it any more than you do, dear reader. Copycat!
+	-- I don't like it any more than you do, dear reader. Copycat!
 	hook.Add("TTT2SyncGlobals", "ttt2_marker_sync_convars", function()
 		SetGlobalBool("ttt_mark_deal_no_damage", GetConVar("ttt_mark_deal_no_damage"):GetBool())
 		SetGlobalBool("ttt_mark_take_no_damage", GetConVar("ttt_mark_take_no_damage"):GetBool())
@@ -38,4 +40,6 @@ hook.Add("TTTUlxDynamicRCVars", "ttt2_ulx_dynamic_marker_convars", function(tbl)
 	table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_pct_marked", slider = true, min = 0, max = 1, decimal = 2, desc = "ttt_mark_pct_marked (def. 0.75)"})
 	table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_fixed_mark_amount", slider = true, min = -1, max = 25, decimal = 0, desc = "ttt_mark_fixed_mark_amount (def. -1)"})
 	table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_defi_factor", slider = true, min = 0, max = 1, decimal = 2, desc = "ttt_mark_defi_factor (def. 0.34)"})
+	table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_defi_revive_time", slider = true, min = 0, max = 30, decimal = 1, desc = "ttt_mark_defi_revive_time (def. 1.0)"})
+	table.insert(tbl[ROLE_MARKER], {cvar = "ttt_mark_defi_error_time", slider = true, min = 0, max = 30, decimal = 1, desc = "ttt_mark_defi_error_time (def. 1.0)"})
 end)
