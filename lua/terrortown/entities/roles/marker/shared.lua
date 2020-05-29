@@ -85,15 +85,17 @@ if SERVER then
 				pos.y = math.Round(pos.y)
 				pos.z = math.Round(pos.z)
 
-				local subrole
+				local subrole, team
 
 				if MARKER_DATA:IsMarked(p) then
 					subrole = ROLE_MARKER
+					team = TEAM_MARKER
 				else
 					subrole = ROLE_INNOCENT
+					team = TEAM_INNOCENT
 				end
 
-				targets[#targets + 1] = {subrole = subrole, pos = pos}
+				targets[#targets + 1] = {subrole = subrole, team = team, pos = pos}
 			end
 		end
 
