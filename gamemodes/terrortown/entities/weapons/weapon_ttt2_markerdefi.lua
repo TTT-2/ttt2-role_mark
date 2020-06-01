@@ -1,7 +1,7 @@
 if SERVER then
 	AddCSLuaFile()
 
-	resource.AddFile("materials/gui/ttt/icon_markerdefi.vmt")
+	resource.AddFile("materials/gui/ttt/icon_defi_marker.vmt")
 end
 
 local DEFI_IDLE = 0
@@ -36,7 +36,7 @@ if CLIENT then
 		desc = "weapon_markerdefi_desc"
 	}
 
-	SWEP.Icon = "vgui/ttt/icon_markerdefi"
+	SWEP.Icon = "vgui/ttt/icon_defi_marker"
 end
 
 SWEP.Kind = WEAPON_EQUIP2

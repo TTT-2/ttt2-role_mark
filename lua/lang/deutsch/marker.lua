@@ -9,10 +9,10 @@ L["body_found_" .. MARKER.abbr] = "Er war ein Markierer..."
 L["search_role_" .. MARKER.abbr] = "Diese Person war ein Markierer!"
 L["target_" .. MARKER.name] = "Markierer"
 L["ttt2_desc_" .. MARKER.name] = [[Der Markierer muss alleine gewinnen!]]
-L["hilite_win_" .. TEAM_MARKER] = "THE MARKER WON"
-L["win_" .. TEAM_MARKER] = "Der Marker hat gewonnen!"
-L["ev_win_" .. TEAM_MARKER] = "Der böse Marker hat die Runde gewonnen!"
-L["credit_" .. MARKER.abbr .. "_all"] = "Marker, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben."
+L["hilite_win_" .. TEAM_MARKER] = "DER MARKIERER GEWINNT"
+L["win_" .. TEAM_MARKER] = "Der Markierer hat gewonnen!"
+L["ev_win_" .. TEAM_MARKER] = "Der böse Markierer hat die Runde gewonnen!"
+L["credit_" .. MARKER.abbr .. "_all"] = "Markierer, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben."
 
 -- OTHER ROLE LANGUAGE STRINGS
 L["ttt_marker_was_marked"] = "Dieser Spieler scheint mit Farbe übergossen zu sein. Er wurde markiert!"
@@ -25,6 +25,9 @@ L["ttt_markerdefi_desc"] = "Belebt tote Spieler als markierte Spieler wieder. Si
 
 L["weapon_markerdefi_name"] = "Geisterbeschwörer Defi"
 L["weapon_markerdefi_desc"] = "Belebt tote Spieler als markierte Spieler wieder. Sie behalten ihre Rolle."
+
+L["ttt2_paintgun_name"] = "Geisterbeschwörer Waffe"
+L["ttt2_paintgun_desc"] = "Markiert Spieler indem sie mit Farbe übergossen werden."
 
 L["revived_by_marker"] = "Du wirst von {name} wiederbelebt. Du behaältst deine Rolle, bist aber automatisch markiert. Halte dich bereit!"
 L["markerdefi_hold_key_to_revive"] = "Halte [{key}] um Spieler markiert wiederzubeleben"

@@ -26,6 +26,9 @@ L["ttt_markerdefi_desc"] = "Riporta in vita i giocatori morti come marcati. Mant
 L["weapon_markerdefi_name"] = "Defibrillatore Marker"
 L["weapon_markerdefi_desc"] = "Riporta in vita i giocatori morti come marcati. Mantengono il loro ruolo."
 
+--L["ttt2_paintgun_name"] = "Marker's Gun"
+--L["ttt2_paintgun_desc"] = "Marks players while covering them in color."
+
 L["revived_by_marker"] = "Sei stato rianimato da {name}. Terrai il tuo ruolo ma sarai marcato. Preparati!"
 L["markerdefi_hold_key_to_revive"] = "Tieni premuto [{key}] per rianimarli marchiati"
 L["markerdefi_revive_progress"] = "Tempo rimasto: {time} secondi"

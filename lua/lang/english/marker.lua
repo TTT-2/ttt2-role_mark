@@ -25,6 +25,9 @@ L["ttt_marker_player_marked"] = "PLAYER IS MARKED"
 L["weapon_markerdefi_name"] = "Marker's Defi"
 L["weapon_markerdefi_desc"] = "Revives dead people as marked players. They keep their role."
 
+L["ttt2_paintgun_name"] = "Marker's Gun"
+L["ttt2_paintgun_desc"] = "Marks players while covering them in color."
+
 L["revived_by_marker"] = "You are revived by {name}. You will keep your role but you will be marked. Prepare yourself!"
 L["markerdefi_hold_key_to_revive"] = "Hold [{key}] to revive player as a marked player"
 L["markerdefi_revive_progress"] = "Time left: {time}s"

@@ -7,20 +7,16 @@ if SERVER then
 end
 
 if CLIENT then
-	SWEP.Category			= "Paintball SWEPs"
-	SWEP.PrintName			= "Marker Gun"
-	SWEP.Author				= "TTT2 Team"
-	SWEP.Contact			= ""
-	SWEP.Purpose			= ""
-	SWEP.Instructions		= "Shoot with primary and secondary fire."
-	SWEP.CSMuzzleFlashes    = true
-
-	SWEP.Slot               = 7
+	SWEP.PrintName = "Marker Gun"
+	SWEP.Author = "TTT2 Team"
+	SWEP.Instructions = "Shoot with primary and secondary fire."
+	SWEP.CSMuzzleFlashes = true
 
 	SWEP.Icon = "vgui/ttt/icon_markergun.png"
 
 	SWEP.EquipMenuData = {
 		type = "item_weapon",
+		name = "ttt2_paintgun_name",
 		desc = "ttt2_paintgun_desc"
 	}
 
