@@ -365,7 +365,7 @@ if CLIENT then
 
 		if activeWeapon:GetState() ~= DEFI_BUSY then return end
 
-		local progress = (CurTime() - activeWeapon:GetStartTime()) / activeWeapon:GetReviveTime()
+		local progress = math.min((CurTime() - activeWeapon:GetStartTime()) / activeWeapon:GetReviveTime(), 1.0)
 		local timeLeft = activeWeapon:GetReviveTime() - (CurTime() - activeWeapon:GetStartTime())
 
 		local x = 0.5 * ScrW()
