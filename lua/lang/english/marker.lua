@@ -4,7 +4,7 @@ L = LANG.GetLanguageTableReference("english")
 L[MARKER.name] = "Marker"
 L[TEAM_MARKER] = "TEAM marker"
 L["info_popup_" .. MARKER.name] = [[You are the Marker!
-	Try to mark all players! It"s hard, but don"t wait until only a few players are left...]]
+	Try to mark all players! It's hard, but don't wait until only a few players are left...]]
 L["body_found_" .. MARKER.abbr] = "They were a Marker."
 L["search_role_" .. MARKER.abbr] = "This person was a Marker!"
 L["target_" .. MARKER.name] = "Marker"
