@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("Español")
+local L = LANG.GetLanguageTableReference("español")
 
 -- GENERAL ROLE LANGUAGE STRINGS
 L[MARKER.name] = "Pintor"
