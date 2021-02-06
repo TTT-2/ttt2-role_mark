@@ -2,7 +2,7 @@ local L = LANG.GetLanguageTableReference("english")
 
 -- GENERAL ROLE LANGUAGE STRINGS
 L[MARKER.name] = "Marker"
-L[TEAM_MARKER] = "TEAM marker"
+L[TEAM_MARKER] = "Team Marker"
 L["info_popup_" .. MARKER.name] = [[You are the Marker!
 	Try to mark all players! It's hard, but don't wait until only a few players are left...]]
 L["body_found_" .. MARKER.abbr] = "They were a Marker."
