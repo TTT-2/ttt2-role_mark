@@ -40,7 +40,7 @@ hook.Add("TTTRenderEntityInfo", "ttt2_marker_highlight_focused_players", functio
 		end
 	end
 
-	if GetGlobalBool("ttt_mark_deal_no_damage", false) then
+	if GetGlobalBool("ttt_mark_deal_no_damage", false) and not (MARKER_DATA:IsMarked(ent) and GetGlobalBool("ttt_mark_hurt_marked", false))  then
 		tData:AddDescriptionLine(
 			LANG.GetTranslation("ttt_marker_player_deal_no_damage"),
 			COLOR_ORANGE,
