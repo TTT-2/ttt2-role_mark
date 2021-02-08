@@ -175,7 +175,13 @@ if SERVER then
 
 		if not attacker or not IsValid(attacker) or not attacker:IsPlayer() then return end
 
-		if attacker:GetTeam() == TEAM_MARKER and attacker ~= ply then
+		if attacker:GetTeam() ~= TEAM_MARKER or attacker == ply then return end
+
+		local dmg_scale = GetConVar("ttt_mark_hurt_marked_factor"):GetFloat()
+
+		if dmg_scale > 0 then
+			dmginfo:ScaleDamage(dmg_scale)
+		else
 			dmginfo:ScaleDamage(0)
 			dmginfo:SetDamage(0)
 		end
