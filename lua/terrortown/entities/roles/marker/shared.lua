@@ -165,6 +165,8 @@ if SERVER then
 	end)
 
 	hook.Add("EntityTakeDamage", "TTT2MarkerDealNoDamage", function(ply, dmginfo)
+		if SpecDM and (ply.IsGhost and ply:IsGhost()) then return end
+
 		if not ply:IsPlayer() then return end
 
 		if not GetConVar("ttt_mark_deal_no_damage"):GetBool() then return end
