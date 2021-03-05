@@ -4,7 +4,7 @@ local L = LANG.GetLanguageTableReference("de")
 L[MARKER.name] = "Markierer"
 L[TEAM_MARKER] = "Team Markierer"
 L["info_popup_" .. MARKER.name] = [[Du bist ein Markierer!
-	Versuche alle anderen spieler zu markieren! Aber warte nicht so lange bis nur noch ein paar Spieler übrig sind...]]
+	Versuche alle anderen Spieler zu markieren! Aber warte nicht so lange bis nur noch ein paar Spieler übrig sind...]]
 L["body_found_" .. MARKER.abbr] = "Er war ein Markierer..."
 L["search_role_" .. MARKER.abbr] = "Diese Person war ein Markierer!"
 L["target_" .. MARKER.name] = "Markierer"
@@ -29,12 +29,12 @@ L["weapon_markerdefi_desc"] = "Belebt tote Spieler als markierte Spieler wieder.
 L["ttt2_paintgun_name"] = "Geisterbeschwörer Waffe"
 L["ttt2_paintgun_desc"] = "Markiert Spieler indem sie mit Farbe übergossen werden."
 
-L["revived_by_marker"] = "Du wirst von {name} wiederbelebt. Du behaältst deine Rolle, bist aber automatisch markiert. Halte dich bereit!"
-L["markerdefi_hold_key_to_revive"] = "Halte [{key}] um Spieler markiert wiederzubeleben"
+L["revived_by_marker"] = "Du wirst von {name} wiederbelebt. Du behältst deine Rolle, bist aber automatisch markiert. Halte dich bereit!"
+L["markerdefi_hold_key_to_revive"] = "Halte [{key}], um Spieler markiert wiederzubeleben"
 L["markerdefi_revive_progress"] = "Zeit übrig: {time}s"
 L["markerdefi_charging"] = "Defibrillator lädt sich auf, bitte warten"
 L["markerdefi_player_already_reviving"] = "Dieser Spieler wird bereits wiederbelebt"
-L["markerdefi_error_no_space"] = "Es ist nicht genügend Platz vorhanden um den Spieler wiederzubeleben."
+L["markerdefi_error_no_space"] = "Es ist nicht genügend Platz vorhanden, um den Spieler wiederzubeleben."
 L["markerdefi_error_too_fast"] = "Defibrillator lädt sich auf. Bitte warten."
 L["markerdefi_error_lost_target"] = "Du hast dein Ziel verloren. Bitte versuche es erneut."
 L["markerdefi_error_no_valid_ply"] = "Du kannst diesen Spieler nicht wiederbeleben, da er nicht länger valide ist."
