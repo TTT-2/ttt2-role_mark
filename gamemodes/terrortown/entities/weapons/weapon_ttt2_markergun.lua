@@ -110,16 +110,18 @@ end
 if SERVER then
 	hook.Add("ScalePlayerDamage", "MarkerHitReg", function(ply, hitgroup, dmginfo)
 		local attacker = dmginfo:GetAttacker()
+
 		if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker)
-			or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
+			or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon())
+		then return end
 
-		local weap = attacker:GetActiveWeapon()
+		local wep = attacker:GetActiveWeapon()
 
-		if weap:GetClass() ~= "weapon_ttt2_markergun" then return end
+		if wep:GetClass() ~= "weapon_ttt2_markergun" then return end
 
 		-- send to marker that he has marked another player
 		if ply:GetTeam() ~= TEAM_MARKER then
-			MARKER_DATA:SetMarkedPlayer(ply)
+			MARKER_DATA:SetMarkedPlayer(attacker, ply, false)
 		end
 
 		dmginfo:SetDamage(0)

@@ -91,21 +91,23 @@ if SERVER then
 	util.AddNetworkString("ttt2_role_marker_scoreboard")
 	util.AddNetworkString("ttt2_role_marker_corpse_update")
 
-	function MARKER_DATA:SetMarkedPlayer(ply)
-		if not ply or not ply:IsPlayer() then return end
+	function MARKER_DATA:SetMarkedPlayer(marker, markee, isRevival)
+		if not IsValid(markee) or not markee:IsPlayer() then return end
 
 		-- show player that they are marked
 		if GetConVar("ttt_mark_show_sidebar"):GetBool() then
-			self:MarkPlayer(ply)
+			self:MarkPlayer(markee)
 		end
 
-		MARKER_DATA.marked_players[tostring(ply:SteamID64() or ply:EntIndex())] = true
+		MARKER_DATA.marked_players[tostring(markee:SteamID64() or markee:EntIndex())] = true
 
 		net.Start("ttt2_role_marker_new_marking")
-		net.WriteEntity(ply)
-		net.Send(player.GetAll()) -- send to all players, only markers will handle the data
+		net.WriteEntity(markee)
+		net.Broadcast() -- send to all players, only markers will handle the data
 
 		self:Count()
+
+		events.Trigger(EVENT_MARKED, marker, markee, isRevival)
 	end
 
 	function MARKER_DATA:PrepareCorpseOnDeath(ply)
@@ -134,7 +136,7 @@ if SERVER then
 
 		net.Start("ttt2_role_marker_remove_marking")
 		net.WriteEntity(ply)
-		net.Send(player.GetAll()) -- send to all players, only markers will handle the data
+		net.Broadcast() -- send to all players, only markers will handle the data
 
 		self:Count()
 	end
@@ -151,7 +153,7 @@ if SERVER then
 
 		-- clear on client
 		net.Start("ttt2_role_marker_remove_all")
-		net.Send(player.GetAll()) -- send to all players, only markers will handle the data
+		net.Broadcast() -- send to all players, only markers will handle the data
 	end
 
 	function MARKER_DATA:UpdateAfterChange()
@@ -187,7 +189,7 @@ if SERVER then
 		net.WriteUInt(self.amount_no_marker_alive, 16)
 		net.WriteBool(self.able_to_win)
 		net.WriteUInt(self.amount_to_win, 16)
-		net.Send(player.GetAll()) -- send to all players, only markers will handle the data
+		net.Broadcast() -- send to all players, only markers will handle the data
 	end
 
 	function MARKER_DATA:MarkerDied()
@@ -199,7 +201,7 @@ if SERVER then
 		-- needs a short time so that the marker has received his role
 		timer.Simple(0.1, function()
 			net.Start("ttt2_role_marker_scoreboard")
-			net.Send(player.GetAll())
+			net.Broadcast()
 		end)
 	end
 

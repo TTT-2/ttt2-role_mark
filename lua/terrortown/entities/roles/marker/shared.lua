@@ -16,10 +16,11 @@ function ROLE:PreInitialize()
 
 	self.abbr = "mark"
 	self.score.surviveBonusMultiplier = 0
-	self.score.timelimitMultiplier = -0.5
-	self.score.killsMultiplier = 2
-	self.score.teamKillsMultiplier = -16
+	self.score.timelimitMultiplier = 0
+	self.score.killsMultiplier = 0
+	self.score.teamKillsMultiplier = 0
 	self.score.bodyFoundMuliplier = 0
+	self.score.aliveTeammatesBonusMultiplier = 0
 	self.preventFindCredits = true
 	self.preventKillCredits = true
 	self.preventTraitorAloneCredits = true
@@ -28,12 +29,12 @@ function ROLE:PreInitialize()
 	self.defaultTeam = TEAM_MARKER
 
 	self.conVarData = {
-		pct = 0.15, -- necessary: percentage of getting this role selected (per player)
-		maximum = 1, -- maximum amount of roles in a round
-		minPlayers = 7, -- minimum amount of players until this role is able to get selected
-		credits = 0, -- the starting credits of a specific role
+		pct = 0.15,
+		maximum = 1,
+		minPlayers = 7,
+		credits = 0,
 		shopFallback = SHOP_DISABLED,
-		togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+		togglable = true,
 		random = 33
 	}
 end

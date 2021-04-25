@@ -140,6 +140,7 @@ if SERVER then
 
 	function SWEP:BeginRevival(ragdoll, bone)
 		local ply = CORPSE.GetPlayer(ragdoll)
+		local owner = self:GetOwner()
 
 		if not IsValid(ply) then
 			self:Error(DEFI_ERROR_NO_VALID_PLY)
@@ -166,7 +167,7 @@ if SERVER then
 			function(p)
 				-- mark revived player
 				timer.Simple(0.1, function()
-					MARKER_DATA:SetMarkedPlayer(p)
+					MARKER_DATA:SetMarkedPlayer(owner, p, true)
 				end)
 			end,
 			nil,

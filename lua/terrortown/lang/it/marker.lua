@@ -21,7 +21,6 @@ L["ttt_marker_player_take_no_damage"] = "Questo giocatore è un marker e non pu�
 L["ttt_marker_marked"] = "Sembra che questo giocatore sia stato marcato."
 L["ttt_marker_died"] = "Sembra che un giocatore marcato sia morto."
 L["ttt_marker_player_marked"] = "IL GIOCATORE È MARCATO"
-L["ttt_markerdefi_desc"] = "Riporta in vita i giocatori morti come marcati. Mantengono il loro ruolo."
 
 L["weapon_markerdefi_name"] = "Defibrillatore Marker"
 L["weapon_markerdefi_desc"] = "Riporta in vita i giocatori morti come marcati. Mantengono il loro ruolo."
@@ -40,3 +39,10 @@ L["markerdefi_error_lost_target"] = "Hai perso il tuo bersaglio. Per favore ripr
 L["markerdefi_error_no_valid_ply"] = "Non puoi rianimare questo giocatore perchè non è più valido."
 L["markerdefi_error_already_reviving"] = "Non puoi rianimare questo giocatore perchè lo stanno rianimando."
 L["markerdefi_error_failed"] = "Tentativo di rianimazione fallito. Per favore riprova."
+
+--L["tooltip_marked_score"] = "Marked: {score}"
+--L["marked_score"] = "Marked:"
+--L["title_event_marked"] = "A player got marked"
+--L["desc_event_marked"] = "{marker} has marked {markee} ({mrole} / {mteam})."
+--L["desc_event_marked_paintgun"] = "They used their Marker's Gun."
+--L["desc_event_marked_revival"] = "They used their Marker's Defi."

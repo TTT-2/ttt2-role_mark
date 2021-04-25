@@ -9,7 +9,7 @@ L["body_found_" .. MARKER.abbr] = "Er war ein Markierer..."
 L["search_role_" .. MARKER.abbr] = "Diese Person war ein Markierer!"
 L["target_" .. MARKER.name] = "Markierer"
 L["ttt2_desc_" .. MARKER.name] = [[Der Markierer muss alleine gewinnen!]]
-L["hilite_win_" .. TEAM_MARKER] = "DIE MARKIERER GEWINNEN"
+L["hilite_win_" .. TEAM_MARKER] = "TEAM MARKIERER GEWANN"
 L["win_" .. TEAM_MARKER] = "Der Markierer hat gewonnen!"
 L["ev_win_" .. TEAM_MARKER] = "Der böse Markierer hat die Runde gewonnen!"
 L["credit_" .. MARKER.abbr .. "_all"] = "Markierer, dir wurde(n) {num} Ausrüstungs-Credit(s) für deine Leistung gegeben."
@@ -21,12 +21,11 @@ L["ttt_marker_player_take_no_damage"] = "Dieser Spieler ist markiert und kann di
 L["ttt_marker_marked"] = "Es scheint so, als wäre ein weiterer Spieler markiert worden."
 L["ttt_marker_died"] = "Es scheint so, als wäre ein markierter Spieler gestorben."
 L["ttt_marker_player_marked"] = "SPIELER IST MARKIERT"
-L["ttt_markerdefi_desc"] = "Belebt tote Spieler als markierte Spieler wieder. Sie behalten ihre Rolle."
 
-L["weapon_markerdefi_name"] = "Geisterbeschwörer Defi"
+L["weapon_markerdefi_name"] = "Markierer Defi"
 L["weapon_markerdefi_desc"] = "Belebt tote Spieler als markierte Spieler wieder. Sie behalten ihre Rolle."
 
-L["ttt2_paintgun_name"] = "Geisterbeschwörer Waffe"
+L["ttt2_paintgun_name"] = "Markierer Farbwaffe"
 L["ttt2_paintgun_desc"] = "Markiert Spieler indem sie mit Farbe übergossen werden."
 
 L["revived_by_marker"] = "Du wirst von {name} wiederbelebt. Du behaältst deine Rolle, bist aber automatisch markiert. Halte dich bereit!"
@@ -40,3 +39,10 @@ L["markerdefi_error_lost_target"] = "Du hast dein Ziel verloren. Bitte versuche 
 L["markerdefi_error_no_valid_ply"] = "Du kannst diesen Spieler nicht wiederbeleben, da er nicht länger valide ist."
 L["markerdefi_error_already_reviving"] = "Du kannst diesen Spieler nicht wiederbeleben, da er bereits wiederbelebt wird."
 L["markerdefi_error_failed"] = "Wiederbeleben fehlgeschlagen. Bitte versuche es erneut."
+
+L["tooltip_marked_score"] = "Markiert: {score}"
+L["marked_score"] = "Markiert:"
+L["title_event_marked"] = "Ein Spieler wurde markiert"
+L["desc_event_marked"] = "{marker} hat {markee} ({mrole} / {mteam}) markiert."
+L["desc_event_marked_paintgun"] = "Er hat seine Markierer Farbwaffe verwendet."
+L["desc_event_marked_revival"] = "Er hat seinen Markierer Defi verwendet."

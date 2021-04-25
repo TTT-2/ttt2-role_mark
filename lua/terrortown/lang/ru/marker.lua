@@ -39,3 +39,10 @@ L["markerdefi_error_lost_target"] = "Вы потеряли цель. Пожал�
 L["markerdefi_error_no_valid_ply"] = "Вы не можете оживить этого игрока, так как он больше не действителен."
 L["markerdefi_error_already_reviving"] = "Вы не можете оживить этого игрока, так как он уже оживает."
 L["markerdefi_error_failed"] = "Попытка возрождения не удалась. Пожалуйста, попробуйте ещё раз."
+
+--L["tooltip_marked_score"] = "Marked: {score}"
+--L["marked_score"] = "Marked:"
+--L["title_event_marked"] = "A player got marked"
+--L["desc_event_marked"] = "{marker} has marked {markee} ({mrole} / {mteam})."
+--L["desc_event_marked_paintgun"] = "They used their Marker's Gun."
+--L["desc_event_marked_revival"] = "They used their Marker's Defi."
