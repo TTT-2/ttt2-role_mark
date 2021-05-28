@@ -39,7 +39,7 @@ L["markerdefi_error_lost_target"] = "Perdió de vista a su objetivo. Intenta de 
 L["markerdefi_error_no_valid_ply"] = "No puedes revivir a este jugador ya que su cuerpo no existe o no es válido."
 L["markerdefi_error_already_reviving"] = "No puedes revivir a este jugador porque ya lo están reviviendo."
 L["markerdefi_error_failed"] = "Intento de revivir fallido. Intenta de nuevo."
--- L["markerdefi_error_player_alive"] = "You can't revive this player since they are already alive."
+--L["markerdefi_error_player_alive"] = "You can't revive this player since they are already alive."
 
 --L["tooltip_marked_score"] = "Marked: {score}"
 --L["marked_score"] = "Marked:"
