@@ -39,6 +39,7 @@ L["markerdefi_error_lost_target"] = "Du hast dein Ziel verloren. Bitte versuche 
 L["markerdefi_error_no_valid_ply"] = "Du kannst diesen Spieler nicht wiederbeleben, da er nicht länger valide ist."
 L["markerdefi_error_already_reviving"] = "Du kannst diesen Spieler nicht wiederbeleben, da er bereits wiederbelebt wird."
 L["markerdefi_error_failed"] = "Wiederbeleben fehlgeschlagen. Bitte versuche es erneut."
+L["markerdefi_error_player_alive"] = "Du kannst diesen Spieler nicht wiederbeleben, da er bereits lebt."
 
 L["tooltip_marked_score"] = "Markiert: {score}"
 L["marked_score"] = "Markiert:"

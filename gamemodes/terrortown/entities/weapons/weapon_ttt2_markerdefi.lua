@@ -14,6 +14,7 @@ local DEFI_ERROR_LOST_TARGET = 3
 local DEFI_ERROR_NO_VALID_PLY = 4
 local DEFI_ERROR_ALREADY_REVIVING = 5
 local DEFI_ERROR_FAILED = 6
+local DEFI_ERROR_PLAYER_ALIVE = 7
 
 local sounds = {
 	empty = Sound("Weapon_SMG1.Empty"),
@@ -135,6 +136,8 @@ if SERVER then
 			LANG.Msg(owner, "markerdefi_error_already_reviving", nil, MSG_MSTACK_WARN)
 		elseif type == DEFI_ERROR_FAILED then
 			LANG.Msg(owner, "markerdefi_error_failed", nil, MSG_MSTACK_WARN)
+		elseif type == DEFI_ERROR_PLAYER_ALIVE then
+			LANG.Msg(owner, "markerdefi_error_player_alive", nil, MSG_MSTACK_WARN)
 		end
 	end
 
@@ -150,6 +153,12 @@ if SERVER then
 
 		if ply:IsReviving() then
 			self:Error(DEFI_ERROR_ALREADY_REVIVING)
+
+			return
+		end
+
+		if ply:Alive() and not (SpecDM and not ply:IsGhost()) then
+			self:Error(DEFI_ERROR_PLAYER_ALIVE)
 
 			return
 		end
@@ -170,7 +179,9 @@ if SERVER then
 					MARKER_DATA:SetMarkedPlayer(owner, p, true)
 				end)
 			end,
-			nil,
+			function(p)
+				return not p:Alive() or (SpecDM and p:IsGhost())
+			end,
 			true,
 			true
 		)
@@ -223,12 +234,16 @@ if SERVER then
 		if self:GetState() ~= DEFI_BUSY then return end
 
 		local owner = self:GetOwner()
+		local target = CORPSE.GetPlayer(self.defiTarget)
 
 		if CurTime() >= self:GetStartTime() + GetConVar("ttt_mark_defi_revive_time"):GetFloat() - 0.01 then
 			self:FinishRevival()
 		elseif not owner:KeyDown(IN_ATTACK) or owner:GetEyeTrace(MASK_SHOT_HULL).Entity ~= self.defiTarget then
 			self:CancelRevival()
 			self:Error(DEFI_ERROR_LOST_TARGET)
+		elseif target:Alive() and not (SpecDM and not target:IsGhost()) then
+			self:CancelRevival()
+			self:Error(DEFI_ERROR_PLAYER_ALIVE)
 		end
 	end
 

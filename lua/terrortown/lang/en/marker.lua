@@ -39,6 +39,7 @@ L["markerdefi_error_lost_target"] = "You lost your target. Please try again."
 L["markerdefi_error_no_valid_ply"] = "You can't revive this player since they are no longer valid."
 L["markerdefi_error_already_reviving"] = "You can't revive this player since they are already reviving."
 L["markerdefi_error_failed"] = "Revival attempt failed. Please try again."
+L["markerdefi_error_player_alive"] = "You can't revive this player since they are already alive."
 
 L["tooltip_marked_score"] = "Marked: {score}"
 L["marked_score"] = "Marked:"
