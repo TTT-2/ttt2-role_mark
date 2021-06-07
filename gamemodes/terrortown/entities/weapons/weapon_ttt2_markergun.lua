@@ -1,7 +1,5 @@
 SWEP.Base = "weapon_tttbase"
 
-SWEP.Kind = WEAPON_NONE
-
 if SERVER then
 	AddCSLuaFile("weapon_ttt2_markergun.lua")
 end
@@ -26,43 +24,46 @@ if CLIENT then
 	end)
 end
 
-SWEP.data                   = {}
-SWEP.data.newclip           = false
+SWEP.Kind = WEAPON_NONE
+SWEP.CanBuy = nil
+SWEP.notBuyable = true
 
-SWEP.Spawnable			    = true
-SWEP.AdminSpawnable		    = true
+SWEP.data = {}
+SWEP.data.newclip = false
 
-SWEP.HoldType			    = "pistol"
-SWEP.ViewModel			    = "models/Weapons/v_blazer.mdl"
-SWEP.WorldModel			    = "models/Weapons/w_blazer.mdl"
-SWEP.ViewModelFlip		    = false
+SWEP.Spawnable = true
+SWEP.AdminSpawnable = true
 
-SWEP.Drawammo               = true
-SWEP.DrawCrosshair          = false
+SWEP.HoldType = "pistol"
+SWEP.ViewModel = "models/Weapons/v_blazer.mdl"
+SWEP.WorldModel = "models/Weapons/w_blazer.mdl"
+SWEP.ViewModelFlip = false
 
-SWEP.Weight			        = 5
-SWEP.AutoSwitchTo		    = false
-SWEP.AutoSwitchFrom		    = false
-SWEP.AllowDrop              = false
-SWEP.notBuyable             = true
+SWEP.Drawammo = true
+SWEP.DrawCrosshair = false
 
-SWEP.Primary.Sound		    = Sound("marker/pbfire.wav")
-SWEP.Primary.Recoil		    = 1.5
-SWEP.Primary.Damage		    = 1
-SWEP.Primary.NumShot        = 1
-SWEP.Primary.Cone		    = 0.01
-SWEP.Primary.Delay		    = 0.30
-SWEP.Primary.ClipSize	    = 250
-SWEP.Primary.DefaultClip    = 250
-SWEP.Primary.AmmoSize       = 0
-SWEP.Primary.DefaultAmmo    = 0
-SWEP.Primary.Automatic	    = false
-SWEP.Primary.Ammo		    = "none"
+SWEP.Weight = 5
+SWEP.AutoSwitchTo = false
+SWEP.AutoSwitchFrom = false
+SWEP.AllowDrop = false
 
-SWEP.Secondary.ClipSize		= -1
-SWEP.Secondary.DefaultClip	= -1
-SWEP.Secondary.Automatic	= false
-SWEP.Secondary.Ammo		    = "none"
+SWEP.Primary.Sound = Sound("marker/pbfire.wav")
+SWEP.Primary.Recoil = 1.5
+SWEP.Primary.Damage = 1
+SWEP.Primary.NumShot = 1
+SWEP.Primary.Cone = 0.01
+SWEP.Primary.Delay = 0.30
+SWEP.Primary.ClipSize = 250
+SWEP.Primary.DefaultClip = 250
+SWEP.Primary.AmmoSize = 0
+SWEP.Primary.DefaultAmmo = 0
+SWEP.Primary.Automatic = false
+SWEP.Primary.Ammo = "none"
+
+SWEP.Secondary.ClipSize = -1
+SWEP.Secondary.DefaultClip = -1
+SWEP.Secondary.Automatic = false
+SWEP.Secondary.Ammo = "none"
 
 function SWEP:Reload()
 	self:DefaultReload(ACT_VM_RELOAD);
