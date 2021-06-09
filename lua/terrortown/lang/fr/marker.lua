@@ -2,7 +2,7 @@ local L = LANG.GetLanguageTableReference("fr")
 
 -- GENERAL ROLE LANGUAGE STRINGS
 L[MARKER.name] = "Marqueur"
-L[TEAM_MARKER] = "TEAM Marqueur"
+L[TEAM_MARKER] = "TEAM du Marqueur"
 L["info_popup_" .. MARKER.name] = [[Vous êtes le Marqueur!
 	Essayez de marquer tous les joueurs! C'est difficile, mais n'attendez pas qu'il ne reste plus que quelques joueurs...]]
 L["body_found_" .. MARKER.abbr] = "C'était un Marqueur."
@@ -25,7 +25,7 @@ L["ttt_marker_player_marked"] = "LE JOUEUR EST MARQUÉ"
 L["weapon_markerdefi_name"] = "Défibrillateur du Marqueur"
 L["weapon_markerdefi_desc"] = "Ressuscite les morts en tant que joueurs marqués. Ils conservent leur rôle."
 
-L["ttt2_paintgun_name"] = "Pistolet a Peinture du Marqueur"
+L["ttt2_paintgun_name"] = "Pistolet a Peinture"
 L["ttt2_paintgun_desc"] = "Marque les joueurs en les couvrant de peinture."
 
 L["revived_by_marker"] = "Vous êtes réanimé par {name}. Vous conserverez votre rôle mais vous serez marqué. Préparez-vous!"
@@ -41,9 +41,9 @@ L["markerdefi_error_already_reviving"] = "Vous ne pouvez pas réanimer ce joueur
 L["markerdefi_error_failed"] = "La tentative de réanimation a échoué. Veuillez réessayer."
 L["markerdefi_error_player_alive"] = "Vous ne pouvez pas réanimer ce joueur parce qu'il est déjà réanimé."
 
-L["tooltip_marked_score"] = "Marqué: {score}"
-L["marked_score"] = "Marqué:"
+L["tooltip_marked_score"] = "Joueur Marqué: {score}"
+L["marked_score"] = "Joueur Marqué:"
 L["title_event_marked"] = "Un joueur a était marqué"
 L["desc_event_marked"] = "{marker} a marqué {markee} ({mrole} / {mteam})."
-L["desc_event_marked_paintgun"] = "Ils ont utilisé le Pistolet a Peinture du Marqueur."
-L["desc_event_marked_revival"] = "Ils ont utilisé le Défibrillateur du Marqueur."
+L["desc_event_marked_paintgun"] = "Il a utilisé le Pistolet a Peinture."
+L["desc_event_marked_revival"] = "Il a utilisé le Défibrillateur du Marqueur."
