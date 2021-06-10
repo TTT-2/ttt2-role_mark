@@ -2,14 +2,14 @@ local L = LANG.GetLanguageTableReference("fr")
 
 -- GENERAL ROLE LANGUAGE STRINGS
 L[MARKER.name] = "Marqueur"
-L[TEAM_MARKER] = "Team du Marqueur"
+L[TEAM_MARKER] = "Team des Marqueurs"
 L["info_popup_" .. MARKER.name] = [[Vous êtes le Marqueur!
 	Essayez de marquer tous les joueurs! C'est difficile, mais n'attendez pas qu'il ne reste plus que quelques joueurs...]]
 L["body_found_" .. MARKER.abbr] = "C'était un Marqueur."
 L["search_role_" .. MARKER.abbr] = "C'était un Marqueur!"
 L["target_" .. MARKER.name] = "Marqueur"
 L["ttt2_desc_" .. MARKER.name] = [[Le Marqueur doit gagner seul!]]
-L["hilite_win_" .. TEAM_MARKER] = "LE MARQUEUR A GAGNÉ"
+L["hilite_win_" .. TEAM_MARKER] = "LA TEAM DES MARQUEURS A GAGNÉ"
 L["win_" .. TEAM_MARKER] = "Le Marqueur a gagné!"
 L["ev_win_" .. TEAM_MARKER] = "Le méchant Marqueur a gagné le round!"
 L["credit_" .. MARKER.abbr .. "_all"] = "Marqueur, vous avez été récompensé de {num} crédit(s) d'équipement pour votre performances."
