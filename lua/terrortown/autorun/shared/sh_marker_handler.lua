@@ -92,7 +92,7 @@ if SERVER then
 	util.AddNetworkString("ttt2_role_marker_corpse_update")
 
 	function MARKER_DATA:SetMarkedPlayer(marker, markee, isRevival)
-		if not IsValid(markee) or not markee:IsPlayer() then return end
+		if not IsValid(markee) or not markee:IsPlayer() or self:IsMarked(markee) then return end
 
 		-- show player that they are marked
 		if GetConVar("ttt_mark_show_sidebar"):GetBool() then
