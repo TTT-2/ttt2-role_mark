@@ -160,10 +160,10 @@ if SERVER then
 		-- player alive
 		local player_alive, amnt_marker = 0, 0
 		for _, p in ipairs(player.GetAll()) do
-			if p:Alive() and p:IsTerror() then
+			if p:IsActive() then
 				player_alive = player_alive + 1
 			end
-			if p:Alive() and p:IsTerror() and p:GetTeam() == TEAM_MARKER then
+			if p:IsActive() and p:GetTeam() == TEAM_MARKER then
 				amnt_marker = amnt_marker + 1
 			end
 		end
