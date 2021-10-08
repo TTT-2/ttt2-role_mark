@@ -157,7 +157,7 @@ if SERVER then
 			return
 		end
 
-		if ply:Alive() and not (SpecDM and not ply:IsGhost()) then
+		if ply:IsActive() and not (SpecDM and not ply:IsGhost()) then
 			self:Error(DEFI_ERROR_PLAYER_ALIVE)
 
 			return
@@ -180,7 +180,7 @@ if SERVER then
 				end)
 			end,
 			function(p)
-				return not p:Alive() or (SpecDM and p:IsGhost())
+				return not p:IsActive() or (SpecDM and p:IsGhost())
 			end,
 			true,
 			true
@@ -241,7 +241,7 @@ if SERVER then
 		elseif not owner:KeyDown(IN_ATTACK) or owner:GetEyeTrace(MASK_SHOT_HULL).Entity ~= self.defiTarget then
 			self:CancelRevival()
 			self:Error(DEFI_ERROR_LOST_TARGET)
-		elseif target:Alive() and not (SpecDM and not target:IsGhost()) then
+		elseif target:IsActive() and not (SpecDM and not target:IsGhost()) then
 			self:CancelRevival()
 			self:Error(DEFI_ERROR_PLAYER_ALIVE)
 		end
