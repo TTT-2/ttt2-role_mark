@@ -263,7 +263,7 @@ if SERVER then
 			return
 		end
 
-		local spawnPoint = spawn.MakeSpawnPointSafe(CORPSE.GetPlayer(ent), ent:GetPos())
+		local spawnPoint = plyspawn.MakeSpawnPointSafe(CORPSE.GetPlayer(ent), ent:GetPos())
 
 		if self:GetState() ~= DEFI_IDLE then
 			self:Error(DEFI_ERROR_TOO_FAST)
