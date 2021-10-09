@@ -208,4 +208,10 @@ if SERVER then
 			dmginfo:SetDamage(0)
 		end
 	end)
+
+	hook.Add("TTT2PharaohPreventDamageToAnkh", "TTT2PharaohPreventDamageToAnkhMarker", function(attacker)
+		if attacker:GetTeam() == TEAM_MARKER and GetConVar("ttt_mark_deal_no_damage"):GetBool() then
+			return true
+		end
+	end)
 end
