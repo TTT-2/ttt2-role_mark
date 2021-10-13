@@ -21,9 +21,7 @@ function ROLE:PreInitialize()
 	self.score.teamKillsMultiplier = 0
 	self.score.bodyFoundMuliplier = 0
 	self.score.aliveTeammatesBonusMultiplier = 0
-	self.preventFindCredits = true
-	self.preventKillCredits = true
-	self.preventTraitorAloneCredits = true
+
 	self.preventWin = true
 
 	self.defaultTeam = TEAM_MARKER
