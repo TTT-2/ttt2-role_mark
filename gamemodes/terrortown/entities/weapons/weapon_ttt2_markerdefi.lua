@@ -183,7 +183,7 @@ if SERVER then
 				return not p:IsActive() or (SpecDM and p:IsGhost())
 			end,
 			true,
-			true
+			REVIVAL_BLOCK_ALL
 		)
 		ply:SendRevivalReason("revived_by_marker", {name = self:GetOwner():Nick()})
 
