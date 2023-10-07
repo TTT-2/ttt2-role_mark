@@ -38,6 +38,94 @@ function ROLE:PreInitialize()
 end
 
 if CLIENT then
+	function ROLE:AddToSettingsMenu(parent)
+		local form = vgui.CreateTTT2Form(parent, "header_roles_additional")
+
+		form:MakeCheckBox({
+			serverConvar = "ttt_mark_show_sidebar",
+			label = "label_mark_show_sidebar"
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt_mark_show_messages",
+			label = "label_mark_show_messages"
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt_mark_deal_no_damage",
+			label = "label_mark_deal_no_damage"
+		})
+
+		form:MakeCheckBox({
+			serverConvar = "ttt_mark_take_no_damage",
+			label = "label_mark_take_no_damage"
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_min_alive",
+			label = "label_mark_min_alive",
+			min = 0,
+			max = 25,
+			decimal = 0
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_max_to_mark",
+			label = "label_mark_max_to_mark",
+			min = 0,
+			max = 25,
+			decimal = 0
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_pct_marked",
+			label = "label_mark_pct_marked",
+			min = 0,
+			max = 1,
+			decimal = 2
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_fixed_mark_amount",
+			label = "label_mark_fixed_mark_amount",
+			min = -1,
+			max = 25,
+			decimal = 0
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_defi_factor",
+			label = "label_mark_defi_factor",
+			min = 0,
+			max = 1,
+			decimal = 2
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_defi_revive_time",
+			label = "label_mark_defi_revive_time",
+			min = 0,
+			max = 30,
+			decimal = 1
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_defi_error_time",
+			label = "label_mark_defi_error_time",
+			min = 0,
+			max = 30,
+			decimal = 1
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt_mark_hurt_marked_factor",
+			label = "label_mark_hurt_marked_factor",
+			min = 0,
+			max = 1,
+			decimal = 2
+		})
+	end
+
 	hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
 		if not raw.owner then return end
 		if not raw.owner.was_marked then return end
