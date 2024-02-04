@@ -137,6 +137,29 @@ if CLIENT then
 
 		search.was_marked = {img = "vgui/ttt/player_marked.png", text = LANG.GetTranslation("ttt_marker_was_marked"), p = highest_id + 1}
 	end)
+
+	local TryT = LANG.TryTranslation
+	local ParT = LANG.GetParamTranslation
+
+	local materialCorpse = Material("vgui/ttt/tid/tid_big_corpse")
+
+	hook.Add("TTT2RenderMarkerVisionInfo", "HUDDrawMarkerVisionMarkerCorpse", function(mvData)
+		local client = LocalPlayer()
+		local ent = mvData:GetEntity()
+		local mvObject = mvData:GetMarkerVisionObject()
+
+		if not client:IsTerror() or not mvObject:IsObjectFor(ent, "corpse_marker") then return end
+
+		local distance = math.Round(util.HammerUnitsToMeters(mvData:GetEntityDistance()), 1)
+
+		mvData:EnableText()
+
+		mvData:AddIcon(materialCorpse)
+		mvData:SetTitle(ParT("necro_corpse_player", {nick = CORPSE.GetPlayerNick(ent, "---")}))
+
+		mvData:AddDescriptionLine(ParT("marker_vision_distance", {distance = distance}))
+		mvData:AddDescriptionLine(TryT(mvObject:GetVisibleForTranslationKey()), COLOR_SLATEGRAY)
+	end)
 end
 
 if SERVER then
@@ -148,25 +171,15 @@ if SERVER then
 	ROLE.CustomRadar = function(ply)
 		local targets = {}
 
-		-- get corpses
-		local corpses = ents.FindByClass("prop_ragdoll")
-
-		for _, c in ipairs(corpses) do
-			-- make sure it is a player corpse and not a random map ragdoll
-			if not c.player_ragdoll then continue end
-
-			local pos = c:LocalToWorld(c:OBBCenter())
-
-			pos.x = math.Round(pos.x)
-			pos.y = math.Round(pos.y)
-			pos.z = math.Round(pos.z)
-
-			targets[#targets + 1] = {subrole = -1, pos = pos}
-		end
-
 		-- get players alive
-		for _, p in ipairs(player.GetAll()) do
-			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false) or not p:IsPlayer()) then
+		local plys = player.GetAll()
+
+		for i = 1, #plys do
+			local p = plys[i]
+
+			if IsValid(p) and ply ~= p and p:GetTeam() ~= TEAM_MARKER
+				and (p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false) or not p:IsPlayer())
+			then
 				local pos = p:LocalToWorld(p:OBBCenter())
 
 				-- Round off, easier to send and inaccuracy does not matter
@@ -190,8 +203,8 @@ if SERVER then
 
 		-- get decoys
 		local decoys = ents.FindByClass("ttt_decoy")
-		for _, decoy in ipairs(decoys) do
-			local pos = decoy:LocalToWorld(decoy:OBBCenter())
+		for i = 1, #decoys do
+			local pos = decoy:LocalToWorld(decoys[i]:OBBCenter())
 
 			-- Round off, easier to send and inaccuracy does not matter
 			pos.x = math.Round(pos.x)
@@ -203,20 +216,6 @@ if SERVER then
 
 		return targets
 	end
-
-	ROLE.radarTime = 10
-
-	-- modify roles table of rolesetup addon
-	hook.Add("TTTAModifyRolesTable", "ModifyRoleMarkToInno", function(rls, printrls)
-		printrls[ROLE_MARKER] = true
-
-		local markers = rls[ROLE_MARKER]
-
-		if not markers then return end
-
-		rls[ROLE_INNOCENT] = rls[ROLE_INNOCENT] + markers
-		rls[ROLE_MARKER] = 0
-	end)
 
 	local function InitRoleMarker(ply)
 		ply:GiveEquipmentWeapon("weapon_ttt2_markergun")
@@ -242,6 +241,21 @@ if SERVER then
 		-- remove markings when no marker is alive
 		MARKER_DATA:MarkerDied()
 	end
+
+	hook.Add("TTTOnCorpseCreated", "MarkerAddedDeadBody", function(rag, ply)
+		if not IsValid(rag) or not IsValid(ply) then return end
+
+		local mvObject = rag:AddMarkerVision("corpse_marker")
+		mvObject:SetOwner(ROLE_MARKER)
+		mvObject:SetVisibleFor(VISIBLE_FOR_ROLE)
+		mvObject:SyncToClients()
+	end)
+
+	hook.Add("EntityRemoved", "MarkerRemovedDeadBody", function(ent)
+		if not IsValid(ent) or ent:GetClass() ~= "prop_ragdoll" then return end
+
+		ent:RemoveMarkerVision("corpse_marker")
+	end)
 
 	hook.Add("TTTCheckForWin", "TTT2MarkerCheckWin", function()
 		if not MARKER_DATA:AbleToWin() then return end
