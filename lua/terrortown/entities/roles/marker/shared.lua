@@ -155,7 +155,7 @@ if CLIENT then
 		mvData:EnableText()
 
 		mvData:AddIcon(materialCorpse)
-		mvData:SetTitle(ParT("necro_corpse_player", {nick = CORPSE.GetPlayerNick(ent, "---")}))
+		mvData:SetTitle(ParT("marker_corpse_player", {nick = CORPSE.GetPlayerNick(ent, "---")}))
 
 		mvData:AddDescriptionLine(ParT("marker_vision_distance", {distance = distance}))
 		mvData:AddDescriptionLine(TryT(mvObject:GetVisibleForTranslationKey()), COLOR_SLATEGRAY)

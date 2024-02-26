@@ -60,3 +60,5 @@ L["markerdefi_error_failed"] = "Intento de revivir fallido. Intenta de nuevo."
 --L["label_mark_defi_revive_time"] = "Time it takes for revival"
 --L["label_mark_defi_error_time"] = "Timeout after failed revival"
 --L["label_mark_hurt_marked_factor"] = "Damage marked players deal to the Marker"
+
+--L["marker_corpse_player"] = "Corpse of {nick}"

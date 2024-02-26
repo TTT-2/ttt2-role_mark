@@ -60,3 +60,5 @@ L["label_mark_defi_factor"] = "Faktor zur Berechnung der Defi Menge"
 L["label_mark_defi_revive_time"] = "Dauer der Wiederbelebung"
 L["label_mark_defi_error_time"] = "Pause nach Fehlschlag"
 L["label_mark_hurt_marked_factor"] = "Schaden markierte Spieler dem Markierer zufügen"
+
+--L["marker_corpse_player"] = "Leiche von {nick}"
