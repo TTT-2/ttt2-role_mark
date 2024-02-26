@@ -1,5 +1,7 @@
 hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
-	AddChange("TTT2 Role Marker - v1.0", [[
+    AddChange(
+        "TTT2 Role Marker - v1.0",
+        [[
 		<ul>
 			<li>Initial Release</li>
 		</ul>
@@ -10,27 +12,39 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
 		<p>Additionally the marker sees in a special UI element how many players he has to mark. And since this number is scaled by the number of players that are alive, he can get a sense of how many players are still alive. This gives him some interesting powers, but he should keep quiet about them because calling out that someone has died might reveal him. Marked players do not deal any damage at all to him and he wears a body armor to protect himself.</p>
 		
 		<p>The marker spawns with a marker defi that allows him to revive dead players. Revived players keep their role but spawn as marked. Since nobody knows if he is a traitor, a survivalist or a marker he can confuse others really fast.</p>
-	]], os.time({year = 2019, month = 06, day = 22}))
+	]],
+        os.time({ year = 2019, month = 06, day = 22 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.1", [[
+    AddChange(
+        "TTT2 Role Marker - v1.1",
+        [[
 		<ul>
 			<li>Small fix to make sure marked players are always informed</li>
 			<li>Fixed a problem with the damage hook</li>
 			<li>Added a marker's defi</li>
 			<li>Added text to show if a player is marked</li>
 		</ul>
-	]], os.time({year = 2019, month = 06, day = 25}))
+	]],
+        os.time({ year = 2019, month = 06, day = 25 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.2", [[
+    AddChange(
+        "TTT2 Role Marker - v1.2",
+        [[
 		<ul>
 			<li>Added scoreboard support</li>
 			<li>Updated marker to use new fontrendering</li>
 			<li>EquipMenuData fix</li>
 			<li>Fixed some icon bugs</li>
 		</ul>
-	]], os.time({year = 2019, month = 07, day = 07}))
+	]],
+        os.time({ year = 2019, month = 07, day = 07 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.3", [[
+    AddChange(
+        "TTT2 Role Marker - v1.3",
+        [[
 		<ul>
 			<li>Fixed pirate-marker interaction</li>
 			<li>Fixed scoreboard sometimes causing erros</li>
@@ -43,30 +57,44 @@ hook.Add("TTT2AddChange", "TTT2_role_marker_changelog", function()
 			</ul>
 			<li>Improved loadout by using other hooks, prevents wrong loadout when a player was a marker in the previous round</li>
 		</ul>
-	]], os.time({year = 2019, month = 09, day = 11}))
+	]],
+        os.time({ year = 2019, month = 09, day = 11 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.4", [[
+    AddChange(
+        "TTT2 Role Marker - v1.4",
+        [[
 		<ul>
 			<li>Using new loadout functions that allow item giving without raceconditions</li>
 			<li>Giving the marker 60 armor points on spawn</li>
 			<li>Fixed a convar error where setting it to 0 disabled all damage taken on the server</li>
 			<li>Added "was marked" indicator to body search</li>
 		</ul>
-	]], os.time({year = 2019, month = 10, day = 07}))
+	]],
+        os.time({ year = 2019, month = 10, day = 07 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.5", [[
+    AddChange(
+        "TTT2 Role Marker - v1.5",
+        [[
 		<ul>
 			<li>Fixing a bug with the inspection of dead bodies when the player has respawned</li>
 			<li>Adding role specific convars to ulx</li>
 		</ul>
-	]], os.time({year = 2019, month = 10, day = 09}))
+	]],
+        os.time({ year = 2019, month = 10, day = 09 })
+    )
 
-	AddChange("TTT2 Role Marker - v1.6", [[
+    AddChange(
+        "TTT2 Role Marker - v1.6",
+        [[
 		<ul>
 			<li>Switched to new TTT2 addon language system</li>
 			<li>added targetID support</li>
 			<li>marker radar now respects decoys</li>
 			<li>only detect player ragdolls</li>
 		</ul>
-	]], os.time({year = 2020, month = 02, day = 21}))
+	]],
+        os.time({ year = 2020, month = 02, day = 21 })
+    )
 end)
