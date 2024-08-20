@@ -29,17 +29,6 @@ L["weapon_markerdefi_desc"] = "Riporta in vita i giocatori morti come marcati. M
 --L["ttt2_paintgun_desc"] = "Marks players while covering them in color."
 
 L["revived_by_marker"] = "Sei stato rianimato da {name}. Terrai il tuo ruolo ma sarai marcato. Preparati!"
-L["markerdefi_hold_key_to_revive"] = "Tieni premuto [{key}] per rianimarli marchiati"
-L["markerdefi_revive_progress"] = "Tempo rimasto: {time} secondi"
-L["markerdefi_charging"] = "Il defibrillatore si sta ricaricando, per favore aspetta"
-L["markerdefi_player_already_reviving"] = "Il giocatore sta venendo rianimato"
-L["markerdefi_error_no_space"] = "Non c'è abbastanza spazio disponibile per questo tentativo di rianimazione."
-L["markerdefi_error_too_fast"] = "Il defibrillatore si sta ricaricando, per favore aspetta"
-L["markerdefi_error_lost_target"] = "Hai perso il tuo bersaglio. Per favore riprova."
-L["markerdefi_error_no_valid_ply"] = "Non puoi rianimare questo giocatore perchè non è più valido."
-L["markerdefi_error_already_reviving"] = "Non puoi rianimare questo giocatore perchè lo stanno rianimando."
-L["markerdefi_error_failed"] = "Tentativo di rianimazione fallito. Per favore riprova."
---L["markerdefi_error_player_alive"] = "You can't revive this player since they are already alive."
 
 --L["tooltip_marked_score"] = "Marked: {score}"
 --L["marked_score"] = "Marked:"
@@ -56,9 +45,6 @@ L["markerdefi_error_failed"] = "Tentativo di rianimazione fallito. Per favore ri
 --L["label_mark_max_to_mark"] = "Upper limit of how many players have to be marked"
 --L["label_mark_pct_marked"] = "Pct of alive non Marker to be marked to win"
 --L["label_mark_fixed_mark_amount"] = "Max value (-1 to use scaled max)"
---L["label_mark_defi_factor"] = "Factor to calculate amount of defis"
---L["label_mark_defi_revive_time"] = "Time it takes for revival"
---L["label_mark_defi_error_time"] = "Timeout after failed revival"
 --L["label_mark_hurt_marked_factor"] = "Damage marked players deal to the Marker"
 
 --L["marker_corpse_player"] = "Corpse of {nick}"

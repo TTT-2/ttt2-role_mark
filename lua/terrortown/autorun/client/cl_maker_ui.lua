@@ -1,6 +1,5 @@
 local materialDamage = Material("vgui/ttt/dynamic/roles/icon_traitor")
 
--- handle looking at sodas
 hook.Add("TTTRenderEntityInfo", "ttt2_marker_highlight_focused_players", function(tData)
     -- while client is setting up, ignore missing MARKER
     if not MARKER then
@@ -51,4 +50,11 @@ hook.Add("TTTRenderEntityInfo", "ttt2_marker_highlight_focused_players", functio
             { materialDamage }
         )
     end
+end)
+
+hook.Add("TTT2FinishedLoading", "ttt2_role_marker_init", function()
+    STATUS:RegisterStatus("ttt2_role_marker_marked", {
+        hud = Material("vgui/ttt/hud_icon_marked.png"),
+        type = "bad",
+    })
 end)

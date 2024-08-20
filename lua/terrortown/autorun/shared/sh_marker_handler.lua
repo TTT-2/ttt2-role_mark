@@ -1,3 +1,16 @@
+local flags = { FCVAR_NOTIFY, FCVAR_ARCHIVE, FCVAR_REPLICATED }
+
+local cvMarkShowSidebar = CreateConVar("ttt_mark_show_sidebar", 1, flags)
+local cvMarkShowMessages = CreateConVar("ttt_mark_show_messages", 1, flags)
+local cvMarkMinAlive = CreateConVar("ttt_mark_min_alive", 4, flags)
+local cvMarkMaxToMark = CreateConVar("ttt_mark_max_to_mark", 9, flags)
+local cvMarkPctMarked = CreateConVar("ttt_mark_pct_marked", 0.75, flags)
+local cvMarkFixedAmount = CreateConVar("ttt_mark_fixed_mark_amount", -1, flags)
+
+CreateConVar("ttt_mark_deal_no_damage", 1, flags)
+CreateConVar("ttt_mark_take_no_damage", 1, flags)
+CreateConVar("ttt_mark_hurt_marked_factor", 0, flags)
+
 MARKER_DATA = {}
 MARKER_DATA.marked_players = {}
 MARKER_DATA.amount_marked = 0
@@ -20,7 +33,7 @@ if CLIENT then
         end
 
         if not MARKER_DATA.marked_players[marked_player_id] then
-            if GetConVar("ttt_mark_show_messages"):GetBool() then
+            if cvMarkShowMessages:GetBool() then
                 MSTACK:AddMessage(LANG.GetTranslation("ttt_marker_marked"))
             end
             MARKER_DATA.marked_players[marked_player_id] = true
@@ -41,9 +54,10 @@ if CLIENT then
         end
 
         if MARKER_DATA.marked_players[marked_player_id] then
-            if GetConVar("ttt_mark_show_messages"):GetBool() then
+            if cvMarkShowMessages:GetBool() then
                 MSTACK:AddMessage(LANG.GetTranslation("ttt_marker_died"))
             end
+
             MARKER_DATA.marked_players[marked_player_id] = nil
             MARKER_DATA:Count()
         end
@@ -115,7 +129,7 @@ if SERVER then
         end
 
         -- show player that they are marked
-        if GetConVar("ttt_mark_show_sidebar"):GetBool() then
+        if cvMarkShowSidebar:GetBool() then
             self:MarkPlayer(markee)
         end
 
@@ -199,13 +213,10 @@ if SERVER then
         self.amount_no_marker_alive = player_alive - amnt_marker
 
         -- amount to win
-        if GetConVar("ttt_mark_fixed_mark_amount"):GetInt() == -1 then
-            self.amount_to_win =
-                math.ceil(GetConVar("ttt_mark_pct_marked"):GetFloat() * self:AmountNoMarkerAlive())
-            self.amount_to_win =
-                math.max(self.amount_to_win, GetConVar("ttt_mark_min_alive"):GetInt())
-            self.amount_to_win =
-                math.min(self.amount_to_win, GetConVar("ttt_mark_max_to_mark"):GetInt())
+        if cvMarkFixedAmount:GetInt() == -1 then
+            self.amount_to_win = math.ceil(cvMarkPctMarked:GetFloat() * self:AmountNoMarkerAlive())
+            self.amount_to_win = math.max(self.amount_to_win, cvMarkMinAlive:GetInt())
+            self.amount_to_win = math.min(self.amount_to_win, cvMarkMaxToMark:GetInt())
         else
             self.amount_to_win = GetConVar("ttt_mark_fixed_mark_amount"):GetInt()
         end

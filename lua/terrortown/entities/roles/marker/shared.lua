@@ -94,30 +94,6 @@ if CLIENT then
         })
 
         form:MakeSlider({
-            serverConvar = "ttt_mark_defi_factor",
-            label = "label_mark_defi_factor",
-            min = 0,
-            max = 1,
-            decimal = 2,
-        })
-
-        form:MakeSlider({
-            serverConvar = "ttt_mark_defi_revive_time",
-            label = "label_mark_defi_revive_time",
-            min = 0,
-            max = 30,
-            decimal = 1,
-        })
-
-        form:MakeSlider({
-            serverConvar = "ttt_mark_defi_error_time",
-            label = "label_mark_defi_error_time",
-            min = 0,
-            max = 30,
-            decimal = 1,
-        })
-
-        form:MakeSlider({
             serverConvar = "ttt_mark_hurt_marked_factor",
             label = "label_mark_hurt_marked_factor",
             min = 0,
@@ -127,10 +103,7 @@ if CLIENT then
     end
 
     hook.Add("TTTBodySearchPopulate", "ttt2_role_marker_add_marked_indicator", function(search, raw)
-        if not raw.owner then
-            return
-        end
-        if not raw.owner.was_marked then
+        if not raw.owner or not raw.owner.was_marked then
             return
         end
 
@@ -173,66 +146,6 @@ if CLIENT then
 end
 
 if SERVER then
-    -- giving the marker a custom radar, it does not show other players in the marker team
-    -- the radar has three modes:
-    -- - marked players (rolecolor)
-    -- - dead players (gray)
-    -- - unmarked players (default radar color)
-    ROLE.CustomRadar = function(ply)
-        local targets = {}
-
-        -- get players alive
-        local plys = player.GetAll()
-
-        for i = 1, #plys do
-            local p = plys[i]
-
-            if
-                IsValid(p)
-                and ply ~= p
-                and p:GetTeam() ~= TEAM_MARKER
-                and (
-                    p:IsPlayer() and p:IsTerror() and not p:GetNWBool("disguised", false)
-                    or not p:IsPlayer()
-                )
-            then
-                local pos = p:LocalToWorld(p:OBBCenter())
-
-                -- Round off, easier to send and inaccuracy does not matter
-                pos.x = math.Round(pos.x)
-                pos.y = math.Round(pos.y)
-                pos.z = math.Round(pos.z)
-
-                local subrole, team
-
-                if MARKER_DATA:IsMarked(p) then
-                    subrole = ROLE_MARKER
-                    team = TEAM_MARKER
-                else
-                    subrole = ROLE_INNOCENT
-                    team = TEAM_INNOCENT
-                end
-
-                targets[#targets + 1] = { subrole = subrole, team = team, pos = pos }
-            end
-        end
-
-        -- get decoys
-        local decoys = ents.FindByClass("ttt_decoy")
-        for i = 1, #decoys do
-            local pos = decoy:LocalToWorld(decoys[i]:OBBCenter())
-
-            -- Round off, easier to send and inaccuracy does not matter
-            pos.x = math.Round(pos.x)
-            pos.y = math.Round(pos.y)
-            pos.z = math.Round(pos.z)
-
-            targets[#targets + 1] = { subrole = ROLE_INNOCENT, pos = pos }
-        end
-
-        return targets
-    end
-
     local function InitRoleMarker(ply)
         ply:GiveEquipmentWeapon("weapon_ttt2_markergun")
         ply:GiveEquipmentWeapon("weapon_ttt2_markerdefi")
@@ -358,7 +271,8 @@ if SERVER then
         "TTT2PharaohPreventDamageToAnkhMarker",
         function(attacker)
             if
-                attacker:GetTeam() == TEAM_MARKER and GetConVar("ttt_mark_deal_no_damage"):GetBool()
+                attacker:GetTeam() == TEAM_MARKER
+                and GetConVar("ttt_mark_deal_no_damage"):GetBool()
             then
                 return true
             end
