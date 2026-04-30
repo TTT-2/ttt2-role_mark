@@ -4,13 +4,13 @@ include("shared.lua")
 
 paintballdamage = tonumber(1)
 
-concommand.Add("paintball_damage",SetPaintDamage)
-
 function SetPaintDamage(ply, cmd, args)
 	if cmd == "paintball_damage" then
 		paintballdamage = tonumber(args[1])
 	end
 end
+
+concommand.Add("paintball_damage",SetPaintDamage)
 
 function ENT:SpawnFunction(ply, tr)
 	if not tr.Hit then return end
